@@ -1,11 +1,13 @@
 <?php
-require_once 'SessionManager.php';
-require_once 'PersistanceManager.php';
 
-class AppManager 
+require_once 'PersistanceManager.php';
+require_once 'SessionManager.php';
+
+class AppManager
 {
-    private static $pm;
-    private static $sm;
+
+    private static $pm; 
+    private static $sm; 
 
     public static function getPM()
     {
@@ -14,7 +16,7 @@ class AppManager
         }
         return self::$pm;
     }
-    
+
     public static function getSM()
     {
         if (self::$sm === null) {
@@ -23,4 +25,3 @@ class AppManager
         return self::$sm;
     }
 }
-?>

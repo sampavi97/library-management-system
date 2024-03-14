@@ -23,12 +23,12 @@ class PersistanceManager
 
     public function run($query, $param = null, $fetchFirstRecOnly = false)
     {
-        $this->executeQuery($query, $param, $fetchFirstRecOnly);
+        return $this->executeQuery($query, $param, $fetchFirstRecOnly);
     }
 
     public function insertAndGetLastRowId($query, $param = null)
     {
-        $result = $this->executeQuery($query, $param, true, true);
+        return $this->executeQuery($query, $param, true, true);
     }
 
     private function executeQuery($query, $param = null, $fetchFirstRecOnly = false, $getLastInsertedId = false)
@@ -37,15 +37,15 @@ class PersistanceManager
             $stmt = $this->pdo->prepare($query);
             $stmt->execute($param);
 
-            if($getLastInsertedId) {
+            if ($getLastInsertedId) {
                 return $this->pdo->lastInsertId();
             }
 
-            if($fetchFirstRecOnly){
+            if ($fetchFirstRecOnly)
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            } else {
+            else
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }
+
 
             $stmt->closeCursor();
             return $result;
@@ -56,4 +56,3 @@ class PersistanceManager
     }
     
 }
-?>

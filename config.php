@@ -64,6 +64,19 @@ function pr($data, $comment = '')
     print('</pre>');
 }
 
+function getDays()
+{
+    return [
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday'
+    ];
+}
+
 // Function to generate a random string
 function generateRandomString($length = 4)
 {

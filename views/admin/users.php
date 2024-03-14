@@ -1,0 +1,408 @@
+<?php
+require_once('../layouts/header.php');
+require_once __DIR__ . '/../../models/User.php';
+
+$userModel = new User();
+$users = $userModel->getAll();
+
+?>
+
+<div class="container">
+
+    <h3 class="mx-3 my-5">Manage Users
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-sm btn-dark float-end" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <span class="tf-icons bx bx-user-plus "></span> Add User
+        </button>
+    </h3>
+
+    <!-- Filter By Username AND User Role -->
+    <section class="content m-3">
+        <div class=" row gy-3 mb-3">
+            <div class="col-md-7">
+                <label for="defaultFormControlInput" class="form-label">Filter by name</label>
+                <input type="text" class="form-control" id="defaultFormControlInput" placeholder="Type and Tab" aria-describedby="defaultFormControlHelp">
+            </div>
+            <div class="col-md-5">
+                <label for="defaultSelect" class="form-label">Filter by role</label>
+                <select id="defaultSelect" class="form-select">
+                    <option value="member">Member</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+        </div>
+        <!-- /Filter By Username AND User Role -->
+
+        <div class="card">
+
+            <div class="table-responsive text-nowrap">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Contact No</th>
+                            <th>NIC</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <?php
+                        foreach ($users as $key => $c) {
+                        ?>
+                            <tr class="table-primary">
+                                <td><?= ++$key ?></td>
+                                <td><?= $c['username'] ?? ""; ?></td>
+                                <td><?= $c['email'] ?? ""; ?></td>
+                                <td><?= $c['address'] ?? ""; ?></td>
+                                <td><?= $c['contact_num'] ?? ""; ?></td>
+                                <td><?= $c['nic'] ?? ""; ?></td>
+                                <td><?= $c['role'] ?? ""; ?></td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Second group">
+                                        <button type="button" class="btn btn-sm btn-secondary edit-user" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $c['id']; ?>"><i class="tf-icons bx bx-edit "></i></button>
+                                        <button type="button" class="btn btn-sm btn-danger delete-user" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $c['id']; ?>"><i class="tf-icons bx bx-trash "></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!--Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="add-user-form" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="add_user">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Add User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-1 mb-3">
+                        <label class="form-label" for="username">Name</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
+                    </div>
+                    <div class="row g-2 mt-2">
+                        <div class="col-md-7 mb-3">
+                            <label class="form-label" for="email">Email</label>
+                            <div class="input-group input-group-merge">
+                                <input type="email" id="email" name="email" class="form-control" placeholder="XXXX@XXX.XXX" required>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select id="role" name="role" class="form-select" required>
+                                    <option value="member">Member</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2 mt-2">
+                        <div class="col mb-0 form-password-toggle">
+                            <label class="form-label" for="password">Password</label>
+                            <div class="input-group">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="············" aria-describedby="basic-default-password2" required>
+                                <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                        </div>
+                        <div class="col mb-0 form-password-toggle">
+                            <label class="form-label" for="confirm_password">Confirm Password</label>
+                            <div class="input-group">
+                                <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="············" aria-describedby="basic-default-password2" required>
+                                <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2 mt-2">
+                        <div class="col mb-3">
+                            <label class="form-label" for="contact_num">Phone No</label>
+                            <input type="number" id="contact_num" name="contact_num" class="form-control phone-mask" placeholder="07X XXX XXXX" required>
+                        </div>
+                        <div class="col mb-3">
+                            <label class="form-label" for="nic">NIC No</label>
+                            <input type="text" id="nic" name="nic" class="form-control" placeholder="--------------" required>
+                        </div>
+                    </div>
+                    <div class="row g-1 mb-3">
+                        <label class="form-label" for="address">Address</label>
+                        <textarea id="address" name="address" class="form-control" placeholder="Your address" required></textarea>
+                    </div>
+
+                    <div id="additional-fields"></div>
+                    <div class="mb-3 mt-3">
+                        <div id="alert-container"></div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="add-now" class="btn btn-dark">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end Add User Modal -->
+
+<!--Update User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="edit-user-form" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="edit_user">
+                <input type="hidden" name="id" id="user_id">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-1 mb-3">
+                        <label class="form-label" for="username">Name</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
+                    </div>
+                    <div class="row g-2 mt-2">
+                        <div class="col-md-7 mb-3">
+                            <label class="form-label" for="email">Email</label>
+                            <div class="input-group input-group-merge">
+                                <input type="email" id="email" name="email" class="form-control" placeholder="XXXX@XXX.XXX" required>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select id="role" name="role" class="form-select" required>
+                                    <option value="member">Member</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2 mt-2">
+                        <div class="col mb-0 form-password-toggle">
+                            <label class="form-label" for="password">Password</label>
+                            <div class="input-group">
+                                <input type="password" name="password" class="form-control" id="password" placeholder="············" aria-describedby="basic-default-password2" required>
+                                <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                        </div>
+                        <div class="col mb-0 form-password-toggle">
+                            <label class="form-label" for="confirm_password">Confirm Password</label>
+                            <div class="input-group">
+                                <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="············" aria-describedby="basic-default-password2" required>
+                                <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2 mt-2">
+                        <div class="col mb-3">
+                            <label class="form-label" for="contact_num">Phone No</label>
+                            <input type="number" id="contact_num" name="contact_num" class="form-control phone-mask" placeholder="07X XXX XXXX" required>
+                        </div>
+                        <div class="col mb-3">
+                            <label class="form-label" for="nic">NIC No</label>
+                            <input type="text" id="nic" name="nic" class="form-control" placeholder="--------------" required>
+                        </div>
+                    </div>
+                    <div class="row g-1 mb-3">
+                        <label class="form-label" for="address">Address</label>
+                        <textarea id="address" name="address" class="form-control" placeholder="Your address" required></textarea>
+                    </div>
+
+                    <div id="additional-fields"></div>
+                    <div class="mb-3 mt-3">
+                        <div id="alert-container-edit-form"></div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="edit-now" class="btn btn-dark">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end Update User Modal -->
+
+<?php
+require_once('../layouts/footer.php');
+?>
+
+<script>
+    $(document).ready(function() {
+        $('#add-now').on('click', function() {
+            
+            var form = $('#add-user-form')[0];
+            $('#add-user-form')[0].reportValidity();
+
+            if (form.checkValidity()) {
+                var formData = new FormData($('#add-user-form')[0]);
+
+                $.ajax({
+                    url: $('#add-user-form').attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        showAlert(response.message, response.success ? 'primary' : 'danger');
+                        if (response.success) {
+                            $('#addUserModal').modal('hide');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error submitting the form:', error);
+                    },
+                    complete: function(response) {
+                        console.log('Request complete:', response);
+                    }
+                });
+            } else {
+                var message = ('Form is not valid. Please check your inputs.');
+                showAlert(message, 'danger');
+            }
+        });
+
+        $('.edit-user').on('click', async function() {
+            var user_id = $(this).data('id');
+            await getUserById(user_id);
+        })
+
+        $('.delete-user').on('click', async function() {
+            var user_id = $(this).data('id');
+            var is_confirm = confirm('Are you sure, Do you want to delete?');
+            if (is_confirm) await deleteById(user_id);
+        })
+
+        $('#edit-now').on('click', function() {
+            var form = $('#edit-user-form')[0];
+            $('#edit-user-form')[0].reportValidity();
+
+            if (form.checkValidity()) {
+                var formData = $('#edit-user-form').serialize();
+                var formAction = $('#edit-user-form').attr('action');
+
+                $.ajax({
+                    url: formAction,
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    // contentType: false,
+                    // processData: false,
+                    success: function(response) {
+                        showAlert(response.message, response.success ? 'primary' : 'danger', 'alert-container-edit-form');
+                        if (response.success) {
+                            $('#editUserModal').modal('hide');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error submitting the form:', error);
+                    },
+                    complete: function(response) {
+                        console.log('Request complete:', response);
+                    }
+                });
+            } else {
+                var message = ('Form is not valid. Please check your inputs. ');
+                showAlert(message, 'danger');
+            }
+        });
+
+        // if role changed add users to admin table function
+   
+    });
+
+    async function getUserById(id) {
+        var formAction = $('#edit-user-form').attr('action');
+
+        $.ajax({
+            url: formAction,
+            type: 'GET',
+            data: {
+                user_id: id,
+                action: 'get_user'
+            },
+            dataType: 'json',
+            success: function(response) {
+                showAlert(response.message, response.success ? 'primary' : 'danger');
+                if (response.success) {
+                    var user_id = response.data.id;
+                    var username = response.data.username;
+                    var email = response.data.email;
+                    var role = response.data.role;
+                    var contact_num = response.data.contact_num;
+                    var nic = response.data.nic;
+                    var address = response.data.address;
+
+                    $('#editUserModal #user_id').val(user_id);
+                    $('#editUserModal #username').val(username);
+                    $('#editUserModal #email').val(email);
+                    $('#editUserModal #role').val(role);
+                    $('#editUserModal #contact_num').val(contact_num);
+                    $('#editUserModal #nic').val(nic);
+                    $('#editUserModal #address').val(address);
+                    $('#editUserModal').modal('show');
+                }
+            },
+            error: function(error) {
+                console.error('Error submitting the form:',error);
+            },
+            complete: function(response) {
+                console.log('Request complete:', response);
+            }
+        });
+    }
+
+    async function deleteById(id) {
+        var formAction = $('#edit-user-form').attr('action');
+
+        $.ajax({
+            url: formAction,
+            type: 'GET',
+            data: {
+                user_id: id,
+                action: 'delete_user',
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                }
+            },
+            error: function(error) {
+                console.error('Error submitting the form:', error);
+            },
+            complete: function(response) {
+                console.log('Request complete:', response);
+            }
+        });
+    }
+</script>
