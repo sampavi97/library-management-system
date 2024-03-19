@@ -15,15 +15,16 @@ $books = $bookModel->getAll();
   <section class="content m-3">
     <div class=" row gy-3 mb-3">
       <div class="col-md-7">
-        <label for="defaultFormControlInput" class="form-label">Filter by book title</label>
-        <input type="text" class="form-control" id="defaultFormControlInput" placeholder="Advanced Filter" aria-describedby="defaultFormControlHelp">
+        <label for="searchByTitle" class="form-label">Filter by book title</label>
+        <input type="text" class="form-control" name="searchByTitle" id="searchByTitle" placeholder="Search by Book Title" aria-describedby="defaultFormControlHelp">
       </div>
       <div class="col-md-5">
-        <label for="defaultFormControlInput" class="form-label">Filter by isbn no</label>
-        <input type="text" class="form-control" id="defaultFormControlInput" placeholder="Advanced Filter" aria-describedby="defaultFormControlHelp">
+        <label for="searchByIsbn" class="form-label">Filter by isbn no</label>
+        <input type="text" class="form-control" name="searchByIsbn" id="searchByIsbn" placeholder="Search by ISBN No" aria-describedby="defaultFormControlHelp">
       </div>
     </div>
     <!-- /Filter by title and isbn no -->
+
     <!-- Book Display Table -->
     <div class="card">
     <div class="table-responsive text-nowrap">
@@ -303,4 +304,6 @@ require_once('../layouts/footer.php');
       }
     });
   }
+
+
 </script>

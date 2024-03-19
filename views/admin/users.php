@@ -21,12 +21,13 @@ $users = $userModel->getAll();
     <section class="content m-3">
         <div class=" row gy-3 mb-3">
             <div class="col-md-7">
-                <label for="defaultFormControlInput" class="form-label">Filter by name</label>
-                <input type="text" class="form-control" id="defaultFormControlInput" placeholder="Type and Tab" aria-describedby="defaultFormControlHelp">
+                <label for="searchByName" class="form-label">Filter by name</label>
+                <input type="text" class="form-control" name="searchByName" id="searchByName" placeholder="Type and Tab" aria-describedby="defaultFormControlHelp">
             </div>
             <div class="col-md-5">
-                <label for="defaultSelect" class="form-label">Filter by role</label>
-                <select id="defaultSelect" class="form-select">
+                <label for="searchByRole" class="form-label">Filter by role</label>
+                <select id="searchByRole" class="form-select">
+                    <option value="selected">Choose role</option>
                     <option value="member">Member</option>
                     <option value="admin">Admin</option>
                 </select>
@@ -250,7 +251,7 @@ require_once('../layouts/footer.php');
 <script>
     $(document).ready(function() {
         $('#add-now').on('click', function() {
-            
+
             var form = $('#add-user-form')[0];
             $('#add-user-form')[0].reportValidity();
 
@@ -335,7 +336,7 @@ require_once('../layouts/footer.php');
         });
 
         // if role changed add users to admin table function
-   
+
     });
 
     async function getUserById(id) {
@@ -371,7 +372,7 @@ require_once('../layouts/footer.php');
                 }
             },
             error: function(error) {
-                console.error('Error submitting the form:',error);
+                console.error('Error submitting the form:', error);
             },
             complete: function(response) {
                 console.log('Request complete:', response);
@@ -405,4 +406,39 @@ require_once('../layouts/footer.php');
             }
         });
     }
+// search by user name
+    $(document).ready(function() {
+        $('#searchByName').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+
+            $('tbody tr').each(function() {
+                var username = $(this).find('td:eq(1)').text().toLowerCase(); // Index 1 for the name column
+
+                // Check if the username contains the search term
+                if (username.includes(searchTerm)) {
+                    $(this).show(); // Show the row if the search term is found
+                } else {
+                    $(this).hide(); // Hide the row if the search term is not found
+                }
+            });
+        });
+    });
+
+    //search by user role
+    $(document).ready(function() {
+        $('#searchByRole').change(function() {
+            var selectedRole = $(this).val();
+
+            $('tbody tr').filter(function() {
+                var role = $(this).find('td:eq(6)').text(); // Index 6 for the role column
+
+                // Check if the role matches the selected role or if "Choose role" is selected
+                if (selectedRole === 'selected' || role === selectedRole) {
+                    $(this).show(); // Show the row if the role matches the selected role or if "Choose role" is selected
+                } else {
+                    $(this).hide(); // Hide the row if the role does not match the selected role
+                }
+            });
+        });
+    });
 </script>
