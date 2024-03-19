@@ -26,16 +26,20 @@ $books = $bookModel->getAll();
     <!-- /Filter by title and isbn no -->
     <!-- Book Display Table -->
     <div class="card">
+    <div class="table-responsive text-nowrap">
       <table class="table table-bordered table-dark">
         <thead>
           <tr>
             <th>#</th>
             <th>qty</th>
             <th>isbn no</th>
+            <th>book img</th>
             <th>title</th>
             <th>author</th>
+            <th>publisher</th>
             <th>catogary</th>
             <th>book status</th>
+            <th>book desc</th>
             <th>action</th>
           </tr>
         </thead>
@@ -47,10 +51,17 @@ $books = $bookModel->getAll();
               <td><?= ++$key ?></td>
               <td><?= $b['quantity'] ?></td>
               <td><?= $b['isbn'] ?></td>
+              <td>
+                <?php if (isset($b['book_image']) || !empty($b['book_image'])) : ?>
+                    <img src="<?= asset('assets/upload/' . $b['book_image']) ?>" alt="book" class="d-block rounded m-3" width="80">
+                <?php endif; ?>
+              </td>
               <td><?= $b['title'] ?></td>
               <td><?= $b['author'] ?></td>
+              <td><?= $b['publisher'] ?></td>
               <td><?= $b['catogary'] ?></td>
               <td><?= $b['book_status'] ?></td>
+              <td><?= $b['bk_desc'] ?></td>
               <td>
                 <div class="btn-group" role="group" aria-label="Second group">
                   <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $b['id']; ?>">
@@ -67,6 +78,7 @@ $books = $bookModel->getAll();
           ?>
         </tbody>
       </table>
+    </div>
     </div>
     <!-- end Book Display Table -->
   </section>
@@ -112,10 +124,10 @@ $books = $bookModel->getAll();
               <label class="form-label" for="author">Authors</label>
               <input type="text" id="author" name="author" class="form-control" required>
             </div>
-            <!-- <div class="col mb-3">
+            <div class="col mb-3">
               <label class="form-label" for="publisher">Publishers</label>
               <input type="text" id="publisher" name="publisher" class="form-control" required>
-            </div> -->
+            </div>
           </div>
           <div class="row g-2 mt-2">
             <div class="col-md-4 mb-3">
@@ -132,10 +144,16 @@ $books = $bookModel->getAll();
               </select>
             </div>
           </div>
-          <!-- <div class="row g-1 mb-3">
-            <label class="form-label" for="description">Description</label>
-            <textarea id="description" name="description" class="form-control" required></textarea>
-          </div> -->
+          <div class="row g-1 mb-3">
+            <label class="form-label" for="bk_desc">Description</label>
+            <textarea id="bk_desc" name="bk_desc" class="form-control" required></textarea>
+          </div>
+          <div class="row g-1 mb-3">
+          <div class="form-group">
+              <label for="formFile" class="form-label">Select Image</label>
+              <input type="file" id="formFile" name="book_image" class="form-control" accept="image/*">
+          </div>
+          </div>
 
           <div id="additional-fields"></div>
           <div class="mb-3 mt-3">
@@ -230,17 +248,23 @@ require_once('../layouts/footer.php');
           var title = response.data.title;
           var isbn = response.data.isbn;
           var author = response.data.author;
+          var publisher = response.data.publisher;
           var catogary = response.data.catogary;
           var quantity = response.data.quantity;
           var book_status = response.data.book_status;
+          var bk_desc = response.data.bk_desc;
+          var book_image = response.data.book_image;
 
           $('#editBookModal #book_id').val(book_id);
           $('#editBookModal #title').val(title);
           $('#editBookModal #isbn').val(isbn);
           $('#editBookModal #author').val(author);
-          $('#editBookModal #catogary').val(catogary);
+          $('#editBookModal #publisher').val(publisher);
+          $('#editBookModal #catogary option[value="' + catogary + '"]').prop('selected', true);
           $('#editBookModal #quantity').val(quantity);
-          $('#editBookModal #book_status').val(book_status);
+          $('#editBookModal #book_status option[value="' + book_status + '"]').prop('selected', true);
+          $('#editBookModal #bk_desc').val(bk_desc);
+          $('#editBookModal #book_image').val(book_image);
           $('#editBookModal').modal('show');
         }
       },

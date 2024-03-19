@@ -4,7 +4,7 @@ require_once '../helpers/AppManager.php';
 require_once '../models/Book.php';
 require_once '../models/User.php';
 
-$target_dir = "../assets/uploads/";
+$target_dir = "../assets/upload/";
 
 // CRUD Operations for User
 //add user
@@ -108,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit;
 }
 
+
 // CRUD Operations for Book
 //add book
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_book') {
@@ -115,13 +116,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     try {
         $title = $_POST['title'];
         $author = $_POST['author'];
+        $publisher = $_POST['publisher'];
         $catogary = $_POST['catogary'];
         $isbn = $_POST['isbn'];
         $quantity = $_POST['quantity'];
         $book_status = $_POST['book_status'];
+        $bk_desc = $_POST['bk_desc'];
+        //add book image
+        $image = $_FILES["book_image"];
+        $imageFileName = null;
+
+        // Check if file is uploaded
+        if (isset($image) && !empty($image)) {
+            // Check if there are errors
+            if ($image["error"] > 0) {
+                echo "Error uploading file: " . $image["error"];
+            } else {
+                // Check if file is an image
+                if (getimagesize($image["tmp_name"]) !== false) {
+                    // Check file size (optional)
+                    if ($image["size"] < 500000) { // 500kb limit
+                        // Generate unique filename
+                        $new_filename = uniqid() . "." . pathinfo($image["name"])["extension"];
+
+                        // Move uploaded file to target directory
+                        if (move_uploaded_file($image["tmp_name"], $target_dir . $new_filename)) {
+                            $imageFileName = $new_filename;
+                        } else {
+                            echo json_encode(['success' => false, 'message' => "Error moving uploaded file."]);
+                            exit;
+                        }
+                    } else {
+                        echo json_encode(['success' => false, 'message' => "File size is too large."]);
+                        exit;
+                    }
+                } else {
+                    echo json_encode(['success' => false, 'message' => "Uploaded file is not an image."]);
+                    exit;
+                }
+            }
+        }
 
         $bookModel = new Book();
-        $created = $bookModel->addBook($title,$author,$catogary,$isbn,$quantity,$book_status);
+        $created = $bookModel->addBook($title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$imageFileName);
 
         if($created) {
             echo json_encode(['success' => true, 'message' => "Book created successfully!"]);
@@ -176,10 +213,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     try {
         $title = $_POST['title'];
         $author = $_POST['author'];
+        $publisher = $_POST['publisher'];
         $catogary = $_POST['catogary'];
         $isbn = $_POST['isbn'];
         $quantity = $_POST['quantity'];
         $book_status = $_POST['book_status'];
+        $bk_desc = $_POST['bk_desc'];
         $id = $_POST['id'];
 
         if (empty($title) || empty($isbn)) {
@@ -188,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         $bookModel = new Book();
-        $updated = $bookModel->updateBook($id,$title,$author,$catogary,$isbn,$quantity,$book_status);
+        $updated = $bookModel->updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc);
         if ($updated) {
             echo json_encode(['success' => true, 'message' => "Book updated successfully!"]);
         } else {

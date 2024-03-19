@@ -1,19 +1,31 @@
 <?php
 require_once('../layouts/header.php');
+require_once __DIR__ . '/../../models/Book.php';
+
+$bookModel = new Book();
+$books = $bookModel->getAll();
 ?>
 
 <div class="container">
     <h3 class="mx-3 my-4">Add Books</h3>
 </div>
-    <!-- card divider -->
-    <hr class="m-3">
+<!-- card divider -->
+<hr class="m-3">
 
 <!-- Add Book Form -->
 <form id="add-book-form" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
     <input type="hidden" name="action" value="add_book">
     <div class="container row g-2">
         <div class="container col-md-2">
-            <img src="<?= asset('assets/uploads/upload-img-icon.jpg') ?>" alt="book-img" height="200" width="150">
+            <!-- <div class="wrapper"> -->
+            <div class="form-group">
+                <img id="previewImage" src="<?= url('assets/uploads/default-book-dp.png') ?>" width="140" height="180"/>
+                <p id="errorMsg"></p>
+                <label for="formFile" class="form-label">Choose Image:</label>
+                <input type="file" id="inputImage" name="book_image" class="form-control" accept="image/*">
+            </div>
+            <!-- </div> -->
+
         </div>
 
         <div class="container col-md-10 float-end">
@@ -33,7 +45,6 @@ require_once('../layouts/header.php');
                                     <option selected>Select catogary</option>
                                     <option value="fiction">Fiction</option>
                                     <option value="non-fiction">Non-fiction</option>
-                                    <option value="language">Language</option>
                                     <option value="science">Science</option>
                                     <option value="history">History</option>
                                     <option value="technology">Technology</option>
@@ -84,8 +95,8 @@ require_once('../layouts/header.php');
                     </div>
 
                     <div class="input-group">
-                        <span class="input-group-text" for="description">Description</span>
-                        <textarea class="form-control" id="description" name="description" required></textarea>
+                        <span class="input-group-text" for="bk_desc">Description</span>
+                        <textarea class="form-control" id="bk_desc" name="bk_desc" required></textarea>
                     </div>
                 </div>
 
@@ -147,5 +158,23 @@ require_once('../layouts/footer.php');
                 showAlert(message, 'danger');
             }
         });
+    });
+
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const element = document.getElementById('previewImage');
+            element.src = reader.result;
+        }
+        reader.onerror = function() {
+            const element = document.getElementById('errorMsg');
+            element.value = "Couldn't load the image.";
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const input = document.getElementById('inputImage');
+    input.addEventListener('change', (event) => {
+        previewImage(event)
     });
 </script>

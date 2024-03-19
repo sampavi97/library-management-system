@@ -44,7 +44,7 @@
                 // Function to display a Bootstrap alert
                 function showAlert(message, alertType, id = "alert-container") {
                     var alertContainer = $('#' + id);
-                    var alert = $('<div class="alert alert-' + alertType + ' alert-dismissible fade show" role="alert">' + message +
+                    var alert = $('<div class="alert alert-dark mb-0' + alertType + ' alert-dismissible fade show" role="alert">' + message +
                         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
                     alertContainer.html(alert);
                 }

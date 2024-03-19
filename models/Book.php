@@ -6,10 +6,13 @@ class Book extends BaseModel
 {
     public $title;
     public $author;
+    public $publisher;
     public $catogary;
     public $isbn;
     public $quantity;
     public $book_status;
+    public $bk_desc;
+    public $bk_image;
 
     protected function getTableName()
     {
@@ -21,13 +24,16 @@ class Book extends BaseModel
         $param = array(
             ':title' => $this->title,
             ':author' => $this->author,
+            ':publisher' => $this->publisher,
             ':catogary' => $this->catogary,
             ':isbn' => $this->isbn,
             ':quantity' => $this->quantity,
-            ':book_status' => $this->book_status
+            ':book_status' => $this->book_status,
+            ':bk_desc' => $this->bk_desc,
+            ':bk_image' => $this->bk_image
         );
 
-        return $this->pm->run("INSERT INTO " . $this->getTableName() . "(title,author,catogary,isbn,quantity,book_status) values(:title, :author, :catogary, :isbn, :quantity, :book_status)", $param);
+        return $this->pm->run("INSERT INTO " . $this->getTableName() . "(title,author,publisher,catogary,isbn,quantity,book_status,bk_desc,book_image) values(:title, :author, :publisher, :catogary, :isbn, :quantity, :book_status, :bk_desc,:bk_image)", $param);
     }
 
     protected function updateRec()
@@ -40,10 +46,12 @@ class Book extends BaseModel
         $param = array(
             ':title' => $this->title,
             ':author' => $this->author,
+            ':publisher' => $this->publisher,
             ':catogary' => $this->catogary,
             ':isbn' => $this->isbn,
             ':quantity' => $this->quantity,
             ':book_status' => $this->book_status,
+            ':bk_desc' => $this->bk_desc,
             ':id' => $this->id
         );
         return $this->pm->run(
@@ -51,10 +59,12 @@ class Book extends BaseModel
             SET
                 title = :title,
                 author = :author,
+                publisher = :publisher,
                 catogary = :catogary,
                 isbn = :isbn,
                 quantity = :quantity,
-                book_status = :book_status
+                book_status = :book_status,
+                bk_desc = :bk_desc
                 WHERE id = :id" ,
                 $param
         );
@@ -76,7 +86,7 @@ class Book extends BaseModel
         return $result;
     }
 
-    function addBook($title,$author,$catogary,$isbn,$quantity,$book_status)
+    function addBook($title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$bk_image)
     {
         $bookModel = new Book();
         $existingBook = $bookModel->getBookByTitleOrISBN($title,$isbn);
@@ -87,10 +97,13 @@ class Book extends BaseModel
         $book = new Book();
         $book->title = $title;
         $book->author = $author;
+        $book->publisher = $publisher;
         $book->catogary = $catogary;
         $book->isbn = $isbn;
         $book->quantity = $quantity;
         $book->book_status = $book_status;
+        $book->bk_desc = $bk_desc;
+        $book->bk_image = $bk_image;
         $book->addNewRec();
 
         if($book) {
@@ -100,7 +113,7 @@ class Book extends BaseModel
         }
     }
 
-    function updateBook($id,$title,$author,$catogary,$isbn,$quantity,$book_status)
+    function updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc)
     {
         $bookModel = new Book();
         $existingBook = $bookModel->getBookByTitleOrISBNWithId($title,$isbn,$id);
@@ -113,10 +126,12 @@ class Book extends BaseModel
         $book->id = $id;
         $book->title = $title;
         $book->author = $author;
+        $book->publisher = $publisher;
         $book->catogary = $catogary;
         $book->isbn = $isbn;
         $book->quantity = $quantity;
         $book->book_status = $book_status;
+        $book->bk_desc = $bk_desc;
         $book->updateRec();
 
         if($book) {

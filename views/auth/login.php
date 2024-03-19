@@ -15,7 +15,7 @@ $error = $sm->getAttribute("error");
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Library-Management-System</title>
+    <title>LMS</title>
 
     <meta name="description" content="" />
 
@@ -63,10 +63,11 @@ $error = $sm->getAttribute("error");
                             <img src="<?= asset('assets/uploads/login-logo.png') ?>" height="110" width="200" alt="login-logo">
                         </div>
                         <div class="app-brand justify-content-center mt-3">
-                                <span class="app-brand-text demo text-body fw-bolder" style=" text-transform: capitalize; float:left;">Welcome Back!</span>
+                            <span class="app-brand-text demo text-body fw-bolder" style=" text-transform: capitalize; float:left;">Welcome Back!</span>
                         </div>
                         <!-- /Logo -->
 
+                        <!-- login from -->
                         <form id="formAuthentication" class="m-3" action="../../services/auth.php" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -80,7 +81,7 @@ $error = $sm->getAttribute("error");
                                     </a>
                                 </div>
                                 <div class="input-group input-group-merge">
-                                    <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" required/>
+                                    <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" required />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
                             </div>
@@ -97,6 +98,7 @@ $error = $sm->getAttribute("error");
                                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                             </div>
                         </form>
+                        <!-- end login form -->
 
                         <p class="text-center">
                             <span>Don't have an account?</span>
@@ -113,4 +115,5 @@ $error = $sm->getAttribute("error");
 
     <!-- / Content -->
 </body>
+
 </html>

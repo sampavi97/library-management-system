@@ -1,4 +1,3 @@
-
 <!-- Include Config -->
 <?php
 include __DIR__ . '/../../config.php';
@@ -10,7 +9,7 @@ $role = $sm->getAttribute("role");
 $user_id = $sm->getAttribute("userId");
 
 if (!isset($username)) {
-    header('location: ../auth/login.php');
+    header('location: ../auth/front_login.php');
 }
 
 $currentUrl = $_SERVER['SCRIPT_NAME'];
@@ -101,19 +100,20 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                             </a>
                         </li>
 
-                        <li class="menu-item <?= $currentFilename === "addbooks.php" ? 'active' : '' ?>">
-                            <a href="<?= url('views/admin/addbooks.php') ?>" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-plus-circle"></i>
-                                <div data-i18n="Analytics">Add Books</div>
-                            </a>
-                        </li>
+                        <?php if ($role == 'admin') : ?>
+                            <li class="menu-item <?= $currentFilename === "addbooks.php" ? 'active' : '' ?>">
+                                <a href="<?= url('views/admin/addbooks.php') ?>" class="menu-link">
+                                    <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                                    <div data-i18n="Analytics">Add Books</div>
+                                </a>
+                            </li>
 
-                        <li class="menu-item <?= $currentFilename === "issue_book.php" ? 'active' : '' ?>">
-                            <a href="<?= url('views/admin/issue_book.php') ?>" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-book"></i>
-                                <div data-i18n="Analytics">Issue Books</div>
-                            </a>
-                        </li>
+                            <li class="menu-item <?= $currentFilename === "issue_book.php" ? 'active' : '' ?>">
+                                <a href="<?= url('views/admin/issue_book.php') ?>" class="menu-link">
+                                    <i class="menu-icon tf-icons bx bx-book"></i>
+                                    <div data-i18n="Analytics">Issue Books</div>
+                                </a>
+                            </li>
 
                             <li class="menu-item <?= $currentFilename === "issued_book.php" ? 'active' : '' ?>">
                                 <a href="<?= url('views/admin/issued_book.php') ?>" class="menu-link">
@@ -121,28 +121,27 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                                     <div data-i18n="Analytics">Issued Books</div>
                                 </a>
                             </li>
-
-                            <li class="menu-item <?= $currentFilename === "members.php" ? 'active' : '' ?>">
-                                <a href="<?= url('views/admin/members.php') ?>" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-user-circle"></i>
-                                    <div data-i18n="Analytics">Librarian</div>
+                            <li class="menu-item <?= $currentFilename === "recieved_book.php" ? 'active' : '' ?>">
+                                <a href="<?= url('views/admin/recieved_book.php') ?>" class="menu-link">
+                                    <i class="menu-icon tf-icons bx bx-book-content"></i>
+                                    <div data-i18n="Analytics">Returned Books</div>
                                 </a>
                             </li>
+                        <?php endif; ?>
 
+                        <li class="menu-item <?= $currentFilename === "mm.php" ? 'active' : '' ?>">
+                            <a href="<?= url('views/admin/mm.php') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-notepad"></i>
+                                <div data-i18n="Analytics">Notice</div>
+                            </a>
+                        </li>
 
-                            <li class="menu-item <?= $currentFilename === "payments.php" ? 'active' : '' ?>">
-                                <a href="<?= url('views/admin/payments.php') ?>" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-notepad"></i>
-                                    <div data-i18n="Analytics">Notice</div>
-                                </a>
-                            </li>
-
-                            <li class="menu-item <?= $currentFilename === "users.php" ? 'active' : '' ?>">
-                                <a href="<?= url('views/admin/users.php') ?>" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-user"></i>
-                                    <div data-i18n="Analytics">Manage User</div>
-                                </a>
-                            </li>
+                        <li class="menu-item <?= $currentFilename === "users.php" ? 'active' : '' ?>">
+                            <a href="<?= url('views/admin/users.php') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">Manage User</div>
+                            </a>
+                        </li>
                     </ul>
                 </aside>
                 <!-- / Menu -->
@@ -171,7 +170,7 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                                 <!-- User -->
                                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                        <div class="avatar avatar-online">
+                                        <div class="avatar">
                                             <img src="<?= asset('assets/img/avatars/1.png') ?>" alt class="w-px-40 h-auto rounded-circle" />
                                         </div>
                                     </a>
@@ -180,16 +179,16 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                                             <a class="dropdown-item" href="#">
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
-                                                        <div class="avatar avatar-online">
+                                                        <div class="avatar">
                                                             <img src="<?= asset('assets/img/avatars/1.png') ?>" alt class="w-px-40 h-auto rounded-circle" />
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
                                                         <span class="fw-semibold d-block text-capitalize">sam</span>
                                                         <small class="text-muted text-capitalize">
-                                                            <?= $permission ?>
+                                                            <?= $role ?>
                                                         </small>
-                                                    </div>   
+                                                    </div>
                                                 </div>
                                             </a>
                                             <a class="dropdown-item" href="#">
@@ -219,5 +218,3 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                     </nav>
 
                     <!-- / Navbar -->
-
-                
