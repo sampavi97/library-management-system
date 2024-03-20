@@ -19,7 +19,7 @@ $books = $bookModel->getAll();
         <div class="container col-md-2">
             <!-- <div class="wrapper"> -->
             <div class="form-group">
-                <img id="previewImage" src="<?= url('assets/uploads/default-book-dp.png') ?>" width="140" height="180"/>
+                <img id="previewImage" src="<?= url('assets/uploads/upload-book.png') ?>" width="140" height="180"/>
                 <p id="errorMsg"></p>
                 <label for="formFile" class="form-label">Choose Image:</label>
                 <input type="file" id="inputImage" name="book_image" class="form-control" accept="image/*">
@@ -49,6 +49,8 @@ $books = $bookModel->getAll();
                                     <option value="history">History</option>
                                     <option value="technology">Technology</option>
                                     <option value="philosophy">Philosophy</option>
+                                    <option value="thriller">Thriller</option>
+                                    <option value="fantasy">Fantasy</option>
                                 </select>
                             </div>
                         </div>
@@ -121,6 +123,7 @@ require_once('../layouts/footer.php');
 ?>
 
 <script>
+    // adding book
     $(document).ready(function() {
         $('#add-book-now').on('click', function() {
 
@@ -160,6 +163,7 @@ require_once('../layouts/footer.php');
         });
     });
 
+// preview image after uploaded
     function previewImage(event) {
         const reader = new FileReader();
         reader.onload = function() {
@@ -177,4 +181,5 @@ require_once('../layouts/footer.php');
     input.addEventListener('change', (event) => {
         previewImage(event)
     });
+
 </script>

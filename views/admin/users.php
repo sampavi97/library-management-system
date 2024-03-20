@@ -22,7 +22,7 @@ $users = $userModel->getAll();
         <div class=" row gy-3 mb-3">
             <div class="col-md-7">
                 <label for="searchByName" class="form-label">Filter by name</label>
-                <input type="text" class="form-control" name="searchByName" id="searchByName" placeholder="Type and Tab" aria-describedby="defaultFormControlHelp">
+                <input type="text" class="form-control" name="searchByName" id="searchByName" placeholder="Filter by name" aria-describedby="defaultFormControlHelp">
             </div>
             <div class="col-md-5">
                 <label for="searchByRole" class="form-label">Filter by role</label>
@@ -37,8 +37,8 @@ $users = $userModel->getAll();
 
         <div class="card">
 
-            <div class="table-responsive text-nowrap">
-                <table class="table table-dark">
+            <div class="table-responsive">
+                <table class="table table-bordered table-dark">
                     <thead>
                         <tr>
                             <th>#</th>

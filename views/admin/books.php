@@ -15,33 +15,44 @@ $books = $bookModel->getAll();
   <section class="content m-3">
     <div class=" row gy-3 mb-3">
       <div class="col-md-7">
-        <label for="searchByTitle" class="form-label">Filter by book title</label>
-        <input type="text" class="form-control" name="searchByTitle" id="searchByTitle" placeholder="Search by Book Title" aria-describedby="defaultFormControlHelp">
+        <label for="searchBook" class="form-label">Search Book</label>
+        <input type="text" class="form-control" name="searchBook" id="searchBook" placeholder="Search book by {isbn no, title, author, publisher}" aria-describedby="defaultFormControlHelp">
       </div>
       <div class="col-md-5">
-        <label for="searchByIsbn" class="form-label">Filter by isbn no</label>
-        <input type="text" class="form-control" name="searchByIsbn" id="searchByIsbn" placeholder="Search by ISBN No" aria-describedby="defaultFormControlHelp">
+        <label for="filterByCatogary" class="form-label">Filter By Catogary</label>
+        <select id="filterByCatogary" name="filterByCatogary" class="form-select">
+          <option value="selected">Select catogary</option>
+          <option value="fiction">Fiction</option>
+          <option value="non-fiction">Non-Fiction</option>
+          <option value="language">Language</option>
+          <option value="science">Science</option>
+          <option value="history">History</option>
+          <option value="technology">Technology</option>
+          <option value="philosophy">Philosophy</option>
+          <option value="thriller">Thriller</option>
+          <option value="fantasy">Fantasy</option>
+        </select>
       </div>
     </div>
     <!-- /Filter by title and isbn no -->
 
     <!-- Book Display Table -->
     <div class="card">
-    <div class="table-responsive text-nowrap">
+    <div class="table-responsive">
       <table class="table table-bordered table-dark">
         <thead>
           <tr>
-            <th>#</th>
-            <th>qty</th>
-            <th>isbn no</th>
-            <th>book img</th>
-            <th>title</th>
-            <th>author</th>
-            <th>publisher</th>
-            <th>catogary</th>
-            <th>book status</th>
-            <th>book desc</th>
-            <th>action</th>
+            <th style="width: 10px">#</th>
+            <th class="">qty</th>
+            <th class="">isbn no</th>
+            <th class="">book img</th>
+            <th class="">title</th>
+            <th class="">author</th>
+            <th class="">publisher</th>
+            <th class="">catogary</th>
+            <th class="">book status</th>
+            <th class="">book desc</th>
+            <th class="">action</th>
           </tr>
         </thead>
         <tbody class="table-border-bottom-0">
@@ -62,7 +73,6 @@ $books = $bookModel->getAll();
               <td><?= $b['publisher'] ?></td>
               <td><?= $b['catogary'] ?></td>
               <td><?= $b['book_status'] ?></td>
-              <td><?= $b['bk_desc'] ?></td>
               <td>
                 <div class="btn-group" role="group" aria-label="Second group">
                   <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $b['id']; ?>">
@@ -117,6 +127,8 @@ $books = $bookModel->getAll();
                   <option value="history">History</option>
                   <option value="technology">Technology</option>
                   <option value="philosophy">Philosophy</option>
+                  <option value="thriller">Thriller</option>
+                  <option value="fantasy">Fantasy</option>
               </select>
             </div>
           </div>
@@ -305,5 +317,41 @@ require_once('../layouts/footer.php');
     });
   }
 
+  // filter book with various catogaries 
+  $(document).ready(function() {
+      $('#filterByCatogary').change(function() {
+        var selectedCat = $(this).val();
+
+        $('tbody tr').filter(function() {
+          var cat = $(this).find('td:eq(7)').text();
+
+          if (selectedCat === 'selected' || cat === selectedCat) {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+        });
+      });
+  });
+
+  //filter book by isbn, title, author, publisher
+  $(document).ready(function() {
+    $('#searchBook').on('input',function () {
+      var searchedBook = $(this).val().toLowerCase();
+
+      $('tbody tr').each(function() {
+        var isbn = $(this).find('td:eq(2)').text().toLowerCase();
+        var title = $(this).find('td:eq(4)').text().toLowerCase();
+        var author = $(this).find('td:eq(5)').text().toLowerCase();
+        var publisher = $(this).find('td:eq(6)').text().toLowerCase();
+
+        if (isbn.includes(searchedBook) || title.includes(searchedBook) || author.includes(searchedBook) || publisher.includes(searchedBook)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+  });
 
 </script>
