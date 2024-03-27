@@ -1,11 +1,12 @@
 <?php
 include __DIR__ . '/../../config.php';
-include __DIR__ . '/../../helpers/AppManager.php';
+require_once '../../helpers/AppManager.php';
 require_once __DIR__ . '/../../models/Book.php';
 
 $bookModel = new Book();
 $books = $bookModel->getAll();
 
+$bookId = $_GET['id'];
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -14,7 +15,7 @@ $books = $bookModel->getAll();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>LMS-Home</title>
+    <title>LMS-Books</title>
 
     <meta name="description" content="" />
 
@@ -47,6 +48,18 @@ $books = $bookModel->getAll();
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="<?= asset('assets/js/config.js') ?>"></script>
 
+    <style>
+        .borderless input {
+            /* border: none; */
+        }
+
+        textarea.borderless {
+            /* border: none;
+            outline: none; */
+            /* Remove the outline when focused */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -76,64 +89,53 @@ $books = $bookModel->getAll();
                 <!-- / Navbar -->
 
                 <!-- Content wrapper -->
-                <div class="content-wrapper">
+                <div class="content-wrapper mb-5 mt-4">
                     <!-- Content -->
-
-                    <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <!-- Custom content with heading -->
-                                <div class="mt-3 mb-3">
-                                    <div class="row">
-                                        <div class="col-lg-3 mb-3 mb-md-0">
-                                            <div class="list-group list-group-item-dark">
-                                                <a class="list-group-item list-group-item-action text-center active" id="list-home-list" data-bs-toggle="list" href="#list-home">ALL BOOKS</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-profile-list" data-bs-toggle="list" href="#list-profile">FICTION</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-messages-list" data-bs-toggle="list" href="#list-messages">NON-FICTION</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">SCIENCE</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">HISTORY</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">TECHNOLOGY</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">PHILOSOPHY</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">THRILLER</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">FANTASY</a>
+                    <form class="borderless" id="book-detail" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <img src="" alt="">
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="col-xl">
+                                    <div class="card mb-5">
+                                        <div class="card-body">
+                                            <div class="row mb-3">
+                                                <input type="text" style="line-height: 60px;" class="form-control" id="title" name="title">
                                             </div>
-                                        </div>
-                                        <div class="col-lg-9">
-                                            <div class="row">
-                                                <input type="text" class="form-control" name="searchBook" id="" style="line-height: 55px;" placeholder="Type and Search Book By { Title | Author | Publisher }">
+                                            <div class="row mb-3">
+                                                <input type="text" class="form-control" id="author" name="author">
                                             </div>
-                                            <div class="row tab-content p-0 mt-3" id="list-home">
-                                                <?php
-                                                foreach ($books as $key => $b) {
-                                                ?>
-                                                    <div class="card col-md-2 mt-1 align-items-center">
-                                                        <?php if (isset($b['book_image']) || !empty($b['book_image'])) : ?>
-                                                            <a class="view-book" href="book_detail.php?id=<?= $b['id'] ?>">
-                                                                <img src="<?= asset('assets/upload/' . $b['book_image']) ?>" alt="book" class="d-block rounded m-3 view-book" width="130" height="180">
-                                                            </a>
-                                                        <?php endif; ?>
-                                                        <!-- book status badges -->
-                                                        <?php if ($b['book_status'] === 'available') { ?>
-                                                            <span class="badge bg-dark">available</span>
-                                                        <?php } else if ($b['book_status'] === 'reserve') { ?>
-                                                            <span class="badge bg-success">reserve</span>
-                                                        <?php } else if ($b['book_status'] === 'lost') { ?>
-                                                            <span class="badge bg-danger">lost</span>
-                                                        <?php } else if ($b['book_status'] === 'loaned') { ?>
-                                                            <span class="badge bg-warning">All issued</span>
-                                                        <?php } ?>
-                                                    </div>
-                                                <?php
-                                                }
-                                                ?>
+                                            <div class="row mb-3">
+                                                <textarea id="bk_desc" name="bk_desc" rows="8" class="form-control"></textarea>
                                             </div>
+                                            <div class="row mb-1">
+                                                <div class="col-sm-2"><span for="publisher">Publisher</span></div>
+                                                <div class="col-sm-10"><input type="text" class="form-control" id="publisher" name="publisher"></div>
+                                            </div>
+                                            <div class="row mb-1">
+                                                <div class="col-sm-2"><span for="catogary">Catogary</span></div>
+                                                <div class="col-sm-10"><input type="text" class="form-control" id="catogary" name="catogary"></div>
+                                            </div>
+                                            <div class="row mb-1">
+                                                <div class="col-sm-2"><span for="isbn">ISBN</span></div>
+                                                <div class="col-sm-10"><input type="text" class="form-control" id="isbn" name="isbn"></div>
+                                            </div>
+                                            <div class="row mb-1">
+                                                <div class="col-sm-2"><span for="quantity">Quantity</span></div>
+                                                <div class="col-sm-10"><input type="text" class="form-control" id="quantity" name="quantity"></div>
+                                            </div>
+                                            <div class="row mb-1">
+                                                <div class="col-sm-2"><span for="available_books">Available Books</span></div>
+                                                <div class="col-sm-10"><input type="text" class="form-control" id="available_books" name="available_books"></div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Send</button>
                                         </div>
                                     </div>
                                 </div>
-                                <!--/ Custom content with heading -->
                             </div>
                         </div>
-                    </div>
+                    </form>
                     <!-- / Content -->
 
 
@@ -174,3 +176,43 @@ $books = $bookModel->getAll();
 </body>
 
 </html>
+
+<script>
+    $(document).ready(async function() {
+        var book_id = <?php echo json_encode($bookId); ?>;
+        await getBookById(book_id);
+    });
+
+    async function getBookById(book_id) {
+        var formAction = $('#book-detail').attr('action');
+
+        $.ajax({
+            url: formAction,
+            type: 'GET',
+            data: {
+                id: book_id,
+                action: 'get_book'
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    $('#book-detail #title').val(response.data.title);
+                    $('#book-detail #isbn').val(response.data.isbn);
+                    $('#book-detail #author').val(response.data.author);
+                    $('#book-detail #publisher').val(response.data.publisher);
+                    $('#book-detail #catogary').val(response.data.catogary)
+                    $('#book-detail #quantity').val(response.data.quantity);
+                    $('#book-detail #available_books').val(response.data.available_books);
+                    $('#book-detail #bk_desc').val(response.data.bk_desc);
+                    $('#book-detail #book_image').val(response.data.book_image);
+                }
+            },
+            error: function(error) {
+                console.error('Error getting details:', error);
+            },
+            complete: function(response) {
+                console.log('Request complete:', response);
+            }
+        });
+    }
+</script>

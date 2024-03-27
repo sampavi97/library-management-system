@@ -25,6 +25,16 @@ abstract class BaseModel
         $param = array(':id' => $id);
         return $this->pm->run("SELECT * FROM " . $this->getTableName() . " WHERE id = :id", $param, true);
     }
+    public function getByUsername($username)
+    {
+        $param = array(':username' => $username);
+        return $this->pm->run("SELECT * FROM " . $this->getTableName() . " WHERE username = :username", $param, true);
+    }
+    public function getByBookTitle($title)
+    {
+        $param = array(':title' => $title);
+        return $this->pm->run("SELECT * FROM " . $this->getTableName() . " WHERE title = :title", $param, true);
+    }
 
     public function getAllByColumnValue($column,$value)
     {

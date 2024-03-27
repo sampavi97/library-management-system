@@ -9,6 +9,7 @@ class User extends BaseModel
     public $contact_num;
     public $nic;
     public $role;
+    public $user_image;
     private $email;
     private $password;
 
@@ -28,10 +29,11 @@ class User extends BaseModel
             ':nic' => $this->nic,
             ':role' => $this->role,
             ':email' => $this->email,
+            ':user_image' => $this->user_image,
             ':password' =>$this->password
         );
 
-        return $this->pm->run("INSERT INTO " . $this->getTableName() . "(username,address,contact_num,nic,role,email,password) values(:username, :address, :contact_num, :nic, :role, :email, :password)", $param);
+        return $this->pm->run("INSERT INTO " . $this->getTableName() . "(username,address,contact_num,nic,role,email,password,user_image) values(:username, :address, :contact_num, :nic, :role, :email, :password, :user_image)", $param);
     }
 
     protected function updateRec()
@@ -53,6 +55,7 @@ class User extends BaseModel
             ':role' => $this->role,
             ':email' => $this->email,
             ':password' => $this->password,
+            ':user_image' => $this->user_image,
             ':id' => $this->id
         );
         return $this->pm->run(
@@ -64,6 +67,7 @@ class User extends BaseModel
                 nic = :nic,
                 role = :role,
                 email = :email,
+                user_image = :user_image,
                 password = :password
             WHERE id = :id",
             $param
@@ -87,7 +91,7 @@ class User extends BaseModel
         return $result; // Return the user if found, or false if not found
     }
 
-    function addUser($username, $address, $contact_num, $nic, $role, $email, $password)
+    function addUser($username, $address, $contact_num, $nic, $role, $email, $password, $user_image)
     {
         $userModel = new User();
 
@@ -104,6 +108,7 @@ class User extends BaseModel
         $user->role = $role;
         $user->email = $email;
         $user->password = $password;
+        $user->user_image = $user_image;
         $user->addNewRec();
 
         if($user) {
@@ -113,7 +118,7 @@ class User extends BaseModel
         }
     }
 
-    function updateUser($id,$username,$address,$contact_num,$nic,$role,$email,$password)
+    function updateUser($id,$username,$address,$contact_num,$nic,$role,$email,$password,$user_image)
     {
         $userModel = new User();
         $existingUser = $userModel->getUserByUsernameOrEmailWithId($username,$email,$id);
@@ -131,6 +136,7 @@ class User extends BaseModel
         $user->role = $role;
         $user->email = $email;
         $user->password = $password;
+        $user->user_image = $user_image;
         $user->updateRec();
 
         if($user) {

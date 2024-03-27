@@ -42,6 +42,8 @@ $users = $userModel->getAll();
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>User Id</th>
+                            <th>User Img</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Address</th>
@@ -57,6 +59,12 @@ $users = $userModel->getAll();
                         ?>
                             <tr class="table-primary">
                                 <td><?= ++$key ?></td>
+                                <td><?= $c['id'] ?? ""; ?></td>
+                                <td>
+                                    <?php if (isset($c['user_image']) || !empty($c['user_image'])) : ?>
+                                        <img src="<?= asset('assets/upload/' . $c['user_image']) ?>" alt="user" class="d-block rounded m-3" width="80">
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= $c['username'] ?? ""; ?></td>
                                 <td><?= $c['email'] ?? ""; ?></td>
                                 <td><?= $c['address'] ?? ""; ?></td>
@@ -92,28 +100,37 @@ $users = $userModel->getAll();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row g-1 mb-3">
-                        <label class="form-label" for="username">Name</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
-                    </div>
-                    <div class="row g-2 mt-2">
-                        <div class="col-md-7 mb-3">
-                            <label class="form-label" for="email">Email</label>
-                            <div class="input-group input-group-merge">
-                                <input type="email" id="email" name="email" class="form-control" placeholder="XXXX@XXX.XXX" required>
+                    <div class="row g-2 mb-3">
+
+                        <div class="col-md-3 mb-3 mt-3">
+                            <img id="previewImage" src="<?= url('assets/uploads/upload-user.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <p id="errorMsg"></p>
+                            <label for="formFile" class="form-label">Upload an image</label>
+                            <input type="file" id="inputImage" name="user_image" class="form-control" accept="image/*">
+                        </div>
+                        <div class="col-md-9 mb-2">
+                            <div class="row g-2 mb-2">
+                                <label class="form-label" for="username">Name</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <label class="form-label" for="email">Email</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="XXXX@XXX.XXX" required>
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">Role</label>
+                                    <select id="role" name="role" class="form-select" required>
+                                        <option value="member">Member</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-5 mb-3">
-                            <div class="mb-3">
-                                <label for="role" class="form-label">Role</label>
-                                <select id="role" name="role" class="form-select" required>
-                                    <option value="member">Member</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
-                    <div class="row g-2 mt-2">
+                    <div class="row g-2 mt-0">
                         <div class="col mb-0 form-password-toggle">
                             <label class="form-label" for="password">Password</label>
                             <div class="input-group">
@@ -139,9 +156,9 @@ $users = $userModel->getAll();
                             <input type="text" id="nic" name="nic" class="form-control" placeholder="--------------" required>
                         </div>
                     </div>
-                    <div class="row g-1 mb-3">
+                    <div class="row g-2 mb-3">
                         <label class="form-label" for="address">Address</label>
-                        <textarea id="address" name="address" class="form-control" placeholder="Your address" required></textarea>
+                        <textarea id="address" name="address" class="form-control" placeholder="Your address" rows="5" required></textarea>
                     </div>
 
                     <div id="additional-fields"></div>
@@ -406,13 +423,13 @@ require_once('../layouts/footer.php');
             }
         });
     }
-// search by user name
+    // search by user name
     $(document).ready(function() {
         $('#searchByName').on('input', function() {
             var searchTerm = $(this).val().toLowerCase();
 
             $('tbody tr').each(function() {
-                var username = $(this).find('td:eq(1)').text().toLowerCase(); // Index 1 for the name column
+                var username = $(this).find('td:eq(2)').text().toLowerCase(); // Index 1 for the name column
 
                 // Check if the username contains the search term
                 if (username.includes(searchTerm)) {
@@ -430,7 +447,7 @@ require_once('../layouts/footer.php');
             var selectedRole = $(this).val();
 
             $('tbody tr').filter(function() {
-                var role = $(this).find('td:eq(6)').text(); // Index 6 for the role column
+                var role = $(this).find('td:eq(8)').text(); // Index 6 for the role column
 
                 // Check if the role matches the selected role or if "Choose role" is selected
                 if (selectedRole === 'selected' || role === selectedRole) {
@@ -440,5 +457,24 @@ require_once('../layouts/footer.php');
                 }
             });
         });
+    });
+
+    //preview user image after uploaded
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const element = document.getElementById('previewImage');
+            element.src = reader.result;
+        }
+        reader.onerror = function() {
+            const element = document.getElementById('errorMsg');
+            element.value = "Couldn't load the image.";
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const input = document.getElementById('inputImage');
+    input.addEventListener('change', (event) => {
+        previewImage(event)
     });
 </script>

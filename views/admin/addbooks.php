@@ -17,15 +17,13 @@ $books = $bookModel->getAll();
     <input type="hidden" name="action" value="add_book">
     <div class="container row g-2">
         <div class="container col-md-2">
-            <!-- <div class="wrapper"> -->
+            <!-- Book Image Adding -->
             <div class="form-group">
-                <img id="previewImage" src="<?= url('assets/uploads/upload-book.png') ?>" width="140" height="180"/>
+                <img id="previewImage" src="<?= url('assets/uploads/upload-book.png') ?>" width="140" height="180" />
                 <p id="errorMsg"></p>
-                <label for="formFile" class="form-label">Choose Image:</label>
                 <input type="file" id="inputImage" name="book_image" class="form-control" accept="image/*">
             </div>
-            <!-- </div> -->
-
+            <!-- end - Book Image Adding -->
         </div>
 
         <div class="container col-md-10 float-end">
@@ -91,6 +89,7 @@ $books = $bookModel->getAll();
                                     <option value="loaned">Loaned</option>
                                     <option value="lost">Lost</option>
                                     <option value="reserve">Reserve</option>
+                                    <option value="not-available">Not Available</option>
                                 </select>
                             </div>
                         </div>
@@ -123,7 +122,7 @@ require_once('../layouts/footer.php');
 ?>
 
 <script>
-    // adding book
+    // adding book details
     $(document).ready(function() {
         $('#add-book-now').on('click', function() {
 
@@ -163,7 +162,7 @@ require_once('../layouts/footer.php');
         });
     });
 
-// preview image after uploaded
+    // preview image after uploaded
     function previewImage(event) {
         const reader = new FileReader();
         reader.onload = function() {
@@ -181,5 +180,4 @@ require_once('../layouts/footer.php');
     input.addEventListener('change', (event) => {
         previewImage(event)
     });
-
 </script>

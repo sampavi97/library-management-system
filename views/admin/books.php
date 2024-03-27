@@ -42,17 +42,18 @@ $books = $bookModel->getAll();
       <table class="table table-bordered table-dark">
         <thead>
           <tr>
-            <th style="width: 10px">#</th>
-            <th class="">qty</th>
-            <th class="">isbn no</th>
-            <th class="">book img</th>
-            <th class="">title</th>
-            <th class="">author</th>
-            <th class="">publisher</th>
-            <th class="">catogary</th>
-            <th class="">book status</th>
-            <th class="">book desc</th>
-            <th class="">action</th>
+            <th>#</th>
+            <th>qty</th>
+            <th>available books</th>
+            <th>isbn no</th>
+            <th>book img</th>
+            <th>title</th>
+            <th>author</th>
+            <th>publisher</th>
+            <th>catogary</th>
+            <th>book status</th>
+            <th>book desc</th>
+            <th>action</th>
           </tr>
         </thead>
         <tbody class="table-border-bottom-0">
@@ -62,6 +63,7 @@ $books = $bookModel->getAll();
             <tr class="table-primary">
               <td><?= ++$key ?></td>
               <td><?= $b['quantity'] ?></td>
+              <td><?= $b['available_books'] ?></td>
               <td><?= $b['isbn'] ?></td>
               <td>
                 <?php if (isset($b['book_image']) || !empty($b['book_image'])) : ?>
@@ -73,6 +75,7 @@ $books = $bookModel->getAll();
               <td><?= $b['publisher'] ?></td>
               <td><?= $b['catogary'] ?></td>
               <td><?= $b['book_status'] ?></td>
+              <td><?= $b['bk_desc'] ?></td>
               <td>
                 <div class="btn-group" role="group" aria-label="Second group">
                   <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $b['id']; ?>">
@@ -143,17 +146,22 @@ $books = $bookModel->getAll();
             </div>
           </div>
           <div class="row g-2 mt-2">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label" for="quantity">Quantity</label>
               <input type="text" id="quantity" name="quantity" class="form-control" required>
             </div>
-            <div class="col-md-8 mb-3">
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="available_books">Available Books</label>
+              <input type="text" id="available_books" name="available_books" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
               <label for="book_status" class="form-label">Book Status</label>
               <select id="book_status" name="book_status" class="form-select" required>
                 <option value="available">Available</option>
                 <option value="loaned">Loaned</option>
                 <option value="lost">Lost</option>
                 <option value="reserve">Reserve</option>
+                <option value="not-available">Not Available</option>
               </select>
             </div>
           </div>
@@ -264,6 +272,7 @@ require_once('../layouts/footer.php');
           var publisher = response.data.publisher;
           var catogary = response.data.catogary;
           var quantity = response.data.quantity;
+          var available_books = response.data.available_books;
           var book_status = response.data.book_status;
           var bk_desc = response.data.bk_desc;
           var book_image = response.data.book_image;
@@ -275,6 +284,7 @@ require_once('../layouts/footer.php');
           $('#editBookModal #publisher').val(publisher);
           $('#editBookModal #catogary option[value="' + catogary + '"]').prop('selected', true);
           $('#editBookModal #quantity').val(quantity);
+          $('#editBookModal #available_books').val(available_books);
           $('#editBookModal #book_status option[value="' + book_status + '"]').prop('selected', true);
           $('#editBookModal #bk_desc').val(bk_desc);
           $('#editBookModal #book_image').val(book_image);
@@ -323,7 +333,7 @@ require_once('../layouts/footer.php');
         var selectedCat = $(this).val();
 
         $('tbody tr').filter(function() {
-          var cat = $(this).find('td:eq(7)').text();
+          var cat = $(this).find('td:eq(8)').text();
 
           if (selectedCat === 'selected' || cat === selectedCat) {
             $(this).show();
@@ -340,10 +350,10 @@ require_once('../layouts/footer.php');
       var searchedBook = $(this).val().toLowerCase();
 
       $('tbody tr').each(function() {
-        var isbn = $(this).find('td:eq(2)').text().toLowerCase();
-        var title = $(this).find('td:eq(4)').text().toLowerCase();
-        var author = $(this).find('td:eq(5)').text().toLowerCase();
-        var publisher = $(this).find('td:eq(6)').text().toLowerCase();
+        var isbn = $(this).find('td:eq(3)').text().toLowerCase();
+        var title = $(this).find('td:eq(5)').text().toLowerCase();
+        var author = $(this).find('td:eq(6)').text().toLowerCase();
+        var publisher = $(this).find('td:eq(7)').text().toLowerCase();
 
         if (isbn.includes(searchedBook) || title.includes(searchedBook) || author.includes(searchedBook) || publisher.includes(searchedBook)) {
           $(this).show();
