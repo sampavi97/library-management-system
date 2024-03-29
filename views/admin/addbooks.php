@@ -21,7 +21,7 @@ $books = $bookModel->getAll();
             <div class="form-group">
                 <img id="previewImage" src="<?= url('assets/uploads/upload-book.png') ?>" width="140" height="180" />
                 <p id="errorMsg"></p>
-                <input type="file" id="inputImage" name="book_image" class="form-control" accept="image/*">
+                <input type="file" id="book_image" name="book_image" class="form-control" accept="image/*">
             </div>
             <!-- end - Book Image Adding -->
         </div>
@@ -176,7 +176,7 @@ require_once('../layouts/footer.php');
         reader.readAsDataURL(event.target.files[0]);
     }
 
-    const input = document.getElementById('inputImage');
+    const input = document.getElementById('book_image');
     input.addEventListener('change', (event) => {
         previewImage(event)
     });

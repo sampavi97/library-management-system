@@ -135,10 +135,6 @@ require_once('../layouts/footer.php');
             var book = $('#searchBook').val();
             await getBookByTitle(book);
         })
-
-        $('#iss_date').('change',function() {
-            
-        })
     });
 
     //getting user details by username input
@@ -216,19 +212,21 @@ require_once('../layouts/footer.php');
         previewImage(event)
     });
 
-        // Dates setting for issueing book
-        const issueDate = document.getElementById('iss_date');
-        const dueDate = document.getElementById('due_date');
+    const startDateInput = document.getElementById('iss_date');
+        const endDateInput = document.getElementById('due_date');
 
-        function calculateDueDate(issueDate) {
-            dueDate.setDate(issueDate.getDate() + 14); 
-            return dueDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+        // Function to calculate end date based on start date
+        function calculateEndDate(startDate) {
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 14); // Adding 14 days
+            return endDate; // Format as YYYY-MM-DD
         }
 
-        issueDate.addEventListener('change', function() {
-            const issueDate = $(this).val(); 
-            const dueDate = calculateDueDate(issueDate); 
-            dueDateInput.value = dueDate; 
+        // Event listener for change on start date input
+        startDateInput.addEventListener('change', function() {
+            const startDate = this.value; // Get value of start date input
+            const endDate = calculateEndDate(startDate); // Calculate end date
+            endDateInput.value = endDate; // Set value of end date input
         });
         
 </script>

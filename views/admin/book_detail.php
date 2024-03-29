@@ -50,12 +50,12 @@ $bookId = $_GET['id'];
 
     <style>
         .borderless input {
-            /* border: none; */
+            border: none;
         }
 
         textarea.borderless {
-            /* border: none;
-            outline: none; */
+            border: none;
+            outline: none;
             /* Remove the outline when focused */
         }
     </style>
@@ -190,12 +190,15 @@ $bookId = $_GET['id'];
             url: formAction,
             type: 'GET',
             data: {
-                id: book_id,
+                // LHS should be same var defined as above (book_id)
+                // RHS also should be as how we mentioned above
+                book_id: book_id,
                 action: 'get_book'
             },
             dataType: 'json',
             success: function(response) {
-                if (response.success) {
+                console.log('Success:', response);
+                if (response.success) { 
                     $('#book-detail #title').val(response.data.title);
                     $('#book-detail #isbn').val(response.data.isbn);
                     $('#book-detail #author').val(response.data.author);

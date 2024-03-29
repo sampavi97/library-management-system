@@ -93,6 +93,13 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                             </a>
                         </li>
 
+                        <li class="menu-item <?= $currentFilename === "my_profile.php" ? 'active' : '' ?>">
+                            <a href="<?= url('views/admin/my_profile.php') ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <div data-i18n="Analytics">My Profile</div>
+                            </a>
+                        </li>
+
                         <li class="menu-item <?= $currentFilename === "books.php" ? 'active' : '' ?>">
                             <a href="<?= url('views/admin/books.php') ?>" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-book-open"></i>
@@ -103,14 +110,14 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                         <?php if ($role == 'admin') : ?>
                             <li class="menu-item <?= $currentFilename === "addbooks.php" ? 'active' : '' ?>">
                                 <a href="<?= url('views/admin/addbooks.php') ?>" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                                    <i class="menu-icon tf-icons bx bx-book-add"></i>
                                     <div data-i18n="Analytics">Add Books</div>
                                 </a>
                             </li>
 
                             <li class="menu-item <?= $currentFilename === "issue_book.php" ? 'active' : '' ?>">
                                 <a href="<?= url('views/admin/issue_book.php') ?>" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-book"></i>
+                                    <i class="menu-icon tf-icons bx bx-book-heart"></i>
                                     <div data-i18n="Analytics">Issue Books</div>
                                 </a>
                             </li>
@@ -123,7 +130,7 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                             </li>
                             <li class="menu-item <?= $currentFilename === "recieved_book.php" ? 'active' : '' ?>">
                                 <a href="<?= url('views/admin/recieved_book.php') ?>" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-book-content"></i>
+                                    <i class="menu-icon tf-icons bx bx-book-reader"></i>
                                     <div data-i18n="Analytics">Returned Books</div>
                                 </a>
                             </li>
@@ -138,7 +145,7 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
 
                         <li class="menu-item <?= $currentFilename === "users.php" ? 'active' : '' ?>">
                             <a href="<?= url('views/admin/users.php') ?>" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-user"></i>
+                                <i class="menu-icon tf-icons bx bx-group"></i>
                                 <div data-i18n="Analytics">Manage User</div>
                             </a>
                         </li>
@@ -184,17 +191,17 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <span class="fw-semibold d-block text-capitalize">sam</span>
+                                                        <span class="fw-semibold d-block text-capitalize"><?= $username?></span>
                                                         <small class="text-muted text-capitalize">
                                                             <?= $role ?>
                                                         </small>
                                                     </div>
                                                 </div>
                                             </a>
-                                            <a class="dropdown-item" href="#">
+                                            <!-- <a class="dropdown-item" href="#">
                                                 <i class="bx bx-user me-2"></i>
                                                 <span class="align-middle">My Profile</span>
-                                            </a>
+                                            </a> -->
                                         </li>
                                         <li>
                                             <div class="dropdown-divider"></div>

@@ -38,61 +38,63 @@ $books = $bookModel->getAll();
 
     <!-- Book Display Table -->
     <div class="card">
-    <div class="table-responsive">
-      <table class="table table-bordered table-dark">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>qty</th>
-            <th>available books</th>
-            <th>isbn no</th>
-            <th>book img</th>
-            <th>title</th>
-            <th>author</th>
-            <th>publisher</th>
-            <th>catogary</th>
-            <th>book status</th>
-            <th>book desc</th>
-            <th>action</th>
-          </tr>
-        </thead>
-        <tbody class="table-border-bottom-0">
-          <?php
-          foreach ($books as $key => $b) {
-          ?>
-            <tr class="table-primary">
-              <td><?= ++$key ?></td>
-              <td><?= $b['quantity'] ?></td>
-              <td><?= $b['available_books'] ?></td>
-              <td><?= $b['isbn'] ?></td>
-              <td>
-                <?php if (isset($b['book_image']) || !empty($b['book_image'])) : ?>
-                    <img src="<?= asset('assets/upload/' . $b['book_image']) ?>" alt="book" class="d-block rounded m-3" width="80">
-                <?php endif; ?>
-              </td>
-              <td><?= $b['title'] ?></td>
-              <td><?= $b['author'] ?></td>
-              <td><?= $b['publisher'] ?></td>
-              <td><?= $b['catogary'] ?></td>
-              <td><?= $b['book_status'] ?></td>
-              <td><?= $b['bk_desc'] ?></td>
-              <td>
-                <div class="btn-group" role="group" aria-label="Second group">
-                  <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $b['id']; ?>">
-                    <i class="tf-icons bx bx-edit "></i>
-                  </button>
-                  <button type="button" class="btn btn-sm btn-danger delete-book" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $b['id']; ?>">
-                    <i class="tf-icons bx bx-trash "></i>
-                  </button>
-                </div>
-              </td>
+      <div class="table-responsive">
+        <table class="table table-bordered table-dark">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>qty</th>
+              <th>available books</th>
+              <th>isbn no</th>
+              <th>book img</th>
+              <th>title</th>
+              <th>author</th>
+              <th>publisher</th>
+              <th>catogary</th>
+              <th>book status</th>
+              <th>book desc</th>
+              <?php if ($role == 'admin') : ?><th>action</th><?php endif; ?>
             </tr>
-          <?php
-          }
-          ?>
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            <?php
+            foreach ($books as $key => $b) {
+            ?>
+              <tr class="table-primary">
+                <td><?= ++$key ?></td>
+                <td><?= $b['quantity'] ?></td>
+                <td><?= $b['available_books'] ?></td>
+                <td><?= $b['isbn'] ?></td>
+                <td>
+                  <?php if (isset($b['book_image']) || !empty($b['book_image'])) : ?>
+                    <img src="<?= asset('assets/upload/' . $b['book_image']) ?>" alt="book" class="d-block rounded m-3" width="80">
+                  <?php endif; ?>
+                </td>
+                <td><?= $b['title'] ?></td>
+                <td><?= $b['author'] ?></td>
+                <td><?= $b['publisher'] ?></td>
+                <td><?= $b['catogary'] ?></td>
+                <td><?= $b['book_status'] ?></td>
+                <td><?= $b['bk_desc'] ?></td>
+                <?php if ($role == 'admin') : ?>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Second group">
+                      <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $b['id']; ?>">
+                        <i class="tf-icons bx bx-edit "></i>
+                      </button>
+                      <button type="button" class="btn btn-sm btn-danger delete-book" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $b['id']; ?>">
+                        <i class="tf-icons bx bx-trash "></i>
+                      </button>
+                    </div>
+                  </td>
+                <?php endif; ?>
+              </tr>
+            <?php
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
     </div>
     <!-- end Book Display Table -->
   </section>
@@ -111,6 +113,26 @@ $books = $bookModel->getAll();
         </div>
         <div class="modal-body">
           <div class="row g-1 mb-3">
+            <div class="col-md-3 mb-3 mt-4">
+              <img id="previewImage" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+              <p id="errorMsg"></p>
+            </div>
+            <div class="col-md-9 mb-3 form-group">
+              <div class="row g-1">
+                <label for="formFile" class="form-label">Select Image</label>
+                <input type="file" id="Editbook_image" name="book_image" class="form-control" accept="image/*">
+              </div>
+              <div class="row g-1">
+                <label class="form-label" for="author">Authors</label>
+                <input type="text" id="author" name="author" class="form-control" required>
+              </div>
+              <div class="row g-1">
+                <label class="form-label" for="publisher">Publishers</label>
+                <input type="text" id="publisher" name="publisher" class="form-control" required>
+              </div>
+            </div>
+          </div>
+          <div class="row g-1 mb-3">
             <label class="form-label" for="title">Book Title</label>
             <input type="text" class="form-control" id="title" name="title" required>
           </div>
@@ -122,27 +144,17 @@ $books = $bookModel->getAll();
             <div class="col-md-8 mb-3">
               <label for="catogary" class="form-label">Catogary</label>
               <select id="catogary" name="catogary" class="form-select" required>
-                  <option selected>Select catogary</option>
-                  <option value="fiction">Fiction</option>
-                  <option value="non-fiction">Non-fiction</option>
-                  <option value="language">Language</option>
-                  <option value="science">Science</option>
-                  <option value="history">History</option>
-                  <option value="technology">Technology</option>
-                  <option value="philosophy">Philosophy</option>
-                  <option value="thriller">Thriller</option>
-                  <option value="fantasy">Fantasy</option>
+                <option selected>Select catogary</option>
+                <option value="fiction">Fiction</option>
+                <option value="non-fiction">Non-fiction</option>
+                <option value="language">Language</option>
+                <option value="science">Science</option>
+                <option value="history">History</option>
+                <option value="technology">Technology</option>
+                <option value="philosophy">Philosophy</option>
+                <option value="thriller">Thriller</option>
+                <option value="fantasy">Fantasy</option>
               </select>
-            </div>
-          </div>
-          <div class="row g-2 mt-2">
-            <div class="col mb-3">
-              <label class="form-label" for="author">Authors</label>
-              <input type="text" id="author" name="author" class="form-control" required>
-            </div>
-            <div class="col mb-3">
-              <label class="form-label" for="publisher">Publishers</label>
-              <input type="text" id="publisher" name="publisher" class="form-control" required>
             </div>
           </div>
           <div class="row g-2 mt-2">
@@ -168,12 +180,6 @@ $books = $bookModel->getAll();
           <div class="row g-1 mb-3">
             <label class="form-label" for="bk_desc">Description</label>
             <textarea id="bk_desc" name="bk_desc" class="form-control" required></textarea>
-          </div>
-          <div class="row g-1 mb-3">
-          <div class="form-group">
-              <label for="formFile" class="form-label">Select Image</label>
-              <input type="file" id="formFile" name="book_image" class="form-control" accept="image/*">
-          </div>
           </div>
 
           <div id="additional-fields"></div>
@@ -329,24 +335,24 @@ require_once('../layouts/footer.php');
 
   // filter book with various catogaries 
   $(document).ready(function() {
-      $('#filterByCatogary').change(function() {
-        var selectedCat = $(this).val();
+    $('#filterByCatogary').change(function() {
+      var selectedCat = $(this).val();
 
-        $('tbody tr').filter(function() {
-          var cat = $(this).find('td:eq(8)').text();
+      $('tbody tr').filter(function() {
+        var cat = $(this).find('td:eq(8)').text();
 
-          if (selectedCat === 'selected' || cat === selectedCat) {
-            $(this).show();
-          } else {
-            $(this).hide();
-          }
-        });
+        if (selectedCat === 'selected' || cat === selectedCat) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
       });
+    });
   });
 
   //filter book by isbn, title, author, publisher
   $(document).ready(function() {
-    $('#searchBook').on('input',function () {
+    $('#searchBook').on('input', function() {
       var searchedBook = $(this).val().toLowerCase();
 
       $('tbody tr').each(function() {
@@ -364,4 +370,22 @@ require_once('../layouts/footer.php');
     });
   });
 
+  // preview image after uploaded
+  function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const element = document.getElementById('previewImage');
+            element.src = reader.result;
+        }
+        reader.onerror = function() {
+            const element = document.getElementById('errorMsg');
+            element.value = "Couldn't load the image.";
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const input = document.getElementById('book_image');
+    input.addEventListener('change', (event) => {
+        previewImage(event)
+    });
 </script>

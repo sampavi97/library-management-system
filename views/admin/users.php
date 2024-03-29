@@ -50,7 +50,7 @@ $users = $userModel->getAll();
                             <th>Contact No</th>
                             <th>NIC</th>
                             <th>Role</th>
-                            <th>Action</th>
+                            <?php if ($role == 'admin') : ?><th>Action</th><?php endif; ?>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
@@ -71,12 +71,14 @@ $users = $userModel->getAll();
                                 <td><?= $c['contact_num'] ?? ""; ?></td>
                                 <td><?= $c['nic'] ?? ""; ?></td>
                                 <td><?= $c['role'] ?? ""; ?></td>
+                                <?php if ($role == 'admin') : ?>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Second group">
                                         <button type="button" class="btn btn-sm btn-secondary edit-user" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $c['id']; ?>"><i class="tf-icons bx bx-edit "></i></button>
                                         <button type="button" class="btn btn-sm btn-danger delete-user" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $c['id']; ?>"><i class="tf-icons bx bx-trash "></i></button>
                                     </div>
                                 </td>
+                                <?php endif; ?>
                             </tr>
                         <?php
                         }
@@ -212,7 +214,8 @@ $users = $userModel->getAll();
                             </div>
                         </div>
                     </div>
-                    <div class="row g-2 mt-2">
+                    <!-- delete password option in update user modal
+                        <div class="row g-2 mt-2">
                         <div class="col mb-0 form-password-toggle">
                             <label class="form-label" for="password">Password</label>
                             <div class="input-group">
@@ -227,7 +230,7 @@ $users = $userModel->getAll();
                                 <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row g-2 mt-2">
                         <div class="col mb-3">
                             <label class="form-label" for="contact_num">Phone No</label>

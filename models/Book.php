@@ -12,7 +12,7 @@ class Book extends BaseModel
     public $quantity;
     public $book_status;
     public $bk_desc;
-    public $bk_image;
+    public $book_image;
     public $available_books;
 
     protected function getTableName()
@@ -31,11 +31,11 @@ class Book extends BaseModel
             ':quantity' => $this->quantity,
             ':book_status' => $this->book_status,
             ':bk_desc' => $this->bk_desc,
-            ':bk_image' => $this->bk_image,
+            ':book_image' => $this->book_image,
             ':available_books' => $this->available_books
         );
 
-        return $this->pm->run("INSERT INTO " . $this->getTableName() . "(title,author,publisher,catogary,isbn,quantity,book_status,bk_desc,book_image,available_books) values(:title, :author, :publisher, :catogary, :isbn, :quantity, :book_status, :bk_desc,:bk_image,:available_books)", $param);
+        return $this->pm->run("INSERT INTO " . $this->getTableName() . "(title,author,publisher,catogary,isbn,quantity,book_status,bk_desc,book_image,available_books) values(:title, :author, :publisher, :catogary, :isbn, :quantity, :book_status, :bk_desc,:book_image,:available_books)", $param);
     }
 
     protected function updateRec()
@@ -55,6 +55,7 @@ class Book extends BaseModel
             ':book_status' => $this->book_status,
             ':bk_desc' => $this->bk_desc,
             ':available_books' => $this->available_books,
+            ':book_image' => $this->book_image,
             ':id' => $this->id
         );
         return $this->pm->run(
@@ -68,7 +69,8 @@ class Book extends BaseModel
                 quantity = :quantity,
                 book_status = :book_status,
                 bk_desc = :bk_desc,
-                available_books = :available_books
+                available_books = :available_books,
+                book_image = :book_image
                 WHERE id = :id" ,
                 $param
         );
@@ -90,7 +92,7 @@ class Book extends BaseModel
         return $result;
     }
 
-    function addBook($title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$bk_image,$available_books)
+    function addBook($title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$book_image,$available_books)
     {
         $bookModel = new Book();
         $existingBook = $bookModel->getBookByTitleOrISBN($title,$isbn);
@@ -107,7 +109,7 @@ class Book extends BaseModel
         $book->quantity = $quantity;
         $book->book_status = $book_status;
         $book->bk_desc = $bk_desc;
-        $book->bk_image = $bk_image;
+        $book->book_image = $book_image;
         $book->available_books = $available_books;
         $book->addNewRec();
 
@@ -118,7 +120,7 @@ class Book extends BaseModel
         }
     }
 
-    function updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$available_books)
+    function updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$available_books,$book_image)
     {
         $bookModel = new Book();
         $existingBook = $bookModel->getBookByTitleOrISBNWithId($title,$isbn,$id);
@@ -138,6 +140,7 @@ class Book extends BaseModel
         $book->book_status = $book_status;
         $book->bk_desc = $bk_desc;
         $book->available_books = $available_books;
+        $book->book_image = $book_image;
         $book->updateRec();
 
         if($book) {
