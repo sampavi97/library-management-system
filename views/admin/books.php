@@ -11,13 +11,15 @@ $books = $bookModel->getAll();
 
   <h3 class="mx-3 my-5">View All Books</h3>
 
-  <!-- Filter by title and isbn no -->
+  <!-- Filter Book -->
   <section class="content m-3">
     <div class=" row gy-3 mb-3">
+      <!-- Search book by {isbn no, title, author, publisher} -->
       <div class="col-md-7">
         <label for="searchBook" class="form-label">Search Book</label>
         <input type="text" class="form-control" name="searchBook" id="searchBook" placeholder="Search book by {isbn no, title, author, publisher}" aria-describedby="defaultFormControlHelp">
       </div>
+      <!-- Filter Book By Catogary -->
       <div class="col-md-5">
         <label for="filterByCatogary" class="form-label">Filter By Catogary</label>
         <select id="filterByCatogary" name="filterByCatogary" class="form-select">
@@ -34,7 +36,7 @@ $books = $bookModel->getAll();
         </select>
       </div>
     </div>
-    <!-- /Filter by title and isbn no -->
+    <!-- /Filter Book -->
 
     <!-- Book Display Table -->
     <div class="card">

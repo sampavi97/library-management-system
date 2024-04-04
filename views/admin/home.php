@@ -82,36 +82,46 @@ $books = $bookModel->getAll();
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <!-- Custom content with heading -->
                                 <div class="mt-3 mb-3">
                                     <div class="row">
+                                        <!-- filter book By Catogary -->
                                         <div class="col-lg-3 mb-3 mb-md-0">
-                                            <div class="list-group list-group-item-dark">
-                                                <a class="list-group-item list-group-item-action text-center active" id="list-home-list" data-bs-toggle="list" href="#list-home">ALL BOOKS</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-profile-list" data-bs-toggle="list" href="#list-profile">FICTION</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-messages-list" data-bs-toggle="list" href="#list-messages">NON-FICTION</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">SCIENCE</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">HISTORY</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">TECHNOLOGY</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">PHILOSOPHY</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">THRILLER</a>
-                                                <a class="list-group-item list-group-item-action text-center" id="list-settings-list" data-bs-toggle="list" href="#list-settings">FANTASY</a>
+                                            <div id="filterByCatogary" class="list-group list-group-item-dark">
+                                                <a class="list-group-item list-group-item-action text-center active" value="selected" data-bs-toggle="list" href="#">ALL BOOKS</a>
+                                                <a class="list-group-item list-group-item-action text-center" id="fiction" value="fiction" data-bs-toggle="list" href="#">FICTION</a>
+                                                <a class="list-group-item list-group-item-action text-center" id="nonFiction" value="non-fiction" data-bs-toggle="list" href="#">NON-FICTION</a>
+                                                <a class="list-group-item list-group-item-action text-center" id="science" value="science" data-bs-toggle="list" href="#">SCIENCE</a>
+                                                <a class="list-group-item list-group-item-action text-center" id="history" value="history" data-bs-toggle="list" href="#">HISTORY</a>
+                                                <a class="list-group-item list-group-item-action text-center" id="technology" value="technology" data-bs-toggle="list" href="#">TECHNOLOGY</a>
+                                                <a class="list-group-item list-group-item-action text-center" id="philosophy" value="philosophy" data-bs-toggle="list" href="#">PHILOSOPHY</a>
+                                                <a class="list-group-item list-group-item-action text-center" id="thriller" value="thriller" data-bs-toggle="list" href="#">THRILLER</a>
+                                                <a class="list-group-item list-group-item-action text-center" id="fantasy" value="fantasy" data-bs-toggle="list" href="#">FANTASY</a>
                                             </div>
                                         </div>
                                         <div class="col-lg-9">
+                                            <!-- filter book By Title | Author | Publisher -->
                                             <div class="row">
-                                                <input type="text" class="form-control" name="searchBook" id="" style="line-height: 55px;" placeholder="Type and Search Book By { Title | Author | Publisher }">
+                                                <input type="text" class="form-control" id="searchBook" style="line-height: 55px;" placeholder="Type and Search Book By { Title | Author | Publisher }">
                                             </div>
                                             <div class="row tab-content p-0 mt-3" id="list-home">
                                                 <?php
                                                 foreach ($books as $key => $b) {
                                                 ?>
-                                                    <div class="card col-md-2 mt-1 align-items-center">
+                                                    <div class="display-book card col-md-2 mt-1 align-items-center">
+                                                        <input type="hidden" value="<?= $b['title'] ?>">
+                                                        <input type="hidden" value="<?= $b['author'] ?>">
+                                                        <input type="hidden" value="<?= $b['publisher'] ?>">
+                                                        <input type="hidden" value="<?= $b['catogary'] ?>">
                                                         <?php if (isset($b['book_image']) || !empty($b['book_image'])) : ?>
                                                             <a class="view-book" href="book_detail.php?id=<?= $b['id'] ?>">
                                                                 <img src="<?= asset('assets/upload/' . $b['book_image']) ?>" alt="book" class="d-block rounded m-3 view-book" width="130" height="180">
                                                             </a>
+                                                        <?php else : ?>
+                                                            <a class="view-book" href="book_detail.php?id=<?= $b['id'] ?>">
+                                                                <img src="<?= asset('assets/img/avatars/upload-book.png') ?>" alt="book" class="d-block rounded m-3 view-book" width="130" height="180">
+                                                            </a>
                                                         <?php endif; ?>
+
                                                         <!-- book status badges -->
                                                         <?php if ($b['book_status'] === 'available') { ?>
                                                             <span class="badge bg-dark">available</span>
@@ -130,7 +140,6 @@ $books = $bookModel->getAll();
                                         </div>
                                     </div>
                                 </div>
-                                <!--/ Custom content with heading -->
                             </div>
                         </div>
                     </div>
@@ -174,3 +183,43 @@ $books = $bookModel->getAll();
 </body>
 
 </html>
+
+<script>
+    // Filter Book By Title, Author, Publisher
+    $(document).ready(function() {
+    $('#searchBook').on('input', function() {
+      var searchedBook = $(this).val().toLowerCase();
+
+      $('.display-book').each(function() {
+        // $(this).find('input:nth-of-type(1)') targets the first input element inside each .display-book, which corresponds to the book title.
+        // input:nth-of-type(1) is a CSS selector that selects the first <input> element among its siblings of the same type within its parent element.
+        var title = $(this).find('input:nth-of-type(1)').val().toLowerCase();
+        var author = $(this).find('input:nth-of-type(2)').val().toLowerCase();
+        var publisher = $(this).find('input:nth-of-type(3)').val().toLowerCase();
+
+        if (title.includes(searchedBook) || author.includes(searchedBook) || publisher.includes(searchedBook)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+  });
+
+  // filter book with various catogaries 
+  $(document).ready(function() {
+    $('#filterByCatogary a').on('click', function() {
+      var selectedCat = $(this).attr('value');
+
+      $('.display-book').filter(function() {
+        var cat = $(this).find('input:nth-of-type(4)').val().toLowerCase();
+
+        if (selectedCat === 'selected' || cat === selectedCat) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+  });
+</script>

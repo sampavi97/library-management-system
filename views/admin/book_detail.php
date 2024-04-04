@@ -7,6 +7,7 @@ $bookModel = new Book();
 $books = $bookModel->getAll();
 
 $bookId = $_GET['id'];
+$bookDetail = $bookModel->getById($bookId);
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -58,6 +59,15 @@ $bookId = $_GET['id'];
             outline: none;
             /* Remove the outline when focused */
         }
+
+        .badge {
+            height: 35px;
+            line-height: 35px;
+            padding: 0 10px;
+            font-size: 14px;
+            width: 250px;
+            margin: 0 auto;
+        }
     </style>
 
 </head>
@@ -90,52 +100,72 @@ $bookId = $_GET['id'];
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper mb-5 mt-4">
-                    <!-- Content -->
-                    <form class="borderless" id="book-detail" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <img src="" alt="">
-                            </div>
-                            <div class="col-lg-9">
-                                <div class="col-xl">
-                                    <div class="card mb-5">
-                                        <div class="card-body">
-                                            <div class="row mb-3">
-                                                <input type="text" style="line-height: 60px;" class="form-control" id="title" name="title">
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="mt-3 mb-3">
+                                    <!-- Content -->
+                                    <form class="borderless" id="book-detail" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <div class="row mb-3">
+                                                    <img src="" alt="book" id="book_image" height="550" width="300" class="d-block rounded m-3">
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <?php if ($bookDetail['book_status'] === 'available') { ?>
+                                                        <span class="badge bg-dark">available</span>
+                                                    <?php } else if ($bookDetail['book_status'] === 'reserve') { ?>
+                                                        <span class="badge bg-success">reserve</span>
+                                                    <?php } else if ($bookDetail['book_status'] === 'lost') { ?>
+                                                        <span class="badge bg-danger">lost</span>
+                                                    <?php } else if ($bookDetail['book_status'] === 'loaned') { ?>
+                                                        <span class="badge bg-warning">All issued</span>
+                                                    <?php } ?>
+                                                </div>
                                             </div>
-                                            <div class="row mb-3">
-                                                <input type="text" class="form-control" id="author" name="author">
+                                            <div class="col-lg-9">
+                                                <div class="col-xl">
+                                                        <div class="card-body">
+                                                            <div class="row mb-3">
+                                                                <input type="text" style="line-height: 60px;" class="form-control" id="title" name="title">
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <input type="text" class="form-control" id="author" name="author">
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <textarea id="bk_desc" name="bk_desc" rows="8" class="form-control"></textarea>
+                                                            </div>
+                                                            <div class="row mb-1">
+                                                                <div class="col-sm-2"><span for="publisher">Publisher</span></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="publisher" name="publisher"></div>
+                                                            </div>
+                                                            <div class="row mb-1">
+                                                                <div class="col-sm-2"><span for="catogary">Catogary</span></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="catogary" name="catogary"></div>
+                                                            </div>
+                                                            <div class="row mb-1">
+                                                                <div class="col-sm-2"><span for="isbn">ISBN</span></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="isbn" name="isbn"></div>
+                                                            </div>
+                                                            <div class="row mb-1">
+                                                                <div class="col-sm-2"><span for="quantity">Quantity</span></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="quantity" name="quantity"></div>
+                                                            </div>
+                                                            <div class="row mb-1">
+                                                                <div class="col-sm-2"><span for="available_books">Available Books</span></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="available_books" name="available_books"></div>
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-primary">Reserve Book</button>
+                                                        </div>
+                                                </div>
                                             </div>
-                                            <div class="row mb-3">
-                                                <textarea id="bk_desc" name="bk_desc" rows="8" class="form-control"></textarea>
-                                            </div>
-                                            <div class="row mb-1">
-                                                <div class="col-sm-2"><span for="publisher">Publisher</span></div>
-                                                <div class="col-sm-10"><input type="text" class="form-control" id="publisher" name="publisher"></div>
-                                            </div>
-                                            <div class="row mb-1">
-                                                <div class="col-sm-2"><span for="catogary">Catogary</span></div>
-                                                <div class="col-sm-10"><input type="text" class="form-control" id="catogary" name="catogary"></div>
-                                            </div>
-                                            <div class="row mb-1">
-                                                <div class="col-sm-2"><span for="isbn">ISBN</span></div>
-                                                <div class="col-sm-10"><input type="text" class="form-control" id="isbn" name="isbn"></div>
-                                            </div>
-                                            <div class="row mb-1">
-                                                <div class="col-sm-2"><span for="quantity">Quantity</span></div>
-                                                <div class="col-sm-10"><input type="text" class="form-control" id="quantity" name="quantity"></div>
-                                            </div>
-                                            <div class="row mb-1">
-                                                <div class="col-sm-2"><span for="available_books">Available Books</span></div>
-                                                <div class="col-sm-10"><input type="text" class="form-control" id="available_books" name="available_books"></div>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Send</button>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <!-- / Content -->
 
 
@@ -198,7 +228,11 @@ $bookId = $_GET['id'];
             dataType: 'json',
             success: function(response) {
                 console.log('Success:', response);
-                if (response.success) { 
+                if (response.success) {
+                    // set path for book image to retrieve 
+                    var imageBaseUrl = '../../assets/upload/';
+                    var adjustedUrl = imageBaseUrl + response.data.book_image;
+
                     $('#book-detail #title').val(response.data.title);
                     $('#book-detail #isbn').val(response.data.isbn);
                     $('#book-detail #author').val(response.data.author);
@@ -207,7 +241,7 @@ $bookId = $_GET['id'];
                     $('#book-detail #quantity').val(response.data.quantity);
                     $('#book-detail #available_books').val(response.data.available_books);
                     $('#book-detail #bk_desc').val(response.data.bk_desc);
-                    $('#book-detail #book_image').val(response.data.book_image);
+                    $('#book-detail #book_image').attr('src', adjustedUrl);
                 }
             },
             error: function(error) {
