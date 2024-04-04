@@ -1,9 +1,13 @@
 <?php
 require_once('../layouts/header.php');
 require_once __DIR__ . '/../../models/User.php';
+require_once __DIR__ . '/../../models/Book.php';
 
 $userModel = new User();
 $users = $userModel->getAll();
+
+$bookModel = new Book();
+$books = $bookModel->getAll();
 
 ?>
 
@@ -64,7 +68,7 @@ $users = $userModel->getAll();
                 <div class="mt-3 m-1">
                     <div class="row">
                         <div class="col-md-3">
-                            <img style="border: 1px solid black;" name="book_image" id="book_image" src="<?= url('assets/uploads/default-book-dp.png') ?>" height="150" width="100" alt="default-dp">
+                            <img style="border: 1px solid black;" id="book_image" src="<?= url('assets/uploads/default-book-dp.png') ?>" height="150" width="100" alt="book">
                         </div>
                         <div class="col-md-9">
                             <div class="input-group input-group-merge">
@@ -177,12 +181,15 @@ require_once('../layouts/footer.php');
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
+                    var imageBaseUrl = '../../assets/upload/';
+                    var adjustedUrl = imageBaseUrl + response.data.book_image;
                     $('#issue-book-form #id').val(response.data.id);
                     $('#issue-book-form #book_image').val(response.data.book_image);
                     $('#issue-book-form #isbn').val(response.data.isbn);
                     $('#issue-book-form #title').val(response.data.title);
                     $('#issue-book-form #author').val(response.data.author);
                     $('#issue-book-form #publisher').val(response.data.publisher);
+                    $('#issue-book-form #book_image').attr('src', adjustedUrl);
                 }
             },
             error: function(error) {

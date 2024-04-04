@@ -56,13 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $userModel = new User();
         $created = $userModel->addUser($username, $address, $contact_num, $nic, $role, $email, $password, $imageFileName);
 
-        if($created) {
+        if ($created) {
             // TODO create createAdmin for admin table also as doctor ceated in ajax_functions.php
             echo json_encode(['success' => true, 'message' => "User created successfully!"]);
         } else {
             echo json_encode(['success' => false, 'message' => "Failed to create user. May be user already exist!"]);
         }
-    } catch (PDOException $e){
+    } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     }
     exit;
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 //Get User By Id
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user_id']) && isset($_GET['action']) && $_GET['action'] == 'get_user') {
-    
+
     try {
         $user_id = $_GET['user_id'];
         $userModel = new User();
@@ -80,15 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user_id']) && isset($_G
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to create user. May be user already exist!']);
         }
-    } catch (PDOException $e){
-        echo json_encode(['success' =>false, 'message' => 'Error: ' . $e->getMessage()]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     }
     exit;
 }
 
 //Get User By username
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user']) && isset($_POST['action']) && $_POST['action'] == 'issue_user') {
-    
+
     try {
         $searchedUser = $_POST['user'];
         $userModel = new User();
@@ -98,8 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user']) && isset($_PO
         } else {
             echo json_encode(['success' => false, 'message' => 'No such user found!']);
         }
-    } catch (PDOException $e){
-        echo json_encode(['success' =>false, 'message' => 'Error: ' . $e->getMessage()]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     }
     exit;
 }
@@ -142,12 +142,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(['success' =>false, 'message' => "Invalid email address"]);
+            echo json_encode(['success' => false, 'message' => "Invalid email address"]);
             exit;
         }
 
         $userModel = new User();
-        $updated = $userModel->updateUser($id,$username,$address,$contact_num,$nic,$role,$email,$password,$user_image);
+        $updated = $userModel->updateUser($id, $username, $address, $contact_num, $nic, $role, $email, $password, $user_image);
         if ($updated) {
             echo json_encode(['success' => true, 'message' => "User updated successfully!"]);
         } else {
@@ -210,14 +210,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         $bookModel = new Book();
-        $created = $bookModel->addBook($title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$imageFileName,$available_books);
+        $created = $bookModel->addBook($title, $author, $publisher, $catogary, $isbn, $quantity, $book_status, $bk_desc, $imageFileName, $available_books);
 
-        if($created) {
+        if ($created) {
             echo json_encode(['success' => true, 'message' => "Book created successfully!"]);
         } else {
             echo json_encode(['success' => false, 'message' => "Failed to create book. May be book already exist!"]);
         }
-    } catch (PDOException $e){
+    } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     }
     exit;
@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 //Get book By Id
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['book_id']) && isset($_GET['action']) && $_GET['action'] == 'get_book') {
-    
+
     try {
         $book_id = $_GET['book_id'];
         $bookModel = new Book();
@@ -235,15 +235,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['book_id']) && isset($_G
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to create book. May be book already exist!']);
         }
-    } catch (PDOException $e){
-        echo json_encode(['success' =>false, 'message' => 'Error: ' . $e->getMessage()]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     }
     exit;
 }
 
 //Get book By Title
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book']) && isset($_POST['action']) && $_POST['action'] == 'issue_book') {
-    
+
     try {
         $searchedBook = $_POST['book'];
         $bookModel = new Book();
@@ -253,8 +253,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book']) && isset($_PO
         } else {
             echo json_encode(['success' => false, 'message' => 'No such book found!']);
         }
-    } catch (PDOException $e){
-        echo json_encode(['success' =>false, 'message' => 'Error: ' . $e->getMessage()]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     }
     exit;
 }
@@ -290,7 +290,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $book_status = $_POST['book_status'];
         $bk_desc = $_POST['bk_desc'];
         $available_books = $_POST['available_books'];
-        $book_image = $_POST['book_image'];
+
+        $image = $_FILES['book_image'];
+        $imageFileName = null;
+
+        // Check if file is uploaded
+        if (isset($image) && !empty($image)) {
+            // Check if there are errors
+            if ($image["error"] > 0) {
+                echo "Error uploading file: " . $image["error"];
+                exit;
+            } else {
+                // Check if file is an image
+                if (getimagesize($image["tmp_name"]) !== false) {
+                    // Check file size (optional)
+                    if ($image["size"] < 500000) { // 500kb limit
+                        // Generate unique filename
+                        $new_filename = uniqid() . "." . pathinfo($image["name"])["extension"];
+
+                        // Move uploaded file to target directory
+                        if (move_uploaded_file($image["tmp_name"], $target_dir . $new_filename)) {
+                            $imageFileName = $new_filename;
+                        } else {
+                            echo json_encode(['success' => false, 'message' => "Error moving uploaded file."]);
+                            exit;
+                        }
+                    } else {
+                        echo json_encode(['success' => false, 'message' => "File size is too large."]);
+                        exit;
+                    }
+                } else {
+                    echo json_encode(['success' => false, 'message' => "Uploaded file is not an image."]);
+                    exit;
+                }
+            }
+        }
+
         $id = $_POST['id'];
 
         if (empty($title) || empty($isbn)) {
@@ -299,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         $bookModel = new Book();
-        $updated = $bookModel->updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$available_books,$book_image);
+        $updated = $bookModel->updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$available_books,$imageFileName);
         if ($updated) {
             echo json_encode(['success' => true, 'message' => "Book updated successfully!"]);
         } else {
@@ -310,5 +345,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     exit;
 }
-
-?>

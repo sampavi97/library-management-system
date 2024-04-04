@@ -8,6 +8,9 @@ $books = $bookModel->getAll();
 
 $bookId = $_GET['id'];
 $bookDetail = $bookModel->getById($bookId);
+
+$sm = AppManager::getSM();
+$role = $sm->getAttribute("role");
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -109,17 +112,19 @@ $bookDetail = $bookModel->getById($bookId);
                                         <div class="row">
                                             <div class="col-lg-3">
                                                 <div class="row mb-3">
-                                                    <img src="" alt="book" id="book_image" height="550" width="300" class="d-block rounded m-3">
+                                                    <img src="" alt="book" id="book_image" height="500" width="280" class="d-block rounded m-3">
                                                 </div>
                                                 <div class="row mb-3">
                                                     <?php if ($bookDetail['book_status'] === 'available') { ?>
-                                                        <span class="badge bg-dark">available</span>
+                                                        <span class="badge bg-success">available</span>
                                                     <?php } else if ($bookDetail['book_status'] === 'reserve') { ?>
-                                                        <span class="badge bg-success">reserve</span>
+                                                        <span class="badge bg-warning">reserve</span>
                                                     <?php } else if ($bookDetail['book_status'] === 'lost') { ?>
                                                         <span class="badge bg-danger">lost</span>
                                                     <?php } else if ($bookDetail['book_status'] === 'loaned') { ?>
-                                                        <span class="badge bg-warning">All issued</span>
+                                                        <span class="badge bg-danger">All issued</span>
+                                                    <?php } else if ($bookDetail['book_status'] === 'not-available') { ?>
+                                                        <span class="badge bg-info">Not Available</span>
                                                     <?php } ?>
                                                 </div>
                                             </div>
@@ -155,8 +160,9 @@ $bookDetail = $bookModel->getById($bookId);
                                                                 <div class="col-sm-2"><span for="available_books">Available Books</span></div>
                                                                 <div class="col-sm-10"><input type="text" class="form-control" id="available_books" name="available_books"></div>
                                                             </div>
-
-                                                            <button type="submit" class="btn btn-primary">Reserve Book</button>
+                                                            <?php if ($role == 'admin' || $role == 'member') : ?>
+                                                            <button type="submit" class="btn btn-dark float-end">Reserve Book</button>
+                                                            <?php endif; ?>
                                                         </div>
                                                 </div>
                                             </div>

@@ -116,13 +116,13 @@ $books = $bookModel->getAll();
         <div class="modal-body">
           <div class="row g-1 mb-3">
             <div class="col-md-3 mb-3 mt-4">
-              <img id="previewImage" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+              <img id="previewImage" class="bk_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
               <p id="errorMsg"></p>
             </div>
             <div class="col-md-9 mb-3 form-group">
               <div class="row g-1">
                 <label for="formFile" class="form-label">Select Image</label>
-                <input type="file" id="Editbook_image" name="book_image" class="form-control" accept="image/*">
+                <input type="file" id="book_image" name="book_image" class="form-control" accept="image/*">
               </div>
               <div class="row g-1">
                 <label class="form-label" for="author">Authors</label>
@@ -283,7 +283,9 @@ require_once('../layouts/footer.php');
           var available_books = response.data.available_books;
           var book_status = response.data.book_status;
           var bk_desc = response.data.bk_desc;
-          var book_image = response.data.book_image;
+
+          var imageBaseUrl = '../../assets/upload/';
+          var adjustedUrl = imageBaseUrl + response.data.book_image;
 
           $('#editBookModal #book_id').val(book_id);
           $('#editBookModal #title').val(title);
@@ -295,7 +297,7 @@ require_once('../layouts/footer.php');
           $('#editBookModal #available_books').val(available_books);
           $('#editBookModal #book_status option[value="' + book_status + '"]').prop('selected', true);
           $('#editBookModal #bk_desc').val(bk_desc);
-          $('#editBookModal #book_image').val(book_image);
+          $('#editBookModal .bk_image').attr('src', adjustedUrl);
           $('#editBookModal').modal('show');
         }
       },
@@ -390,4 +392,5 @@ require_once('../layouts/footer.php');
     input.addEventListener('change', (event) => {
         previewImage(event)
     });
+    
 </script>
