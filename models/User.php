@@ -54,7 +54,6 @@ class User extends BaseModel
             ':nic' => $this->nic,
             ':role' => $this->role,
             ':email' => $this->email,
-            ':password' => $this->password,
             ':user_image' => $this->user_image,
             ':id' => $this->id
         );
@@ -118,7 +117,7 @@ class User extends BaseModel
         }
     }
 
-    function updateUser($id,$username,$address,$contact_num,$nic,$role,$email,$password,$user_image)
+    function updateUser($id,$username,$address,$contact_num,$nic,$role,$email,$user_image)
     {
         $userModel = new User();
         $existingUser = $userModel->getUserByUsernameOrEmailWithId($username,$email,$id);
@@ -135,7 +134,6 @@ class User extends BaseModel
         $user->nic = $nic;
         $user->role = $role;
         $user->email = $email;
-        $user->password = $password;
         $user->user_image = $user_image;
         $user->updateRec();
 

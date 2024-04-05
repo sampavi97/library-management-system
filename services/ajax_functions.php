@@ -128,13 +128,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     try {
         $username = $_POST['username'];
         $email = $_POST['email'];
-        $password = $_POST['password'];
         $role = $_POST['role'] == 'member' ? 'member' : 'admin';
         $contact_num = $_POST['contact_num'];
         $nic = $_POST['nic'];
         $address = $_POST['address'];
-        $user_image = $_POST['user_image'];
+
         $id = $_POST['id'];
+
+        $image = $_FILES["user_image"];
+        $imageFileName = null;
+
+        // Check if file is uploaded
+        if (isset($image) && !empty($image)) {
+            // Check if there are errors
+            if ($image["error"] > 0) {
+                echo "Error uploading file: " . $image["error"];
+            } else {
+                // Check if file is an image
+                if (getimagesize($image["tmp_name"]) !== false) {
+                    // Check file size (optional)
+                    if ($image["size"] < 500000) { // 500kb limit
+                        // Generate unique filename
+                        $new_filename = uniqid() . "." . pathinfo($image["name"])["extension"];
+
+                        // Move uploaded file to target directory
+                        if (move_uploaded_file($image["tmp_name"], $target_dir . $new_filename)) {
+                            $imageFileName = $new_filename;
+                        } else {
+                            echo json_encode(['success' => false, 'message' => "Error moving uploaded file."]);
+                            exit;
+                        }
+                    } else {
+                        echo json_encode(['success' => false, 'message' => "File size is too large."]);
+                        exit;
+                    }
+                } else {
+                    echo json_encode(['success' => false, 'message' => "Uploaded file is not an image."]);
+                    exit;
+                }
+            }
+        }
+        if (empty($title) || empty($isbn)) {
+            echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
+            exit;
+        }
 
         if (empty($username) || empty($email)) {
             echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
@@ -147,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         $userModel = new User();
-        $updated = $userModel->updateUser($id, $username, $address, $contact_num, $nic, $role, $email, $password, $user_image);
+        $updated = $userModel->updateUser($id, $username, $address, $contact_num, $nic, $role, $email, $imageFileName);
         if ($updated) {
             echo json_encode(['success' => true, 'message' => "User updated successfully!"]);
         } else {
@@ -278,7 +315,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['book_id']) && isset($_GE
     exit;
 }
 
-//Update book
+// Update book
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_book') {
     try {
         $title = $_POST['title'];
@@ -291,7 +328,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $bk_desc = $_POST['bk_desc'];
         $available_books = $_POST['available_books'];
 
-        $image = $_FILES['book_image'];
+        $id = $_POST['id'];
+
+        $image = $_FILES["book_image"];
         $imageFileName = null;
 
         // Check if file is uploaded
@@ -299,7 +338,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             // Check if there are errors
             if ($image["error"] > 0) {
                 echo "Error uploading file: " . $image["error"];
-                exit;
             } else {
                 // Check if file is an image
                 if (getimagesize($image["tmp_name"]) !== false) {
@@ -325,9 +363,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 }
             }
         }
-
-        $id = $_POST['id'];
-
         if (empty($title) || empty($isbn)) {
             echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
             exit;
@@ -345,3 +380,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     exit;
 }
+
+
+
+

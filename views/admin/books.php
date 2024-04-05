@@ -121,8 +121,8 @@ $books = $bookModel->getAll();
             </div>
             <div class="col-md-9 mb-3 form-group">
               <div class="row g-1">
-                <label for="formFile" class="form-label">Select Image</label>
-                <input type="file" id="book_image" name="book_image" class="form-control" accept="image/*">
+                <label for="formFile" class="form-label">Change Image</label>
+                <input type="file" id="book_image" name="book_image" value="" class="form-control" accept="image/*">
               </div>
               <div class="row g-1">
                 <label class="form-label" for="author">Authors</label>
@@ -225,7 +225,7 @@ require_once('../layouts/footer.php');
       $('#edit-book-form')[0].reportValidity();
 
       if (form.checkValidity()) {
-        var formData = $('#edit-book-form').serialize();
+        var formData = new FormData($('#edit-book-form')[0]);
         var formAction = $('#edit-book-form').attr('action');
 
         $.ajax({
@@ -233,8 +233,8 @@ require_once('../layouts/footer.php');
           type: 'POST',
           data: formData,
           dataType: 'json',
-          // contentType: false,
-          // processData: false,
+          contentType: false,
+          processData: false,
           success: function(response) {
             showAlert(response.message, response.success ? 'primary' : 'danger', 'alert-container-edit-book');
             if (response.success) {
@@ -283,9 +283,10 @@ require_once('../layouts/footer.php');
           var available_books = response.data.available_books;
           var book_status = response.data.book_status;
           var bk_desc = response.data.bk_desc;
+          var book_image = response.data.book_image;
 
           var imageBaseUrl = '../../assets/upload/';
-          var adjustedUrl = imageBaseUrl + response.data.book_image;
+          var adjustedUrl = imageBaseUrl + book_image;
 
           $('#editBookModal #book_id').val(book_id);
           $('#editBookModal #title').val(title);
@@ -297,6 +298,8 @@ require_once('../layouts/footer.php');
           $('#editBookModal #available_books').val(available_books);
           $('#editBookModal #book_status option[value="' + book_status + '"]').prop('selected', true);
           $('#editBookModal #bk_desc').val(bk_desc);
+          
+          // display uploaded image of book while clicking edit button
           $('#editBookModal .bk_image').attr('src', adjustedUrl);
           $('#editBookModal').modal('show');
         }

@@ -72,12 +72,12 @@ $users = $userModel->getAll();
                                 <td><?= $c['nic'] ?? ""; ?></td>
                                 <td><?= $c['role'] ?? ""; ?></td>
                                 <?php if ($role == 'admin') : ?>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Second group">
-                                        <button type="button" class="btn btn-sm btn-secondary edit-user" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $c['id']; ?>"><i class="tf-icons bx bx-edit "></i></button>
-                                        <button type="button" class="btn btn-sm btn-danger delete-user" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $c['id']; ?>"><i class="tf-icons bx bx-trash "></i></button>
-                                    </div>
-                                </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Second group">
+                                            <button type="button" class="btn btn-sm btn-secondary edit-user" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $c['id']; ?>"><i class="tf-icons bx bx-edit "></i></button>
+                                            <button type="button" class="btn btn-sm btn-danger delete-user" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $c['id']; ?>"><i class="tf-icons bx bx-trash "></i></button>
+                                        </div>
+                                    </td>
                                 <?php endif; ?>
                             </tr>
                         <?php
@@ -194,10 +194,22 @@ $users = $userModel->getAll();
                 </div>
                 <div class="modal-body">
                     <div class="row g-1 mb-3">
-                        <label class="form-label" for="username">Name</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
+                        <div class="col-md-3 mb-3 mt-4">
+                            <img id="previewImage" class="usr_image" src="<?= url('assets/uploads/upload-user.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <p id="errorMsg"></p>
+                        </div>
+                        <div class="col-md-9 mb-3 form-group">
+                            <div class="row g-1 mt-2">
+                                <label for="formFile" class="form-label">Change Image</label>
+                                <input type="file" id="user_image" name="user_image" value="" class="form-control" accept="image/*">
+                            </div>
+                            <div class="row g-1 mt-2">
+                            <label class="form-label" for="username">Name</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row g-2 mt-2">
+                    <div class="row g-2 mt-0">
                         <div class="col-md-7 mb-3">
                             <label class="form-label" for="email">Email</label>
                             <div class="input-group input-group-merge">
@@ -231,7 +243,7 @@ $users = $userModel->getAll();
                             </div>
                         </div>
                     </div> -->
-                    <div class="row g-2 mt-2">
+                    <div class="row g-2 mt-0">
                         <div class="col mb-3">
                             <label class="form-label" for="contact_num">Phone No</label>
                             <input type="number" id="contact_num" name="contact_num" class="form-control phone-mask" placeholder="07X XXX XXXX" required>
@@ -323,7 +335,7 @@ require_once('../layouts/footer.php');
             $('#edit-user-form')[0].reportValidity();
 
             if (form.checkValidity()) {
-                var formData = $('#edit-user-form').serialize();
+                var formData = new FormData($('#edit-user-form')[0]);
                 var formAction = $('#edit-user-form').attr('action');
 
                 $.ajax({
@@ -331,8 +343,8 @@ require_once('../layouts/footer.php');
                     type: 'POST',
                     data: formData,
                     dataType: 'json',
-                    // contentType: false,
-                    // processData: false,
+                    contentType: false,
+                    processData: false,
                     success: function(response) {
                         showAlert(response.message, response.success ? 'primary' : 'danger', 'alert-container-edit-form');
                         if (response.success) {
@@ -380,6 +392,10 @@ require_once('../layouts/footer.php');
                     var contact_num = response.data.contact_num;
                     var nic = response.data.nic;
                     var address = response.data.address;
+                    var user_image = response.data.user_image;
+
+                    var imageBaseUrl = '../../assets/upload/';
+                    var adjustedUrl = imageBaseUrl + user_image;
 
                     $('#editUserModal #user_id').val(user_id);
                     $('#editUserModal #username').val(username);
@@ -388,6 +404,8 @@ require_once('../layouts/footer.php');
                     $('#editUserModal #contact_num').val(contact_num);
                     $('#editUserModal #nic').val(nic);
                     $('#editUserModal #address').val(address);
+
+                    $('#editBookModal .usr_image').attr('src', adjustedUrl);
                     $('#editUserModal').modal('show');
                 }
             },
@@ -476,7 +494,7 @@ require_once('../layouts/footer.php');
         reader.readAsDataURL(event.target.files[0]);
     }
 
-    const input = document.getElementById('inputImage');
+    const input = document.getElementById('user_image');
     input.addEventListener('change', (event) => {
         previewImage(event)
     });
