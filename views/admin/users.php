@@ -405,7 +405,7 @@ require_once('../layouts/footer.php');
                     $('#editUserModal #nic').val(nic);
                     $('#editUserModal #address').val(address);
 
-                    $('#editBookModal .usr_image').attr('src', adjustedUrl);
+                    $('#editUserModal .usr_image').attr('src', adjustedUrl);
                     $('#editUserModal').modal('show');
                 }
             },

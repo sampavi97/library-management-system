@@ -138,20 +138,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $image = $_FILES["user_image"];
         $imageFileName = null;
 
-        // Check if file is uploaded
+        //check if file is uploaded
         if (isset($image) && !empty($image)) {
-            // Check if there are errors
+            //check if there are errors
             if ($image["error"] > 0) {
                 echo "Error uploading file: " . $image["error"];
             } else {
-                // Check if file is an image
+                //check if file is an image
                 if (getimagesize($image["tmp_name"]) !== false) {
-                    // Check file size (optional)
-                    if ($image["size"] < 500000) { // 500kb limit
-                        // Generate unique filename
+                    //Check file size
+                    if ($image["size"] < 500000) { //500kb limit
+                        //Generate unique filename
                         $new_filename = uniqid() . "." . pathinfo($image["name"])["extension"];
 
-                        // Move uploaded file to target directory
+                        //Move uploaded file to target directory
                         if (move_uploaded_file($image["tmp_name"], $target_dir . $new_filename)) {
                             $imageFileName = $new_filename;
                         } else {
@@ -168,11 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 }
             }
         }
-        if (empty($title) || empty($isbn)) {
-            echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
-            exit;
-        }
-
         if (empty($username) || empty($email)) {
             echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
             exit;

@@ -43,10 +43,6 @@ class User extends BaseModel
             return false;
         }
 
-        if (!empty($this->password)) {
-            $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        }
-
         $param = array(
             ':username' => $this->username,
             ':address' => $this->address,
@@ -66,8 +62,7 @@ class User extends BaseModel
                 nic = :nic,
                 role = :role,
                 email = :email,
-                user_image = :user_image,
-                password = :password
+                user_image = :user_image
             WHERE id = :id",
             $param
         );

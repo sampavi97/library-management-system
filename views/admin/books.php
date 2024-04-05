@@ -377,7 +377,7 @@ require_once('../layouts/footer.php');
     });
   });
 
-  // preview image after uploaded
+  // preview book image after uploaded
   function previewImage(event) {
         const reader = new FileReader();
         reader.onload = function() {
