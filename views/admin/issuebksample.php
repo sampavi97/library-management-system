@@ -40,9 +40,7 @@ if (isset($_POST['submitUser'])) {
 </div>
 
 <div class="container mt-1">
-    <form id="issue-book-form" action="" enctype="multipart/form-data" method="post">
-    <input type="hidden" name="action" value="issue_form">
-
+    <form method="post">
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
@@ -53,12 +51,38 @@ if (isset($_POST['submitUser'])) {
                         <input type="submit" value="search user" name="submitUser" class="btn btn-outline-secondary">
                     </div>
                 </div>
-                <!-- No User Alert -->
+                <!-- No User Found Alert -->
                 <?php if (isset($userNotFound) && $userNotFound) : ?>
                     <div class="alert alert-danger mt-2" role="alert">
                         No such user found.
                     </div>
                 <?php endif; ?>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" size="50" id="book" name="book">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" value="search book" name="submitBook" class="btn btn-outline-secondary">
+                    </div>
+                </div>
+
+                <!-- No Book Found Alert -->
+                <?php if (isset($bookNotFound) && $bookNotFound) : ?>
+                    <div class="alert alert-danger mt-2" role="alert">
+                        No such book found.
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </form>
+
+    <form id="issue-book-form" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data" method="post">
+        <input type="hidden" name="action" value="issue_form">
+        <div class="row">
+            <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-3 mt-3">
                         <?php if ($users && isset($users['user_image'])) : ?>
@@ -87,28 +111,8 @@ if (isset($_POST['submitUser'])) {
                         </div>
                     </div>
                 </div>
-
             </div>
-
-            <!-- book -->
-
             <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" size="50" id="book" name="book">
-                    </div>
-                    <div class="col-md-4">
-                        <input type="submit" value="search book" name="submitBook" class="btn btn-outline-secondary">
-                    </div>
-                </div>
-
-                <!-- No Book Alert -->
-                <?php if (isset($bookNotFound) && $bookNotFound) : ?>
-                    <div class="alert alert-danger mt-2" role="alert">
-                        No such book found.
-                    </div>
-                <?php endif; ?>
-
                 <div class="row">
                     <div class="col-md-3 mt-3">
                         <?php if ($books && isset($books['book_image'])) : ?>
@@ -139,23 +143,23 @@ if (isset($_POST['submitUser'])) {
                 </div>
             </div>
         </div>
-
-        <div id="additional-fields"></div>
-        <div class="mb-3 mt-3">
-            <div id="alert-container-issue-book"></div>
+        <div class="row">
+            <div id="additional-fields"></div>
+            <div class="mb-3 mt-3">
+                <div id="alert-container-issue-book"></div>
+            </div>
         </div>
-
         <div class="mb-3 row mt-4">
             <div class="col-md-4 mt-3">
-                <label for="html5-date-input" class="col-form-label">Issue Date</label>
+                <label for="html5-date-input" class="col-form-label" for="issue_date">Issue Date</label>
                 <div class="col-md-10">
-                    <input class="form-control" type="date" placeholder="yyyy-mm-dd" id="html5-date-input">
+                    <input class="form-control" type="date" placeholder="yyyy-mm-dd" name="issued_date" id="issued_date">
                 </div>
             </div>
             <div class="col-md-4 mt-3">
-                <label for="html5-date-input" class="col-form-label">Due Date</label>
+                <label for="html5-date-input" class="col-form-label" for="due_date">Due Date</label>
                 <div class="col-md-10">
-                    <input class="form-control" type="date" placeholder="yyyy-mm-dd" id="html5-date-input">
+                    <input class="form-control" type="date" placeholder="yyyy-mm-dd" name="due_date" id="due_date">
                 </div>
             </div>
             <div class="col-md-2 mt-5">
@@ -172,7 +176,8 @@ require_once('../layouts/footer.php');
 
 <script>
     $(document).ready(function() {
-        $('#issue-book-now').on('click', function() {
+        $('#issue-book-now').on('click', function(event) {
+            event.preventDefault();
 
             var form = $('#issue-book-form')[0];
             $('#issue-book-form')[0].reportValidity();
@@ -197,7 +202,7 @@ require_once('../layouts/footer.php');
                         }
                     },
                     error: function(error) {
-                        console.error('Error submitting the form:',error);
+                        console.error('Error submitting the form:', error);
                     },
                     complete: function(response) {
                         console.log('Request complete:', response);

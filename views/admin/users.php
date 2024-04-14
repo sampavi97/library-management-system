@@ -2,9 +2,12 @@
 require_once('../layouts/header.php');
 require_once __DIR__ . '/../../models/User.php';
 
+$user_id = $sm->getAttribute("userId");
+
 $userModel = new User();
 $users = $userModel->getAll();
-
+$user = $userModel->getById($user_id);
+echo "$user_id";
 ?>
 
 <div class="container">
@@ -202,9 +205,10 @@ $users = $userModel->getAll();
                             <div class="row g-1 mt-2">
                                 <label for="formFile" class="form-label">Change Image</label>
                                 <input type="file" id="user_image" name="user_image" value="" class="form-control" accept="image/*">
+                                <input type="hidden" id="oldimage" name="oldimage" value="<?= $user['user_image']?>" class="form-control" accept="image/*">
                             </div>
                             <div class="row g-1 mt-2">
-                            <label class="form-label" for="username">Name</label>
+                                <label class="form-label" for="username">Name</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
                             </div>
                         </div>
