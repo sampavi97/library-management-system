@@ -112,7 +112,7 @@ $role = $sm->getAttribute("role");
                                         <div class="row">
                                             <div class="col-lg-3">
                                                 <div class="row mb-3">
-                                                    <img src="" alt="book" id="book_image" height="500" width="280" class="d-block rounded m-3">
+                                                    <img src="" alt="book" id="book_image" height="450" width="260" class="d-block rounded m-3">
                                                 </div>
                                                 <div class="row mb-3">
                                                     <?php if ($bookDetail['book_status'] === 'available') { ?>
@@ -132,33 +132,33 @@ $role = $sm->getAttribute("role");
                                                 <div class="col-xl">
                                                         <div class="card-body">
                                                             <div class="row mb-3">
-                                                                <input type="text" style="line-height: 60px;" class="form-control" id="title" name="title">
+                                                                <input type="text" style="line-height: 60px;" class="form-control" id="title" name="title" readonly>
                                                             </div>
                                                             <div class="row mb-3">
-                                                                <input type="text" class="form-control" id="author" name="author">
+                                                                <input type="text" class="form-control" id="author" name="author" readonly>
                                                             </div>
                                                             <div class="row mb-3">
-                                                                <textarea id="bk_desc" name="bk_desc" rows="8" class="form-control"></textarea>
+                                                                <textarea id="bk_desc" name="bk_desc" rows="8" class="form-control" readonly></textarea>
                                                             </div>
                                                             <div class="row mb-1">
                                                                 <div class="col-sm-2"><span for="publisher">Publisher</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="publisher" name="publisher"></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="publisher" name="publisher" readonly></div>
                                                             </div>
                                                             <div class="row mb-1">
                                                                 <div class="col-sm-2"><span for="catogary">Catogary</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="catogary" name="catogary"></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="catogary" name="catogary" readonly></div>
                                                             </div>
                                                             <div class="row mb-1">
                                                                 <div class="col-sm-2"><span for="isbn">ISBN</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="isbn" name="isbn"></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="isbn" name="isbn" readonly></div>
                                                             </div>
                                                             <div class="row mb-1">
                                                                 <div class="col-sm-2"><span for="quantity">Quantity</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="quantity" name="quantity"></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="quantity" name="quantity" readonly></div>
                                                             </div>
                                                             <div class="row mb-1">
                                                                 <div class="col-sm-2"><span for="available_books">Available Books</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="available_books" name="available_books"></div>
+                                                                <div class="col-sm-10"><input type="text" class="form-control" id="available_books" name="available_books" readonly></div>
                                                             </div>
                                                             <?php if ($role == 'admin' || $role == 'member') : ?>
                                                             <button type="submit" class="btn btn-dark float-end">Reserve Book</button>
@@ -226,8 +226,6 @@ $role = $sm->getAttribute("role");
             url: formAction,
             type: 'GET',
             data: {
-                // LHS should be same var defined as above (book_id)
-                // RHS also should be as how we mentioned above
                 book_id: book_id,
                 action: 'get_book'
             },

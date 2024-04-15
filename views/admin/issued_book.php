@@ -42,8 +42,8 @@ $issued_books = $issBookModel->getIssDet();
               <td><?= $ib['book_isbn'] ?></td>
               <td><?= $ib['book_title'] ?></td>
               <td><?= $ib['user_name'] ?></td>
-              <td><?= $ib['issued_date'] ?></td>
-              <td><?= $ib['due_date'] ?></td>
+              <td class="text-nowrap"><?= $ib['issued_date'] ?></td>
+              <td class="text-nowrap"><?= $ib['due_date'] ?></td>
               <td>
                 <div>
                   <?php if ($ib['is_recieved'] == 0) { ?>

@@ -7,18 +7,19 @@ $user_id = $sm->getAttribute("userId");
 $userModel = new User();
 $users = $userModel->getAll();
 $user = $userModel->getById($user_id);
-echo "$user_id";
 ?>
 
 <div class="container">
-
     <h3 class="mx-3 my-5">Manage Users
-
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-sm btn-dark float-end" data-bs-toggle="modal" data-bs-target="#addUserModal">
             <span class="tf-icons bx bx-user-plus "></span> Add User
         </button>
     </h3>
+</div>
+
+<div class="container">
+    <hr class="m-3">
 
     <!-- Filter By Username AND User Role -->
     <section class="content m-3">
@@ -205,7 +206,7 @@ echo "$user_id";
                             <div class="row g-1 mt-2">
                                 <label for="formFile" class="form-label">Change Image</label>
                                 <input type="file" id="user_image" name="user_image" value="" class="form-control" accept="image/*">
-                                <input type="hidden" id="oldimage" name="oldimage" value="<?= $user['user_image']?>" class="form-control" accept="image/*">
+                                <input type="hidden" id="oldimage" name="oldimage" value="<?= $user['user_image'] ?>" class="form-control" accept="image/*">
                             </div>
                             <div class="row g-1 mt-2">
                                 <label class="form-label" for="username">Name</label>
@@ -370,8 +371,6 @@ require_once('../layouts/footer.php');
                 showAlert(message, 'danger');
             }
         });
-
-        // if role changed add users to admin table function
 
     });
 

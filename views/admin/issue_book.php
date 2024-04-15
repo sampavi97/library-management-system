@@ -36,8 +36,8 @@ if (isset($_POST['submitUser'])) {
 
 <div class="container">
     <h3 class="mx-3 my-4">Issue Book</h3>
-    <hr class="m-3">
 </div>
+<hr class="m-3">
 
 <div class="container mt-1">
     <form method="post">

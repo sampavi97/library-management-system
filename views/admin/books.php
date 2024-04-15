@@ -10,6 +10,7 @@ $books = $bookModel->getAll();
 <div class="container">
 
   <h3 class="mx-3 my-5">View All Books</h3>
+  <hr class="m-3">
 
   <!-- Filter Book -->
   <section class="content m-3">
