@@ -352,10 +352,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'issue_form') {
 
     try {
-        $book_id = $_POST['id'];
-        $user_id = $_POST['id'];
+        $book_id = $_POST['book_id'];
+        $user_id = $_POST['user_id'];
         $issued_date = $_POST['issued_date'];
         $due_date = $_POST['due_date'];
+
 
         $issbookModel = new IssueBook();
         $created = $issbookModel->addIssBook($book_id, $user_id, $issued_date, $due_date, $is_recieved = 0);

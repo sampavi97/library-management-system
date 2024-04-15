@@ -8,8 +8,10 @@ class IssueBook extends BaseModel
     public $user_id;
     public $issued_date;
     public $due_date;
-    public $bk_title;
+    public $book_title;
+    public $book_isbn;
     public $user_name;
+    public $available_books;
     public $is_recieved;
 
     protected function getTableName()
@@ -19,13 +21,7 @@ class IssueBook extends BaseModel
 
     public function getIssDet()
     {
-        return $this->pm->run(
-            "SELECT *, bk.title AS book_title, bk.isbn AS book_isbn, us.id AS user_id, us.username AS user_name, iss.id AS id FROM issued_book AS iss 
-            JOIN books AS bk ON bk.id = iss.book_id 
-            JOIN users AS us ON us.id = iss.user_id 
-            WHERE iss.id = id",
-            true
-        );
+        return $this->pm->run("SELECT iss.*, usr.username AS user_name, bk.available_books AS available_books, bk.title AS book_title, bk.isbn AS book_isbn FROM issued_book AS iss INNER JOIN  users AS usr ON iss.user_id = usr.id INNER JOIN books AS bk ON bk.id = iss.book_id order by id desc");
     }
 
     protected function addNewRec()

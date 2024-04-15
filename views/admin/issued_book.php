@@ -3,7 +3,7 @@ require_once('../layouts/header.php');
 require_once __DIR__ . '/../../models/IssueBook.php';
 
 $issBookModel = new IssueBook();
-$issued_books = $issBookModel->getAll();
+$issued_books = $issBookModel->getIssDet();
 ?>
 
 <div class="container">
@@ -13,8 +13,8 @@ $issued_books = $issBookModel->getAll();
   <!-- Filter by title and isbn no -->
   <section class="content m-3">
     <div class="mb-3">
-      <label for="defaultFormControlInput" class="form-label">Advanced Filter</label>
-      <input type="text" class="form-control" id="defaultFormControlInput" placeholder="Advanced Filter" aria-describedby="defaultFormControlHelp">
+      <label for="defaultFormControlInput" class="form-label">Filter Details</label>
+      <input type="text" class="form-control" id="filterDetails" placeholder="Filter By {ISBN no, Title, Borrower Name}" aria-describedby="defaultFormControlHelp">
     </div>
     <!-- /Filter by title and isbn no -->
     <div class="card table-responsive">
@@ -38,23 +38,31 @@ $issued_books = $issBookModel->getAll();
             <?php
             foreach ($issued_books as $key => $ib) {
             ?>
-            <td><?= ++$key ?></td>
-            <td><?= $ib['isbn'] ?></td>
-            <td><?= $ib['title'] ?></td>
-            <td><?= $ib['username'] ?></td>
-            <td><?= $ib['issued_date'] ?></td>
-            <td><?= $ib['due_date'] ?></td>
-            <td><?= $ib['is_recieved'] ?></td>
-            <td><?= $ib['available_books'] ?></td>
+              <td><?= ++$key ?></td>
+              <td><?= $ib['book_isbn'] ?></td>
+              <td><?= $ib['book_title'] ?></td>
+              <td><?= $ib['user_name'] ?></td>
+              <td><?= $ib['issued_date'] ?></td>
+              <td><?= $ib['due_date'] ?></td>
+              <td>
+                <div>
+                  <?php if ($ib['is_recieved'] == 0) { ?>
+                    <span class="badge bg-danger">Not Return</span>
+                  <?php } else { ?>
+                    <span class="badge bg-success">Returned</span>
+                  <?php } ?>
+                </div>
+              </td>
+              <td><?= $ib['available_books'] ?></td>
               <?php if ($role == 'admin') : ?>
                 <td>
                   <div class="btn-group" role="group" aria-label="Second group">
-                    <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $ib['id']; ?>">
-                      <i class="tf-icons bx bx-edit ">Edit</i>
+                    <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $b['id']; ?>">
+                      <i class="tf-icons bx bx-edit "></i>
                     </button>
-                    <!-- <button type="button" class="btn btn-sm btn-danger delete-book" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $b['id']; ?>">
+                    <button type="button" class="btn btn-sm btn-danger delete-book" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $b['id']; ?>">
                       <i class="tf-icons bx bx-trash "></i>
-                    </button> -->
+                    </button>
                   </div>
                 </td>
               <?php endif; ?>
@@ -71,3 +79,25 @@ $issued_books = $issBookModel->getAll();
 <?php
 require_once('../layouts/footer.php');
 ?>
+
+<script>
+  // Filter issued book by (ISBN NO, TITLE, BORROWER NAME)
+   $(document).ready(function() {
+    $('#filterDetails').on('input', function() {
+      var searchedDetails = $(this).val().toLowerCase();
+
+      $('tbody tr').each(function() {
+        var isbn = $(this).find('td:eq(1)').text().toLowerCase();
+        var title = $(this).find('td:eq(2)').text().toLowerCase();
+        var borrower = $(this).find('td:eq(3)').text().toLowerCase();
+        // var issue_date = $(this).find('td:eq(7)').text().toLowerCase();
+
+        if (isbn.includes(searchedDetails) || title.includes(searchedDetails) || borrower.includes(searchedDetails)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+  });
+</script>
