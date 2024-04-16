@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['user_id']) && isset($_GE
     exit;
 }
 
-//Update user
+//Update User Details
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_user') {
     try {
         $username = $_POST['username'];
@@ -115,6 +115,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $nic = $_POST['nic'];
         $address = $_POST['address'];
 
+        $id = $_POST['id'];
+
+        if (empty($username) || empty($email)) {
+            echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
+            exit;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(['success' => false, 'message' => "Invalid email address"]);
+            exit;
+        }
+
+        $userModel = new User();
+        $updated = $userModel->updateUser($id, $username, $address, $contact_num, $nic, $role, $email);
+        if ($updated) {
+            echo json_encode(['success' => true, 'message' => "User updated successfully!"]);
+        } else {
+            echo json_encode(['success' => false, 'message' => "Failed to update user. May be user already exist!"]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
+    exit;
+}
+//Update User Image
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_user_img') {
+    try {
         $id = $_POST['id'];
 
         $image = $_FILES["user_image"];
@@ -157,18 +184,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 }
             }
         }
-        if (empty($username) || empty($email)) {
-            echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
-            exit;
-        }
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(['success' => false, 'message' => "Invalid email address"]);
-            exit;
-        }
 
         $userModel = new User();
-        $updated = $userModel->updateUser($id, $username, $address, $contact_num, $nic, $role, $email, $imageFileName);
+        $updated = $userModel->updateUserImage($id, $imageFileName);
         if ($updated) {
             echo json_encode(['success' => true, 'message' => "User updated successfully!"]);
         } else {
@@ -281,7 +299,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['book_id']) && isset($_GE
     exit;
 }
 
-// Update book
+// Update book details
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_book') {
     try {
         $title = $_POST['title'];
@@ -296,24 +314,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
         $id = $_POST['id'];
 
+        if (empty($title) || empty($isbn)) {
+            echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
+            exit;
+        }
+
+        $bookModel = new Book();
+        $updated = $bookModel->updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$available_books);
+        if ($updated) {
+            echo json_encode(['success' => true, 'message' => "Book updated successfully!"]);
+        } else {
+            echo json_encode(['success' => false, 'message' => "Failed to update book. May be book already exist!"]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+// Update Book Image
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_book_img') {
+    try {
+        $id = $_POST['id'];
+
         $image = $_FILES["book_image"];
+        $oldimage = $_POST['oldimage'];
         $imageFileName = null;
 
+        if (!empty($image)) {
+            $update_filename = $_FILES["book_image"];
+        } else {
+            $update_filename = $oldimage;
+        }
+
         // Check if file is uploaded
-        if (isset($image) && !empty($image)) {
+        if (isset($update_filename) && !empty($update_filename)) {
             // Check if there are errors
-            if ($image["error"] > 0) {
-                echo "Error uploading file: " . $image["error"];
+            if ($update_filename["error"] > 0) {
+                echo "Error uploading file: " . $update_filename["error"];
             } else {
                 // Check if file is an image
-                if (getimagesize($image["tmp_name"]) !== false) {
+                if (getimagesize($update_filename["tmp_name"]) !== false) {
                     // Check file size (optional)
-                    if ($image["size"] < 500000) { // 500kb limit
+                    if ($update_filename["size"] < 500000) { // 500kb limit
                         // Generate unique filename
-                        $new_filename = uniqid() . "." . pathinfo($image["name"])["extension"];
+                        $new_filename = uniqid() . "." . pathinfo($update_filename["name"])["extension"];
 
                         // Move uploaded file to target directory
-                        if (move_uploaded_file($image["tmp_name"], $target_dir . $new_filename)) {
+                        if (move_uploaded_file($update_filename["tmp_name"], $target_dir . $new_filename)) {
                             $imageFileName = $new_filename;
                         } else {
                             echo json_encode(['success' => false, 'message' => "Error moving uploaded file."]);
@@ -329,13 +377,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 }
             }
         }
-        if (empty($title) || empty($isbn)) {
-            echo json_encode(['success' => false, 'message' => "Required fields are missing!"]);
-            exit;
-        }
 
         $bookModel = new Book();
-        $updated = $bookModel->updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$available_books,$imageFileName);
+        $updated = $bookModel->updateBookImage($id,$imageFileName);
         if ($updated) {
             echo json_encode(['success' => true, 'message' => "Book updated successfully!"]);
         } else {
@@ -346,7 +390,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     exit;
 }
-
 
 //issue book
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'issue_form') {

@@ -55,7 +55,6 @@ class Book extends BaseModel
             ':book_status' => $this->book_status,
             ':bk_desc' => $this->bk_desc,
             ':available_books' => $this->available_books,
-            ':book_image' => $this->book_image,
             ':id' => $this->id
         );
         return $this->pm->run(
@@ -69,7 +68,21 @@ class Book extends BaseModel
                 quantity = :quantity,
                 book_status = :book_status,
                 bk_desc = :bk_desc,
-                available_books = :available_books,
+                available_books = :available_books
+                WHERE id = :id" ,
+                $param
+        );
+    }
+
+    protected function updateImgRec()
+    {
+        $param = array(
+            ':book_image' => $this->book_image,
+            ':id' => $this->id
+        );
+        return $this->pm->run(
+            "UPDATE " . $this->getTableName() . "
+            SET
                 book_image = :book_image
                 WHERE id = :id" ,
                 $param
@@ -120,7 +133,7 @@ class Book extends BaseModel
         }
     }
 
-    function updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$available_books,$book_image)
+    function updateBook($id,$title,$author,$publisher,$catogary,$isbn,$quantity,$book_status,$bk_desc,$available_books)
     {
         $bookModel = new Book();
         $existingBook = $bookModel->getBookByTitleOrISBNWithId($title,$isbn,$id);
@@ -140,8 +153,21 @@ class Book extends BaseModel
         $book->book_status = $book_status;
         $book->bk_desc = $bk_desc;
         $book->available_books = $available_books;
-        $book->book_image = $book_image;
         $book->updateRec();
+
+        if($book) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function updateBookImage($id,$book_image)
+    {
+        $book = new Book();
+        $book->id = $id;
+        $book->book_image = $book_image;
+        $book->updateImgRec();
 
         if($book) {
             return true;

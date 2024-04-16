@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../models/User.php';
 $sm = AppManager::getSM();
 $id = $sm->getAttribute("userId");
 $role = $sm->getAttribute("role");
+echo "$id";
 ?>
 
 <div class="container">
@@ -13,14 +14,15 @@ $role = $sm->getAttribute("role");
 
     <div class="container-fluid">
         <form id="user-detail" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
-        <input type="hidden" name="action" value="edit_user">
+            <input type="hidden" name="action" value="edit_user">
             <div class="row mb-5">
                 <div class="col-lg-4 mb-3">
                     <div class="card">
-                        <div class=" text-center center">
+                        <div class="text-center center">
                             <h5 class="text-center text-capitalize mt-3"><?= $role ?></h5>
+                            <input class="form-control" type="hidden" id="role" name="role">
                             <img src="" alt="user" id="user_image" height="180" width="140" class="d-block rounded m-3 mt-4 rounded mx-auto d-block">
-                            <button type="button" class="btn btn-sm btn-dark m-2 mt-3 mb-5 edit-profile" data-id="<?= $id ?>"><i class="tf-icons bx bx-edit-alt"></i>Change DP</button>
+                            <button type="button" class="btn btn-sm btn-dark m-2 mt-3 mb-5 edit-dp"><i class="tf-icons bx bx-edit-alt"></i>Change DP</button>
                         </div>
                     </div>
                 </div>
@@ -80,6 +82,43 @@ $role = $sm->getAttribute("role");
     </div>
 </div>
 
+<!-- update DP -->
+<div class="modal" id="editUserImage" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="edit-user-image" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="edit_user_img">
+                <input type="hidden" name="id" id="user_id">
+                <div class="modal-header mt-3">
+                    <h5 class="modal-title" id="exampleModalLabel1">Edit User Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-1 mb-3">
+                        <div class="col-md-4 text-center center">
+
+                            <img id="previewImage" class="us_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <p id="errorMsg"></p>
+                            <label for="formFile" class="form-label">Change Image</label>
+                            <input type="file" id="usr_image" name="user_image" value="" class="form-control" accept="image/*" size="50">
+                            <input type="hidden" id="oldimage" name="oldimage" value="" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row g-1 mb-3">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" id="edit-img-now" class="btn btn-dark">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <?php
 require_once('../layouts/footer.php');
@@ -125,81 +164,133 @@ require_once('../layouts/footer.php');
         });
     }
 
-    // $('.edit-profile').on('click', async function() {
-    //     var user_id = $(this).data('id');
-    //     var is_confirm = confirm('Are you sure, Do you want to change the details?');
-    //     if (is_confirm) await editById(user_id);
-    // })
-
-    // async function editById(user_id) {
-    //     var form = $('#user-detail')[0];
-    //     $('#user-detail')[0].reportValidity();
-
-    //     if (form.checkValidity()) {
-    //         var formData = new FormData($('#user-detail')[0]);
-    //         var formAction = $('#user-detail').attr('action');
-
-    //         $.ajax({
-    //             url: formAction,
-    //             type: 'POST',
-    //             data: formData,
-    //             dataType: 'json',
-    //             contentType: false,
-    //             processData: false,
-    //             success: function(response) {
-    //                 showAlert(response.message, response.success ? 'success' : 'danger', 'alert-container-edit-profile');
-    //                 if (response.success) {
-    //                     setTimeout(function() {
-    //                         location.reload();
-    //                     }, 1000);
-    //                 }
-    //             },
-    //             error: function(error) {
-    //                 console.error('Error submitting the form:', error);
-    //             },
-    //             complete: function(response) {
-    //                 console.log('Request complete:', response);
-    //             }
-    //         });
-    //     } else {
-    //         var message = ('Form is not valid. Please check your inputs. ');
-    //         showAlert(message, 'danger');
-    //     }
-    // }
-
     $('#edit-profile').on('click', function() {
-            var form = $('#user-detail')[0];
-            $('#user-detail')[0].reportValidity();
+        var form = $('#user-detail')[0];
+        $('#user-detail')[0].reportValidity();
 
-            if (form.checkValidity()) {
-                var formData = new FormData($('#user-detail')[0]);
-                var formAction = $('#user-detail').attr('action');
+        if (form.checkValidity()) {
+            var formData = new FormData($('#user-detail')[0]);
+            var formAction = $('#user-detail').attr('action');
 
-                $.ajax({
-                    url: formAction,
-                    type: 'POST',
-                    data: formData,
-                    dataType: 'json',
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        showAlert(response.message, response.success ? 'primary' : 'danger', 'alert-container-edit-profile');
-                        if (response.success) {
-                            setTimeout(function() {
-                                location.reload();
-                            }, 1000);
-                        }
-                    },
-                    error: function(error) {
-                        console.error('Error submitting the form:', error);
-                    },
-                    complete: function(response) {
-                        console.log('Request complete:', response);
+            $.ajax({
+                url: formAction,
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    showAlert(response.message, response.success ? 'success' : 'danger', 'alert-container-edit-profile');
+                    if (response.success) {
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
                     }
-                });
-            } else {
-                var message = ('Form is not valid. Please check your inputs. ');
-                showAlert(message, 'danger');
+                },
+                error: function(error) {
+                    console.error('Error submitting the form:', error);
+                },
+                complete: function(response) {
+                    console.log('Request complete:', response);
+                }
+            });
+        } else {
+            var message = ('Form is not valid. Please check your inputs. ');
+            showAlert(message, 'danger');
+        }
+    });
+
+    $('.edit-dp').on('click', async function() {
+        var user_id = <?php echo json_encode($id); ?>;
+        await getImgById(user_id);
+    })
+
+    async function getImgById(id) {
+        var formAction = $('#edit-user-image').attr('action');
+
+        $.ajax({
+            url: formAction,
+            type: 'GET',
+            data: {
+                user_id: id,
+                action: 'get_user'
+            },
+            dataType: 'json',
+            success: function(response) {
+                showAlert(response.message, response.success ? 'primary' : 'danger');
+                if (response.success) {
+                    var user_id = response.data.id;
+                    var user_image = response.data.user_image;
+                    var imageBaseUrl = '../../assets/upload/';
+                    var adjustedUrl = imageBaseUrl + user_image;
+
+                    $('#editUserImage #user_id').val(user_id);
+                    $('#editUserImage .us_image').attr('src', adjustedUrl);
+                    $('#editUserImage').modal('show');
+                }
+            },
+            error: function(error) {
+                console.error('Error submitting the form:', error);
+            },
+            complete: function(response) {
+                console.log('Request complete:', response);
             }
         });
+    }
+
+    $('#edit-img-now').on('click', function() {
+        var form = $('#edit-user-image')[0];
+        $('#edit-user-image')[0].reportValidity();
+
+        if (form.checkValidity()) {
+            var formData = new FormData($('#edit-user-image')[0]);
+            var formAction = $('#edit-user-image').attr('action');
+
+            $.ajax({
+                url: formAction,
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    ;
+                    if (response.success) {
+                        $('#editUserImage').modal('hide');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    }
+                },
+                error: function(error) {
+                    console.error('Error submitting the form:', error);
+                },
+                complete: function(response) {
+                    console.log('Request complete:', response);
+                }
+            });
+        } else {
+            var message = ('Image is not valid. Please check your inputs. ');
+            showAlert(message, 'danger');
+        }
+    });
+
+    //preview user image after uploaded
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const element = document.getElementById('previewImage');
+            element.src = reader.result;
+        }
+        reader.onerror = function() {
+            const element = document.getElementById('errorMsg');
+            element.value = "Couldn't load the image.";
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const input = document.getElementById('usr_image');
+    input.addEventListener('change', (event) => {
+        previewImage(event)
+    });
 </script>

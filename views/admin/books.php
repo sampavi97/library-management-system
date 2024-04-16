@@ -117,14 +117,11 @@ $books = $bookModel->getAll();
         <div class="modal-body">
           <div class="row g-1 mb-3">
             <div class="col-md-3 mb-3 mt-4">
-              <img id="previewImage" class="bk_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+              <img class="bk_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+              <button type="button" class="btn btn-sm btn-secondary edit-book-img" data-bs-toggle="tooltip" data-bs-original-title="Edit Image"><i class="tf-icons bx bx-edit "></i></button>
               <p id="errorMsg"></p>
             </div>
-            <div class="col-md-9 mb-3 form-group">
-              <div class="row g-1">
-                <label for="formFile" class="form-label">Change Image</label>
-                <input type="file" id="book_image" name="book_image" value="" class="form-control" accept="image/*">
-              </div>
+            <div class="col-md-9 mb-3 form-group mt-4">
               <div class="row g-1">
                 <label class="form-label" for="author">Authors</label>
                 <input type="text" id="author" name="author" class="form-control" required>
@@ -203,6 +200,45 @@ $books = $bookModel->getAll();
 </div>
 <!-- end Update Book Modal -->
 
+<!-- Update Book Image -->
+<div class="modal" id="editBookImage" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="edit-book-image" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="edit_book_img">
+                <input type="hidden" name="id" id="book_id">
+                <div class="modal-header mt-3">
+                    <h5 class="modal-title" id="exampleModalLabel1">Edit Book Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-1 mb-3">
+                        <div class="col-md-4 text-center center">
+                            <!-- book image -->
+                            <img id="previewImage" class="bk_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <p id="errorMsg"></p>
+                            <label for="formFile" class="form-label">Change Image</label>
+                            <input type="file" id="book_image" name="book_image" value="" class="form-control" accept="image/*" size="50">
+                            <input type="hidden" id="oldimage" name="oldimage" value="" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row g-1 mb-3">
+                        <div class="col-md-4">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="edit-img-now" class="btn btn-dark">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end Update Book Image -->
+
 <?php
 require_once('../layouts/footer.php');
 ?>
@@ -214,6 +250,11 @@ require_once('../layouts/footer.php');
       var book_id = $(this).data('id');
       await getBookById(book_id);
     })
+
+    $('.edit-book-img').on('click', async function() {
+            var book_id = $('#book_id').val();
+            await getImgById(book_id);
+        })
 
     $('.delete-book').on('click', async function() {
       var book_id = $(this).data('id');
@@ -258,7 +299,75 @@ require_once('../layouts/footer.php');
       }
     });
 
+    $('#edit-img-now').on('click', function() {
+            var form = $('#edit-book-image')[0];
+            $('#edit-book-image')[0].reportValidity();
+
+            if (form.checkValidity()) {
+                var formData = new FormData($('#edit-book-image')[0]);
+                var formAction = $('#edit-book-image').attr('action');
+
+                $.ajax({
+                    url: formAction,
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {;
+                        if (response.success) {
+                            $('#editUserImage').modal('hide');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error submitting the form:', error);
+                    },
+                    complete: function(response) {
+                        console.log('Request complete:', response);
+                    }
+                });
+            } else {
+                var message = ('Image is not valid. Please check your inputs. ');
+                showAlert(message, 'danger');
+            }
+        });
   });
+
+  async function getImgById(id) {
+        var formAction = $('#edit-book-image').attr('action');
+
+        $.ajax({
+            url: formAction,
+            type: 'GET',
+            data: {
+                book_id: id,
+                action: 'get_book'
+            },
+            dataType: 'json',
+            success: function(response) {
+                showAlert(response.message, response.success ? 'primary' : 'danger');
+                if (response.success) {
+                    var book_id = response.data.id;
+                    var book_image = response.data.book_image;
+                    var imageBaseUrl = '../../assets/upload/';
+                    var adjustedUrl = imageBaseUrl + book_image;
+
+                    $('#editBookImage #book_id').val(book_id);
+                    $('#editBookImage .bk_image').attr('src', adjustedUrl);
+                    $('#editBookImage').modal('show');
+                }
+            },
+            error: function(error) {
+                console.error('Error submitting the form:', error);
+            },
+            complete: function(response) {
+                console.log('Request complete:', response);
+            }
+        });
+    }
 
   async function getBookById(id) {
     var formAction = $('#edit-book-form').attr('action');

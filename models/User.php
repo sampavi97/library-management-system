@@ -50,7 +50,6 @@ class User extends BaseModel
             ':nic' => $this->nic,
             ':role' => $this->role,
             ':email' => $this->email,
-            ':user_image' => $this->user_image,
             ':id' => $this->id
         );
         return $this->pm->run(
@@ -61,8 +60,21 @@ class User extends BaseModel
                 contact_num = :contact_num,
                 nic = :nic,
                 role = :role,
-                email = :email,
-                user_image = :user_image
+                email = :email
+            WHERE id = :id",
+            $param
+        );
+    }
+    protected function updateImgRec()
+    {
+        $param = array(
+            ':user_image' => $this->user_image,
+            ':id' => $this->id
+        );
+        return $this->pm->run(
+            "UPDATE " . $this->getTableName() . " 
+            SET
+            user_image = :user_image
             WHERE id = :id",
             $param
         );
@@ -112,7 +124,7 @@ class User extends BaseModel
         }
     }
 
-    function updateUser($id,$username,$address,$contact_num,$nic,$role,$email,$user_image)
+    function updateUser($id,$username,$address,$contact_num,$nic,$role,$email)
     {
         $userModel = new User();
         $existingUser = $userModel->getUserByUsernameOrEmailWithId($username,$email,$id);
@@ -129,8 +141,21 @@ class User extends BaseModel
         $user->nic = $nic;
         $user->role = $role;
         $user->email = $email;
-        $user->user_image = $user_image;
         $user->updateRec();
+
+        if($user) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function updateUserImage($id,$user_image)
+    {
+        $user = new User();
+        $user->id = $id;
+        $user->user_image = $user_image;
+        $user->updateImgRec();
 
         if($user) {
             return true;

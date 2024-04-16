@@ -2,11 +2,12 @@
 require_once('../layouts/header.php');
 require_once __DIR__ . '/../../models/User.php';
 
-$user_id = $sm->getAttribute("userId");
+// $user_id = $sm->getAttribute("userId");
 
 $userModel = new User();
 $users = $userModel->getAll();
-$user = $userModel->getById($user_id);
+// $user = $userModel->getById($user_id);
+
 ?>
 
 <div class="container">
@@ -192,43 +193,36 @@ $user = $userModel->getById($user_id);
             <form id="edit-user-form" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="edit_user">
                 <input type="hidden" name="id" id="user_id">
-                <div class="modal-header">
+                <div class="modal-header mt-3">
                     <h5 class="modal-title" id="exampleModalLabel1">Edit User</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row g-1 mb-3">
-                        <div class="col-md-3 mb-3 mt-4">
-                            <img id="previewImage" class="usr_image" src="<?= url('assets/uploads/upload-user.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                        <div class="col-md-3 mb-3 mt-5">
+                            <img class="usr_image" src="<?= url('assets/uploads/upload-user.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <button type="button" class="btn btn-sm btn-secondary edit-user-img" data-bs-toggle="tooltip" data-bs-original-title="Edit Image"><i class="tf-icons bx bx-edit "></i></button>
                             <p id="errorMsg"></p>
                         </div>
-                        <div class="col-md-9 mb-3 form-group">
-                            <div class="row g-1 mt-2">
-                                <label for="formFile" class="form-label">Change Image</label>
-                                <input type="file" id="user_image" name="user_image" value="" class="form-control" accept="image/*">
-                                <input type="hidden" id="oldimage" name="oldimage" value="<?= $user['user_image'] ?>" class="form-control" accept="image/*">
-                            </div>
-                            <div class="row g-1 mt-2">
+                        <div class="col-md-9 mb-3 form-group mt-5">
+                            <div class="row g-1">
                                 <label class="form-label" for="username">Name</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
+
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">Role</label>
+                                    <select id="role" name="role" class="form-select" required>
+                                        <option value="member">Member</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row g-2 mt-0">
-                        <div class="col-md-7 mb-3">
-                            <label class="form-label" for="email">Email</label>
-                            <div class="input-group input-group-merge">
-                                <input type="email" id="email" name="email" class="form-control" placeholder="XXXX@XXX.XXX" required>
-                            </div>
-                        </div>
-                        <div class="col-md-5 mb-3">
-                            <div class="mb-3">
-                                <label for="role" class="form-label">Role</label>
-                                <select id="role" name="role" class="form-select" required>
-                                    <option value="member">Member</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
+                    <div class="row g-1 mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <div class="input-group input-group-merge">
+                            <input type="email" id="email" name="email" class="form-control" placeholder="XXXX@XXX.XXX" required>
                         </div>
                     </div>
                     <!-- delete password option in update user modal
@@ -281,6 +275,44 @@ $user = $userModel->getById($user_id);
 </div>
 <!-- end Update User Modal -->
 
+<!-- Update User Image -->
+<div class="modal" id="editUserImage" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="edit-user-image" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="edit_user_img">
+                <input type="hidden" name="id" id="user_id">
+                <div class="modal-header mt-3">
+                    <h5 class="modal-title" id="exampleModalLabel1">Edit User Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-1 mb-3">
+                        <div class="col-md-4 text-center center">
+                            <!-- user image -->
+                            <img id="previewImage" class="us_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <p id="errorMsg"></p>
+                            <label for="formFile" class="form-label">Change Image</label>
+                            <input type="file" id="usr_image" name="user_image" class="form-control" accept="image/*" size="50">
+                            <input type="hidden" id="oldimage" name="oldimage" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row g-1 mb-3">
+                        <div class="col-md-4">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" id="edit-img-now" class="btn btn-dark">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <?php
 require_once('../layouts/footer.php');
 ?>
@@ -329,6 +361,11 @@ require_once('../layouts/footer.php');
             await getUserById(user_id);
         })
 
+        $('.edit-user-img').on('click', async function() {
+            var user_id = $('#user_id').val();
+            await getImgById(user_id);
+        })
+
         $('.delete-user').on('click', async function() {
             var user_id = $(this).data('id');
             var is_confirm = confirm('Are you sure, Do you want to delete?');
@@ -372,7 +409,75 @@ require_once('../layouts/footer.php');
             }
         });
 
+        $('#edit-img-now').on('click', function() {
+            var form = $('#edit-user-image')[0];
+            $('#edit-user-image')[0].reportValidity();
+
+            if (form.checkValidity()) {
+                var formData = new FormData($('#edit-user-image')[0]);
+                var formAction = $('#edit-user-image').attr('action');
+
+                $.ajax({
+                    url: formAction,
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {;
+                        if (response.success) {
+                            $('#editUserImage').modal('hide');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error submitting the form:', error);
+                    },
+                    complete: function(response) {
+                        console.log('Request complete:', response);
+                    }
+                });
+            } else {
+                var message = ('Image is not valid. Please check your inputs. ');
+                showAlert(message, 'danger');
+            }
+        });
     });
+
+    async function getImgById(id) {
+        var formAction = $('#edit-user-image').attr('action');
+
+        $.ajax({
+            url: formAction,
+            type: 'GET',
+            data: {
+                user_id: id,
+                action: 'get_user'
+            },
+            dataType: 'json',
+            success: function(response) {
+                showAlert(response.message, response.success ? 'primary' : 'danger');
+                if (response.success) {
+                    var user_id = response.data.id;
+                    var user_image = response.data.user_image;
+                    var imageBaseUrl = '../../assets/upload/';
+                    var adjustedUrl = imageBaseUrl + user_image;
+
+                    $('#editUserImage #user_id').val(user_id);
+                    $('#editUserImage .us_image').attr('src', adjustedUrl);
+                    $('#editUserImage').modal('show');
+                }
+            },
+            error: function(error) {
+                console.error('Error submitting the form:', error);
+            },
+            complete: function(response) {
+                console.log('Request complete:', response);
+            }
+        });
+    }
 
     async function getUserById(id) {
         var formAction = $('#edit-user-form').attr('action');
@@ -407,7 +512,6 @@ require_once('../layouts/footer.php');
                     $('#editUserModal #contact_num').val(contact_num);
                     $('#editUserModal #nic').val(nic);
                     $('#editUserModal #address').val(address);
-
                     $('#editUserModal .usr_image').attr('src', adjustedUrl);
                     $('#editUserModal').modal('show');
                 }
@@ -421,6 +525,7 @@ require_once('../layouts/footer.php');
         });
     }
 
+    //delete user
     async function deleteById(id) {
         var formAction = $('#edit-user-form').attr('action');
 
@@ -447,6 +552,7 @@ require_once('../layouts/footer.php');
             }
         });
     }
+
     // search by user name
     $(document).ready(function() {
         $('#searchByName').on('input', function() {
