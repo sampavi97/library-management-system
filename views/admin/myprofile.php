@@ -84,7 +84,7 @@ echo "$id";
 
 <!-- update DP -->
 <div class="modal" id="editUserImage" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="edit-user-image" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="edit_user_img">
@@ -107,12 +107,8 @@ echo "$id";
                 </div>
                 <div class="modal-footer">
                     <div class="row g-1 mb-3">
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                Close
-                            </button>
-                            <button type="button" id="edit-img-now" class="btn btn-dark">Save</button>
-                        </div>
+                        <div class="col-md-6 align-self-end mr-auto"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button></div>
+                        <div class="col-md-6 align-self-end ml-auto"><button type="button" id="edit-img-now" class="btn btn-dark">Save</button></div>
                     </div>
                 </div>
             </form>

@@ -202,7 +202,7 @@ $books = $bookModel->getAll();
 
 <!-- Update Book Image -->
 <div class="modal" id="editBookImage" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="edit-book-image" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="edit_book_img">
@@ -225,12 +225,8 @@ $books = $bookModel->getAll();
                 </div>
                 <div class="modal-footer">
                     <div class="row g-1 mb-3">
-                        <div class="col-md-4">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" id="edit-img-now" class="btn btn-dark">Save</button>
-                        </div>
+                        <div class="col-md-6"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button></div>
+                        <div class="col-md-6"><button type="button" id="edit-img-now" class="btn btn-dark">Save</button></div>
                     </div>
                 </div>
             </form>

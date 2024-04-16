@@ -277,7 +277,7 @@ $users = $userModel->getAll();
 
 <!-- Update User Image -->
 <div class="modal" id="editUserImage" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="edit-user-image" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="edit_user_img">
@@ -288,24 +288,22 @@ $users = $userModel->getAll();
                 </div>
                 <div class="modal-body">
                     <div class="row g-1 mb-3">
-                        <div class="col-md-4 text-center center">
+                        <div class="col-md-4">
                             <!-- user image -->
-                            <img id="previewImage" class="us_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <img id="previewImage" class="us_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="120" height="150" style="border: 1px solid black;" />
                             <p id="errorMsg"></p>
                             <label for="formFile" class="form-label">Change Image</label>
-                            <input type="file" id="usr_image" name="user_image" class="form-control" accept="image/*" size="50">
+                            <input type="file" id="usr_image" name="user_image" class="form-control" accept="image/*">
                             <input type="hidden" id="oldimage" name="oldimage" class="form-control" accept="image/*">
                         </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="row g-1 mb-3">
-                        <div class="col-md-4">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" id="edit-img-now" class="btn btn-dark">Save</button>
-                        </div>
+                        <div class="col-md-6 align-self-end mr-auto"> <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button></div>
+                        <div class="col-md-6 align-self-end ml-auto"> <button type="button" id="edit-img-now" class="btn btn-dark">Save</button></div>
                     </div>
                 </div>
             </form>
@@ -424,7 +422,8 @@ require_once('../layouts/footer.php');
                     dataType: 'json',
                     contentType: false,
                     processData: false,
-                    success: function(response) {;
+                    success: function(response) {
+                        ;
                         if (response.success) {
                             $('#editUserImage').modal('hide');
                             setTimeout(function() {
