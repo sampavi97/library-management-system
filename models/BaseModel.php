@@ -30,6 +30,11 @@ abstract class BaseModel
         $param = array(':username' => $username);
         return $this->pm->run("SELECT * FROM " . $this->getTableName() . " WHERE username = :username", $param, true);
     }
+    public function getByIsbn($isbn)
+    {
+        $param = array(':isbn' => $isbn);
+        return $this->pm->run("SELECT * FROM " . $this->getTableName() . " WHERE isbn = :isbn", $param, true);
+    }
     public function getByBookTitle($title)
     {
         $param = array(':title' => $title);

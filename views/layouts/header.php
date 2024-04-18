@@ -128,8 +128,8 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                                     <div data-i18n="Analytics">Issued Books</div>
                                 </a>
                             </li>
-                            <li class="menu-item <?= $currentFilename === "recieved_book.php" ? 'active' : '' ?>">
-                                <a href="<?= url('views/admin/recieved_book.php') ?>" class="menu-link">
+                            <li class="menu-item <?= $currentFilename === "returned_book.php" ? 'active' : '' ?>">
+                                <a href="<?= url('views/admin/returned_book.php') ?>" class="menu-link">
                                     <i class="menu-icon tf-icons bx bx-book-reader"></i>
                                     <div data-i18n="Analytics">Returned Books</div>
                                 </a>

@@ -189,39 +189,39 @@ $books = $bookModel->getAll();
 <script>
     // Filter Book By Title, Author, Publisher
     $(document).ready(function() {
-    $('#searchBook').on('input', function() {
-      var searchedBook = $(this).val().toLowerCase();
+        $('#searchBook').on('input', function() {
+            var searchedBook = $(this).val().toLowerCase();
 
-      $('.display-book').each(function() {
-        // $(this).find('input:nth-of-type(1)') targets the first input element inside each .display-book, which corresponds to the book title.
-        // input:nth-of-type(1) is a CSS selector that selects the first <input> element among its siblings of the same type within its parent element.
-        var title = $(this).find('input:nth-of-type(1)').val().toLowerCase();
-        var author = $(this).find('input:nth-of-type(2)').val().toLowerCase();
-        var publisher = $(this).find('input:nth-of-type(3)').val().toLowerCase();
+            $('.display-book').each(function() {
+                // $(this).find('input:nth-of-type(1)') targets the first input element inside each .display-book, which corresponds to the book title.
+                // input:nth-of-type(1) is a CSS selector that selects the first <input> element among its siblings of the same type within its parent element.
+                var title = $(this).find('input:nth-of-type(1)').val().toLowerCase();
+                var author = $(this).find('input:nth-of-type(2)').val().toLowerCase();
+                var publisher = $(this).find('input:nth-of-type(3)').val().toLowerCase();
 
-        if (title.includes(searchedBook) || author.includes(searchedBook) || publisher.includes(searchedBook)) {
-          $(this).show();
-        } else {
-          $(this).hide();
-        }
-      });
+                if (title.includes(searchedBook) || author.includes(searchedBook) || publisher.includes(searchedBook)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
     });
-  });
 
-  // filter book with various catogaries 
-  $(document).ready(function() {
-    $('#filterByCatogary a').on('click', function() {
-      var selectedCat = $(this).attr('value');
+    // filter book with various catogaries 
+    $(document).ready(function() {
+        $('#filterByCatogary a').on('click', function() {
+            var selectedCat = $(this).attr('value');
 
-      $('.display-book').filter(function() {
-        var cat = $(this).find('input:nth-of-type(4)').val().toLowerCase();
+            $('.display-book').filter(function() {
+                var cat = $(this).find('input:nth-of-type(4)').val().toLowerCase();
 
-        if (selectedCat === 'selected' || cat === selectedCat) {
-          $(this).show();
-        } else {
-          $(this).hide();
-        }
-      });
+                if (selectedCat === 'selected' || cat === selectedCat) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
     });
-  });
 </script>

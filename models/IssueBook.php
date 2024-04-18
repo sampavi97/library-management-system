@@ -8,10 +8,10 @@ class IssueBook extends BaseModel
     public $user_id;
     public $issued_date;
     public $due_date;
-    public $book_title;
-    public $book_isbn;
-    public $user_name;
-    public $available_books;
+    // public $book_title;
+    // public $book_isbn;
+    // public $user_name;
+    // public $available_books;
     public $is_recieved;
 
     protected function getTableName()
@@ -19,9 +19,16 @@ class IssueBook extends BaseModel
         return "issued_book";
     }
 
+    // get issue book details
     public function getIssDet()
     {
-        return $this->pm->run("SELECT iss.*, usr.username AS user_name, bk.available_books AS available_books, bk.title AS book_title, bk.isbn AS book_isbn FROM issued_book AS iss INNER JOIN  users AS usr ON iss.user_id = usr.id INNER JOIN books AS bk ON bk.id = iss.book_id order by id desc");
+        return $this->pm->run("SELECT iss.*, usr.username AS user_name, usr.id AS user_id, bk.available_books AS available_books, bk.title AS book_title, bk.isbn AS book_isbn FROM issued_book AS iss INNER JOIN  users AS usr ON iss.user_id = usr.id INNER JOIN books AS bk ON bk.id = iss.book_id ORDER BY id DESC");
+    }
+
+    //get details of issued book details which is not return
+    public function getNotRetIss()
+    {
+        return $this->pm->run("SELECT iss.*, bk.title AS book_title, bk.isbn AS book_isbn FROM issued_book AS iss INNER JOIN books AS bk ON bk.id = iss.book_id WHERE iss.is_recieved = 0 ");
     }
 
     protected function addNewRec()
@@ -35,8 +42,6 @@ class IssueBook extends BaseModel
         );
 
         $result = $this->pm->run("INSERT INTO " . $this->getTableName() . "(book_id,user_id,issued_date,due_date,is_recieved) VALUES(:book_id, :user_id, :issued_date, :due_date, :is_recieved)", $param);
-        // $result = $this->pm->insertAndGetLastRowId("INSERT INTO issued_book(book_id,user_id,issued_date,due_date,is_recieved)
-        //     VALUES(:book_id, :user_id, :issued_date, :due_date, :is_recieved)", $param);
 
         return $result;
     }
@@ -115,16 +120,16 @@ class IssueBook extends BaseModel
     //     );
     // }
 
-    public function issueBook($book_id, $user_id)
-    {
-        // Get the current date
-        $current_date = date("Y-m-d");
+    // public function issueBook($book_id, $user_id)
+    // {
+    //     // Get the current date
+    //     $current_date = date("Y-m-d");
 
-        // Prepare the SQL query to insert a new record
-        $sql = "INSERT INTO issued_book (book_id, user_id, issue_date) VALUES (:book_id, :user_id, :issue_date)";
+    //     // Prepare the SQL query to insert a new record
+    //     $sql = "INSERT INTO issued_book (book_id, user_id, issue_date) VALUES (:book_id, :user_id, :issue_date)";
 
-        // Bind parameters and execute the query
-        $params = array(':book_id' => $book_id, ':user_id' => $user_id, ':issue_date' => $current_date);
-        return $this->pm->run($sql, $params, false);
-    }
+    //     // Bind parameters and execute the query
+    //     $params = array(':book_id' => $book_id, ':user_id' => $user_id, ':issue_date' => $current_date);
+    //     return $this->pm->run($sql, $params, false);
+    // }
 }

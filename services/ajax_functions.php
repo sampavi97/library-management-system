@@ -4,6 +4,7 @@ require_once '../helpers/AppManager.php';
 require_once '../models/Book.php';
 require_once '../models/User.php';
 require_once '../models/IssueBook.php';
+require_once '../models/ReturnBook.php';
 
 $target_dir = "../assets/upload/";
 
@@ -400,14 +401,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $issued_date = $_POST['issued_date'];
         $due_date = $_POST['due_date'];
 
-
         $issbookModel = new IssueBook();
         $created = $issbookModel->addIssBook($book_id, $user_id, $issued_date, $due_date, $is_recieved = 0);
 
         if ($created) {
             echo json_encode(['success' => true, 'message' => "Book Issued successfully!"]);
         } else {
-            echo json_encode(['success' => false, 'message' => "Failed to create book. May be book already exist!"]);
+            echo json_encode(['success' => false, 'message' => "Failed to issue book!"]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+//return book
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'return_form') {
+
+    try {
+        $borrowed_id = $_POST['borrowed_id'];
+        $due_date = $_POST['due_date'];
+        $returned_date = $_POST['returned_date'];
+        $fine = $_POST['fine'];
+        $fine_paid = $_POST['fine_paid'];
+
+        $retbookModel = new ReturnBook();
+        $returned = $retbookModel->addRetBook($borrowed_id, $due_date, $returned_date, $fine, $fine_paid);
+
+        if ($returned) {
+            echo json_encode(['success' => true, 'message' => "Book Returned successfully!"]);
+        } else {
+            echo json_encode(['success' => false, 'message' => "Failed to return book!"]);
         }
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
