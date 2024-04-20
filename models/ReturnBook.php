@@ -22,7 +22,7 @@ class ReturnBook extends BaseModel
 
     public function getRetDet()
     {
-        return $this->pm->run("SELECT ret.*, usr.username AS borrower_name, usr.id AS borrower_id, bk.title AS rb_title, bk.isbn AS rb_isbn, iss.is_recieved AS isRecieved, iss.due_date AS due_date FROM returned_book AS ret INNER JOIN issued_book AS iss ON ret.borrowed_id = iss.id INNER JOIN books AS bk ON bk.id = iss.book_id INNER JOIN users AS usr ON usr.id = iss.user_id  WHERE iss.is_recieved = 1 ORDER BY id DESC");
+        return $this->pm->run("SELECT ret.*, usr.username AS borrower_name, usr.id AS borrower_id, bk.title AS rb_title, bk.isbn AS rb_isbn, iss.is_recieved AS isRecieved, iss.due_date AS due_date, iss.issued_date AS issued_date FROM returned_book AS ret INNER JOIN issued_book AS iss ON ret.borrowed_id = iss.id INNER JOIN books AS bk ON bk.id = iss.book_id INNER JOIN users AS usr ON usr.id = iss.user_id ORDER BY id DESC");
     }
 
     protected function addNewRec()

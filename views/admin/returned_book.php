@@ -23,10 +23,12 @@ $retBookDetails = $bookModel->getRetDet();
       <thead>
         <tr>
           <th>#</th>
+          <th>issued id</th>
           <th>isbn</th>
           <th>title</th>
           <th>user id</th>
           <th>user name</th>
+          <th>issued date</th>
           <th>due date</th>
           <th>recieved date</th>
           <th>fine</th>
@@ -35,31 +37,47 @@ $retBookDetails = $bookModel->getRetDet();
         </tr>
       </thead>
       <tbody class="table-primary">
-        <tr>
           <?php
           foreach ($retBookDetails as $key => $rb) {
           ?>
+          <tr>
             <td><?= ++$key ?></td>
+            <td><?= $rb['borrowed_id'] ?></td>
             <td><?= $rb['rb_isbn'] ?></td>
             <td><?= $rb['rb_title'] ?></td>
             <td><?= $rb['borrower_id'] ?></td>
             <td><?= $rb['borrower_name'] ?></td>
-            <td><?= $rb['due_date'] ?></td>
-            <td><?= $rb['returned_date'] ?></td>
+            <td class="text-nowrap"><?= $rb['issued_date'] ?></td>
+            <td class="text-nowrap"><?= $rb['due_date'] ?></td>
+            <td class="text-nowrap"><?= $rb['returned_date'] ?></td>
             <td><?= $rb['fine'] ?></td>
             <td>
               <div>
+                <?php if ($rb['fine'] != 0) {?>
                 <?php if ($rb['fine_paid'] == 0) { ?>
                   <span class="badge bg-danger">Not Paid</span>
                 <?php } else { ?>
                   <span class="badge bg-success">Paid</span>
                 <?php } ?>
+                <?php } else { ?>
+                  <span class="badge bg-primary">No Fine</span>
+                  <?php } ?>
               </div>
             </td>
+            <td>
+            <div class="btn-group" role="group" aria-label="Second group">
+                    <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $b['id']; ?>">
+                      <i class="tf-icons bx bx-edit "></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger delete-book" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $b['id']; ?>">
+                      <i class="tf-icons bx bx-trash "></i>
+                    </button>
+                  </div>
+            </td>
+            </tr>
           <?php
           }
           ?>
-        </tr>
       </tbody>
     </table>
   </div>

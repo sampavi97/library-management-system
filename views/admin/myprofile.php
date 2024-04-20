@@ -5,7 +5,6 @@ require_once __DIR__ . '/../../models/User.php';
 $sm = AppManager::getSM();
 $id = $sm->getAttribute("userId");
 $role = $sm->getAttribute("role");
-echo "$id";
 ?>
 
 <div class="container">

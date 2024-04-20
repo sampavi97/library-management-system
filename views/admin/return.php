@@ -85,64 +85,66 @@ if (0 < $daysDifference && $daysDifference <= 5) {
 <body>
 
     <div class="container mt-1">
-            <div class="row g-1">
-                <div class="col-md-3"></div>
-                    <div class="col-md-6 mt-3">
-                        <form id="return-book-form" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
-                        <input type="hidden" name="action" value="return_form">
-                            <div class="card mb-4 mt-5">
-                                <h4 class="card-header">Return Book</h4>
-                                <div class="card-body">
-                                    <div class="mb-3 row">
-                                        <label for="borrowed_id" class="col-md-3 col-form-label">Issued ID</label>
-                                        <div class="col-md-9">
-                                            <input class="form-control" name="borrowed_id" type="text" value="<?= $issBookDet['id'] ?>" id="borrowed_id" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label for="due_date" class="col-md-3 col-form-label">Due Date</label>
-                                        <div class="col-md-9">
-                                            <input class="form-control" name="due_date" type="text" value="<?= $issBookDet['due_date'] ?>" id="due_date" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label for="returned_date" class="col-md-3 col-form-label text-nowrap">Returned Date</label>
-                                        <div class="col-md-9">
-                                            <input class="form-control" name="returned_date" type="text" value="<?= $date ?>" id="returned_date" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label for="fine" class="col-md-3 col-form-label">Fine</label>
-                                        <div class="col-md-9">
-                                            <input class="form-control" name="fine" type="text" value="<?= $bkFine ?>" id="fine" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="mt-3 row">
-                                        <label for="fine_paid" class="col-md-3 col-form-label">Pay Fine</label>
-                                        <div class="col-md-9 mt-2">
-                                            <div class="row">
-                                                <div class="col-md-1">
-                                                <input style="border: 1px solid gray;" class="form-check-input" type="checkbox" id="fine_paid_checkbox">
-                                                </div>
-                                                <div class="col-md-4"><p id="paidMsg" style="display: none; color:darkslateblue; font-size:large">Fine Paid</p></div>
-                                                <input class="form-control" name="fine_paid" id="fine_paid" type="hidden" value="0">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="additional-fields"></div>
-                                <div class="row mb-2 mt-2">
-                                    <div id="alert-container-return-book"></div>
-                                </div>
-
-                                <div class="card-footer">
-                                    <button type="button" id="return-book-now" class="btn btn-dark text-nowrap float-end">Return Book</button>
+        <div class="row g-1">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 mt-3">
+                <form id="return-book-form" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="return_form">
+                    <div class="card mb-4 mt-5">
+                        <h4 class="card-header">Return Book</h4>
+                        <div class="card-body">
+                            <div class="mb-3 row">
+                                <label for="borrowed_id" class="col-md-3 col-form-label">Issued ID</label>
+                                <div class="col-md-9">
+                                    <input class="form-control" name="borrowed_id" type="text" value="<?= $issBookDet['id'] ?>" id="borrowed_id" readonly>
                                 </div>
                             </div>
-                        </form>
+                            <div class="mb-3 row">
+                                <label for="due_date" class="col-md-3 col-form-label">Due Date</label>
+                                <div class="col-md-9">
+                                    <input class="form-control" name="due_date" type="text" value="<?= $issBookDet['due_date'] ?>" id="due_date" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="returned_date" class="col-md-3 col-form-label text-nowrap">Returned Date</label>
+                                <div class="col-md-9">
+                                    <input class="form-control" name="returned_date" type="text" value="<?= $date ?>" id="returned_date" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="fine" class="col-md-3 col-form-label">Fine</label>
+                                <div class="col-md-9">
+                                    <input class="form-control" name="fine" type="text" value="<?= $bkFine ?>" id="fine" readonly>
+                                </div>
+                            </div>
+                            <div class="mt-3 row">
+                                <label for="fine_paid" class="col-md-3 col-form-label">Pay Fine</label>
+                                <div class="col-md-9 mt-2">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <input style="border: 1px solid gray;" class="form-check-input" type="checkbox" id="fine_paid_checkbox">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p id="paidMsg" style="display: none; color:darkslateblue; font-size:large">Fine Paid</p>
+                                        </div>
+                                        <input class="form-control" name="fine_paid" id="fine_paid" type="hidden" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="additional-fields"></div>
+                        <div class="row mb-2 mt-2">
+                            <div id="alert-container-return-book"></div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="button" id="return-book-now" class="btn btn-dark text-nowrap float-end">Return Book</button>
+                        </div>
                     </div>
-                    <div class="col-md-3"></div>
+                </form>
             </div>
+            <div class="col-md-3"></div>
+        </div>
     </div>
 
     <script src="<?= asset('assets/vendor/libs/jquery/jquery.js') ?>"></script>
@@ -162,6 +164,15 @@ if (0 < $daysDifference && $daysDifference <= 5) {
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        // Function to display a Bootstrap alert
+        function showAlert(message, alertType, id = "alert-container") {
+            var alertContainer = $('#' + id);
+            var alert = $('<div class="alert alert-dark mb-0' + alertType + ' alert-dismissible fade show" role="alert">' + message +
+                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+            alertContainer.html(alert);
+        }
+    </script>
 </body>
 
 </html>
@@ -201,8 +212,8 @@ if (0 < $daysDifference && $daysDifference <= 5) {
                         showAlert(response.message, response.success ? 'success' : 'danger', 'alert-container-return-book');
                         if (response.success) {
                             setTimeout(function() {
-                                location.reload();
-                            }, 1000);
+                                window.location.href = "returned_book.php";
+                            }, 500);
 
                         }
                     },
