@@ -22,7 +22,7 @@ class IssueBook extends BaseModel
     // get issue book details
     public function getIssDet()
     {
-        return $this->pm->run("SELECT iss.*, usr.username AS user_name, usr.id AS user_id, bk.available_books AS available_books, bk.title AS book_title, bk.isbn AS book_isbn FROM issued_book AS iss INNER JOIN  users AS usr ON iss.user_id = usr.id INNER JOIN books AS bk ON bk.id = iss.book_id ORDER BY id DESC");
+        return $this->pm->run("SELECT iss.*, usr.username AS user_name, usr.id AS user_id, bk.available_books AS available_books, bk.title AS book_title, bk.isbn AS book_isbn FROM issued_book AS iss INNER JOIN  users AS usr ON iss.user_id = usr.id INNER JOIN books AS bk ON bk.id = iss.book_id WHERE iss.is_recieved = 0 ORDER BY id DESC");
     }
 
     //get details of issued book details which is not return
@@ -42,6 +42,13 @@ class IssueBook extends BaseModel
         );
 
         $result = $this->pm->run("INSERT INTO " . $this->getTableName() . "(book_id,user_id,issued_date,due_date,is_recieved) VALUES(:book_id, :user_id, :issued_date, :due_date, :is_recieved)", $param);
+
+        return $result;
+    }
+
+    protected function updateAvailableBook()
+    {
+        $result = $this->pm->run("UPDATE books AS bk INNER JOIN issued_book AS iss ON bk.id = iss.book_id SET bk.available_books > 0 THEN bk.available_books-1 ELSE 0 END WHERE iss.is_recieved = 0");
 
         return $result;
     }
@@ -80,6 +87,7 @@ class IssueBook extends BaseModel
         $book->due_date = $due_date;
         $book->is_recieved = $is_recieved;
         $book->addNewRec();
+        $book->updateAvailableBook();
 
         if ($book) {
             return $book;

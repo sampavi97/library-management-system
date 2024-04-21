@@ -406,6 +406,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
         if ($created) {
             echo json_encode(['success' => true, 'message' => "Book Issued successfully!"]);
+            
         } else {
             echo json_encode(['success' => false, 'message' => "Failed to issue book!"]);
         }

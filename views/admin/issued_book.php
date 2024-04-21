@@ -12,9 +12,15 @@ $issued_books = $issBookModel->getIssDet();
 
   <!-- Filter by title and isbn no -->
   <section class="content m-3">
-    <div class="mb-3">
+    <div class="row mb-3">
+      <div class="col-md-7">
       <label for="defaultFormControlInput" class="form-label">Filter Details</label>
-      <input type="text" class="form-control" id="filterDetails" placeholder="Filter By {ISBN no, Title, Borrower Name}" aria-describedby="defaultFormControlHelp">
+      <input type="text" class="form-control" id="filterDetails" placeholder="Filter By {ISBN, User Id, Issued Id}" aria-describedby="defaultFormControlHelp">
+      </div>
+      <div class="col-md-5">
+      <label for="defaultFormControlInput" class="form-label">Filter By Date</label>
+      <input type="text" class="form-control" id="filterDetails2" placeholder="Filter By Issued Date" aria-describedby="defaultFormControlHelp">
+      </div>
     </div>
     <!-- /Filter by title and isbn no -->
     <div class="card table-responsive">
@@ -22,6 +28,7 @@ $issued_books = $issBookModel->getIssDet();
       <table class="table table-bordered table-dark">
         <thead>
           <tr>
+            <th>#</th>
             <th>issued id</th>
             <th>isbn</th>
             <th>Book Title</th>
@@ -39,6 +46,7 @@ $issued_books = $issBookModel->getIssDet();
             <?php
             foreach ($issued_books as $key => $ib) {
             ?>
+              <td><?= ++$key ?></td>
               <td><?= $ib['id'] ?></td>
               <td><?= $ib['book_isbn'] ?></td>
               <td><?= $ib['book_title'] ?></td>
@@ -91,12 +99,25 @@ require_once('../layouts/footer.php');
       var searchedDetails = $(this).val().toLowerCase();
 
       $('tbody tr').each(function() {
-        var isbn = $(this).find('td:eq(1)').text().toLowerCase();
-        var title = $(this).find('td:eq(2)').text().toLowerCase();
-        var borrower = $(this).find('td:eq(4)').text().toLowerCase();
-        // var issue_date = $(this).find('td:eq(7)').text().toLowerCase();
+        var issued_id = $(this).find('td:eq(1)').text().toLowerCase();
+        var isbn = $(this).find('td:eq(2)').text().toLowerCase();
+        var user_id = $(this).find('td:eq(4)').text().toLowerCase();
 
-        if (isbn.includes(searchedDetails) || title.includes(searchedDetails) || borrower.includes(searchedDetails)) {
+        if (issued_id.includes(searchedDetails) || isbn.includes(searchedDetails) || user_id.includes(searchedDetails)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+
+    $('#filterDetails2').on('input', function() {
+      var searchedDetails = $(this).val().toLowerCase();
+
+      $('tbody tr').each(function() {
+        var issued_date = $(this).find('td:eq(6)').text().toLowerCase();
+
+        if (issued_date.includes(searchedDetails)) {
           $(this).show();
         } else {
           $(this).hide();

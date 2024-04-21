@@ -26,8 +26,8 @@ $users = $userModel->getAll();
     <section class="content m-3">
         <div class=" row gy-3 mb-3">
             <div class="col-md-7">
-                <label for="searchByName" class="form-label">Filter by name</label>
-                <input type="text" class="form-control" name="searchByName" id="searchByName" placeholder="Filter by name" aria-describedby="defaultFormControlHelp">
+                <label for="searchByName" class="form-label">Filter by Name Or User Id</label>
+                <input type="text" class="form-control" name="searchByName" id="searchByName" placeholder="Filter by name or user id" aria-describedby="defaultFormControlHelp">
             </div>
             <div class="col-md-5">
                 <label for="searchByRole" class="form-label">Filter by role</label>
@@ -559,9 +559,10 @@ require_once('../layouts/footer.php');
 
             $('tbody tr').each(function() {
                 var username = $(this).find('td:eq(2)').text().toLowerCase(); // Index 1 for the name column
+                var userid = $(this).find('td:eq(1)').text().toLowerCase();
 
                 // Check if the username contains the search term
-                if (username.includes(searchTerm)) {
+                if (username.includes(searchTerm) || userid.includes(searchTerm)) {
                     $(this).show(); // Show the row if the search term is found
                 } else {
                     $(this).hide(); // Hide the row if the search term is not found

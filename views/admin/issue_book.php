@@ -54,7 +54,7 @@ if (isset($_POST['submitUser'])) {
                 <!-- No User Found Alert -->
                 <?php if (isset($userNotFound) && $userNotFound) : ?>
                     <div class="alert alert-danger mt-2" role="alert">
-                        No such user found.
+                        No such user found1
                     </div>
                 <?php endif; ?>
             </div>
@@ -72,7 +72,13 @@ if (isset($_POST['submitUser'])) {
                 <!-- No Book Found Alert -->
                 <?php if (isset($bookNotFound) && $bookNotFound) : ?>
                     <div class="alert alert-danger mt-2" role="alert">
-                        No such book found.
+                        No such book found!
+                    </div>
+                <?php endif; ?>
+                <!-- No Book Available Alert -->
+                <?php if ($books && $books['available_books'] < 1) : ?>
+                    <div class="alert alert-danger mt-2" role="alert">
+                        All books are issued!
                     </div>
                 <?php endif; ?>
             </div>
@@ -197,7 +203,6 @@ require_once('../layouts/footer.php');
                         if (response.success) {
                             setTimeout(function() {
                                 location.reload();
-                                //session_reset();
                             }, 1000);
                             
                         }

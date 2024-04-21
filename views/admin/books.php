@@ -9,7 +9,9 @@ $books = $bookModel->getAll();
 
 <div class="container">
 
-  <h3 class="mx-3 my-5">View All Books</h3>
+  <h3 class="mx-3 my-5">View All Books
+  <button type="button" class="btn btn-sm btn-dark float-end" href="home.php">View Home Books</button>
+  </h3>
   <hr class="m-3">
 
   <!-- Filter Book -->
@@ -46,16 +48,17 @@ $books = $bookModel->getAll();
           <thead>
             <tr>
               <th>#</th>
-              <th>qty</th>
-              <th>available books</th>
+              <th>book id</th>
               <th>isbn no</th>
               <th>book img</th>
               <th>title</th>
+              <th>qty</th>
+              <th>available books</th>
               <th>author</th>
               <th>publisher</th>
               <th>catogary</th>
               <th>book status</th>
-              <th>book desc</th>
+              <!-- <th>book desc</th> -->
               <?php if ($role == 'admin') : ?><th>action</th><?php endif; ?>
             </tr>
           </thead>
@@ -65,8 +68,7 @@ $books = $bookModel->getAll();
             ?>
               <tr class="table-primary">
                 <td><?= ++$key ?></td>
-                <td><?= $b['quantity'] ?></td>
-                <td><?= $b['available_books'] ?></td>
+                <td><?= $b['id'] ?></td>
                 <td><?= $b['isbn'] ?></td>
                 <td>
                   <?php if (isset($b['book_image']) || !empty($b['book_image'])) : ?>
@@ -74,11 +76,13 @@ $books = $bookModel->getAll();
                   <?php endif; ?>
                 </td>
                 <td><?= $b['title'] ?></td>
+                <td><?= $b['quantity'] ?></td>
+                <td><?= $b['available_books'] ?></td>
                 <td><?= $b['author'] ?></td>
                 <td><?= $b['publisher'] ?></td>
                 <td><?= $b['catogary'] ?></td>
                 <td><?= $b['book_status'] ?></td>
-                <td><?= $b['bk_desc'] ?></td>
+                <!-- <td><?= $b['bk_desc'] ?></td> -->
                 <?php if ($role == 'admin') : ?>
                   <td>
                     <div class="btn-group" role="group" aria-label="Second group">
@@ -452,7 +456,7 @@ require_once('../layouts/footer.php');
       var selectedCat = $(this).val();
 
       $('tbody tr').filter(function() {
-        var cat = $(this).find('td:eq(8)').text();
+        var cat = $(this).find('td:eq(9)').text();
 
         if (selectedCat === 'selected' || cat === selectedCat) {
           $(this).show();
@@ -469,12 +473,13 @@ require_once('../layouts/footer.php');
       var searchedBook = $(this).val().toLowerCase();
 
       $('tbody tr').each(function() {
-        var isbn = $(this).find('td:eq(3)').text().toLowerCase();
-        var title = $(this).find('td:eq(5)').text().toLowerCase();
-        var author = $(this).find('td:eq(6)').text().toLowerCase();
-        var publisher = $(this).find('td:eq(7)').text().toLowerCase();
+        var book_id = $(this).find('td:eq(1)').text().toLowerCase();
+        var isbn = $(this).find('td:eq(2)').text().toLowerCase();
+        var title = $(this).find('td:eq(4)').text().toLowerCase();
+        var author = $(this).find('td:eq(7)').text().toLowerCase();
+        var publisher = $(this).find('td:eq(8)').text().toLowerCase();
 
-        if (isbn.includes(searchedBook) || title.includes(searchedBook) || author.includes(searchedBook) || publisher.includes(searchedBook)) {
+        if (book_id.includes(searchedBook) || isbn.includes(searchedBook) || title.includes(searchedBook) || author.includes(searchedBook) || publisher.includes(searchedBook)) {
           $(this).show();
         } else {
           $(this).hide();

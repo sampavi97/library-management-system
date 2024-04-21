@@ -25,6 +25,24 @@ class ReturnBook extends BaseModel
         return $this->pm->run("SELECT ret.*, usr.username AS borrower_name, usr.id AS borrower_id, bk.title AS rb_title, bk.isbn AS rb_isbn, iss.is_recieved AS isRecieved, iss.due_date AS due_date, iss.issued_date AS issued_date FROM returned_book AS ret INNER JOIN issued_book AS iss ON ret.borrowed_id = iss.id INNER JOIN books AS bk ON bk.id = iss.book_id INNER JOIN users AS usr ON usr.id = iss.user_id ORDER BY id DESC");
     }
 
+    protected function updateAvailableBooks()
+    {
+        $param = array(
+            ':borrowed_id' => $this->borrowed_id
+        );
+
+        $result = $this->pm->run("UPDATE books AS bk INNER JOIN issued_book AS iss ON bk.id = iss.book_id INNER JOIN returned_book AS ret ON iss.id = ret.borrowed_id SET bk.available_books = bk.quantity THEN bk.available_books + 1 END WHERE ret.borrowed_id = :borrowed_id", $param);
+
+        return $result;
+    }
+
+    protected function setIsRecieved()
+    {
+        $result = $this->pm->run("UPDATE issued_book AS iss INNER JOIN returned_book AS ret ON iss.id = ret.borrowed_id SET iss.is_recieved = 1 WHERE iss.id IN (SELECT borrowed_id FROM returned_book)");
+
+        return $result;
+    }
+
     protected function addNewRec()
     {
         $param = array(
@@ -37,8 +55,6 @@ class ReturnBook extends BaseModel
         );
 
         $result = $this->pm->run("INSERT INTO " . $this->getTableName() . "(borrowed_id,due_date,returned_date,fine,fine_paid) VALUES(:borrowed_id, :due_date, :returned_date, :fine, :fine_paid)", $param);
-
-        // $results = $this->pm->run("INSERT INTO " . $this->getTableName() . "(borrowed_id,due_date,returned_date,fine,fine_paid) VALUES(:borrowed_id, :due_date, :returned_date, :fine, :fine_paid) WHERE ")
 
         return $result;
     }
@@ -72,6 +88,8 @@ class ReturnBook extends BaseModel
         $book->fine = $fine;
         $book->fine_paid = $fine_paid;
         $book->addNewRec();
+        $book->setIsRecieved();
+        $book->updateAvailableBooks();
 
         if ($book) {
             return $book;

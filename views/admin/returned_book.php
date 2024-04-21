@@ -12,8 +12,16 @@ $retBookDetails = $bookModel->getRetDet();
 <div class="container">
 
   <h3 class="mx-3 my-5">Recieved Books</h3>
-
-  <!-- Filter by title and isbn no -->
+  <div class="row mb-3">
+    <div class="col-md-7">
+    <label for="defaultFormControlInput" class="form-label">Filter Details</label>
+      <input type="text" class="form-control" id="filterDetails1" placeholder="Filter By {Issued Id, ISBN, user Id}" aria-describedby="defaultFormControlHelp">
+    </div>
+    <div class="col-md-5">
+    <label for="defaultFormControlInput" class="form-label">Filter By Date</label>
+      <input type="text" class="form-control" id="filterDetails2" placeholder="Filter By {Issued, Returned Date}" aria-describedby="defaultFormControlHelp">
+    </div>
+    </div>
   <section class="content m-3">
   
   </section>
@@ -25,9 +33,9 @@ $retBookDetails = $bookModel->getRetDet();
           <th>#</th>
           <th>issued id</th>
           <th>isbn</th>
-          <th>title</th>
+          <!-- <th>title</th> -->
           <th>user id</th>
-          <th>user name</th>
+          <!-- <th>user name</th> -->
           <th>issued date</th>
           <th>due date</th>
           <th>recieved date</th>
@@ -44,9 +52,9 @@ $retBookDetails = $bookModel->getRetDet();
             <td><?= ++$key ?></td>
             <td><?= $rb['borrowed_id'] ?></td>
             <td><?= $rb['rb_isbn'] ?></td>
-            <td><?= $rb['rb_title'] ?></td>
+            <!-- <td><?= $rb['rb_title'] ?></td> -->
             <td><?= $rb['borrower_id'] ?></td>
-            <td><?= $rb['borrower_name'] ?></td>
+            <!-- <td><?= $rb['borrower_name'] ?></td> -->
             <td class="text-nowrap"><?= $rb['issued_date'] ?></td>
             <td class="text-nowrap"><?= $rb['due_date'] ?></td>
             <td class="text-nowrap"><?= $rb['returned_date'] ?></td>
@@ -88,24 +96,43 @@ require_once('../layouts/footer.php');
 ?>
 
 <script>
-  // $(document).ready(function() {
-  //   $('#searchBook').on('input', function() {
-  //     var searchedBook = $(this).val().toLowerCase();
 
-  //     $('.notRetBook').each(function() {
-  //       // $(this).find('input:nth-of-type(1)') targets the first input element inside each .display-book, which corresponds to the book title.
-  //       // input:nth-of-type(1) is a CSS selector that selects the first <input> element among its siblings of the same type within its parent element.
-  //       var title = $(this).find('input:nth-of-type(1)').val().toLowerCase();
-  //       var isbn = $(this).find('input:nth-of-type(2)').val().toLowerCase();
+  // Filter issued book by (ISBN NO, TITLE, BORROWER NAME)
+$(document).ready(function() {
 
-  //       if (title.includes(searchedBook) || isbn.includes(searchedBook)) {
-  //         $(this).show();
-  //       } else {
-  //         $(this).hide();
-  //       }
-  //     });
-  //   });
-  // });
+$('#filterDetails1').on('input', function() {
+  var searchedDetails = $(this).val().toLowerCase();
+
+  $('tbody tr').each(function() {
+    var isbn = $(this).find('td:eq(2)').text().toLowerCase();
+    var issued_id = $(this).find('td:eq(1)').text().toLowerCase();
+    var user_id = $(this).find('td:eq(3)').text().toLowerCase();
+
+    if (isbn.includes(searchedDetails) || issued_id.includes(searchedDetails) || user_id.includes(searchedDetails)) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+});
+
+$('#filterDetails2').on('input', function() {
+  var searchedDetails = $(this).val().toLowerCase();
+
+  $('tbody tr').each(function() {
+    var issue_date = $(this).find('td:eq(4)').text().toLowerCase();
+    var recieved_date = $(this).find('td:eq(6)').text().toLowerCase();
+
+    if (issue_date.includes(searchedDetails) || recieved_date.includes(searchedDetails)) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+});
+
+});
+
   $(document).ready(function() {
     $('#issue-book-now').on('click', function() {
 
