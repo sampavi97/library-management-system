@@ -48,7 +48,7 @@ class IssueBook extends BaseModel
 
     protected function updateAvailableBook()
     {
-        $result = $this->pm->run("UPDATE books AS bk INNER JOIN issued_book AS iss ON bk.id = iss.book_id SET bk.available_books > 0 THEN bk.available_books-1 ELSE 0 END WHERE iss.is_recieved = 0");
+        $result = $this->pm->run("UPDATE books AS bk INNER JOIN issued_book AS iss ON bk.id = iss.book_id SET bk.available_books = CASE WHEN bk.available_books > 0 THEN bk.available_books - 1 ELSE 0 END WHERE iss.is_recieved = 0");
 
         return $result;
     }

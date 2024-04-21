@@ -31,7 +31,7 @@ class ReturnBook extends BaseModel
             ':borrowed_id' => $this->borrowed_id
         );
 
-        $result = $this->pm->run("UPDATE books AS bk INNER JOIN issued_book AS iss ON bk.id = iss.book_id INNER JOIN returned_book AS ret ON iss.id = ret.borrowed_id SET bk.available_books = bk.quantity THEN bk.available_books + 1 END WHERE ret.borrowed_id = :borrowed_id", $param);
+        $result = $this->pm->run("UPDATE books AS bk INNER JOIN issued_book AS iss ON bk.id = iss.book_id INNER JOIN returned_book AS ret ON iss.id = ret.borrowed_id SET bk.available_books = CASE WHEN bk.available_books < bk.quantity THEN bk.available_books + 1 ELSE bk.quantity END WHERE ret.borrowed_id = :borrowed_id", $param);
 
         return $result;
     }
