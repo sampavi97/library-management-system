@@ -110,9 +110,10 @@ $role = $sm->getAttribute("role");
                                     <!-- Content -->
                                     <form class="borderless" id="book-detail" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
                                         <div class="row">
-                                            <div class="col-lg-3">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-3">
                                                 <div class="row mb-3">
-                                                    <img src="" alt="book" id="book_image" height="450" width="260" class="d-block rounded m-3">
+                                                    <img src="" alt="book" id="book_image" height="300" width="100">
                                                 </div>
                                                 <div class="row mb-3">
                                                     <?php if ($bookDetail['book_status'] === 'available') { ?>
@@ -128,42 +129,44 @@ $role = $sm->getAttribute("role");
                                                     <?php } ?>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-9">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-7">
                                                 <div class="col-xl">
-                                                        <div class="card-body">
-                                                            <div class="row mb-3">
-                                                                <input type="text" style="line-height: 60px;" class="form-control" id="title" name="title" readonly>
-                                                            </div>
-                                                            <div class="row mb-3">
-                                                                <input type="text" class="form-control" id="author" name="author" readonly>
-                                                            </div>
-                                                            <div class="row mb-3">
-                                                                <textarea id="bk_desc" name="bk_desc" rows="8" class="form-control" readonly></textarea>
-                                                            </div>
-                                                            <div class="row mb-1">
-                                                                <div class="col-sm-2"><span for="publisher">Publisher</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="publisher" name="publisher" readonly></div>
-                                                            </div>
-                                                            <div class="row mb-1">
-                                                                <div class="col-sm-2"><span for="catogary">Catogary</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="catogary" name="catogary" readonly></div>
-                                                            </div>
-                                                            <div class="row mb-1">
-                                                                <div class="col-sm-2"><span for="isbn">ISBN</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="isbn" name="isbn" readonly></div>
-                                                            </div>
-                                                            <div class="row mb-1">
-                                                                <div class="col-sm-2"><span for="quantity">Quantity</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="quantity" name="quantity" readonly></div>
-                                                            </div>
-                                                            <div class="row mb-1">
-                                                                <div class="col-sm-2"><span for="available_books">Available Books</span></div>
-                                                                <div class="col-sm-10"><input type="text" class="form-control" id="available_books" name="available_books" readonly></div>
-                                                            </div>
-                                                            <?php if ($role == 'admin' || $role == 'member') : ?>
-                                                            <button type="submit" class="btn btn-dark float-end">Reserve Book</button>
-                                                            <?php endif; ?>
+                                                    <div class="card-body text-capitalize">
+                                                        <div class="row">
+                                                            <h1 id="title"></h1>
                                                         </div>
+                                                        <div class="row mb-3">
+                                                            <p id="author"></p>
+                                                        </div>
+                                                        <div class="row">
+                                                            <p id="bk_desc"></p>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-2"><span style="color: black;" for="catogary">Catogary</span></div>
+                                                            <div class="col-sm-10">
+                                                                <p id="catogary"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-2"><span style="color: black;" for="publisher">Publisher</span></div>
+                                                            <div class="col-sm-10">
+                                                                <p id="publisher"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-2"><span style="color: black;" for="isbn">ISBN</span></div>
+                                                            <div class="col-sm-10">
+                                                                <p id="isbn"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-2"><span style="color: black;" for="available_books">Available Books</span></div>
+                                                            <div class="col-sm-10">
+                                                                <p id="available_books"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,14 +240,14 @@ $role = $sm->getAttribute("role");
                     var imageBaseUrl = '../../assets/upload/';
                     var adjustedUrl = imageBaseUrl + response.data.book_image;
 
-                    $('#book-detail #title').val(response.data.title);
-                    $('#book-detail #isbn').val(response.data.isbn);
-                    $('#book-detail #author').val(response.data.author);
-                    $('#book-detail #publisher').val(response.data.publisher);
-                    $('#book-detail #catogary').val(response.data.catogary)
-                    $('#book-detail #quantity').val(response.data.quantity);
-                    $('#book-detail #available_books').val(response.data.available_books);
-                    $('#book-detail #bk_desc').val(response.data.bk_desc);
+                    $('#book-detail #title').text(response.data.title);
+                    $('#book-detail #isbn').text(response.data.isbn);
+                    $('#book-detail #author').text(response.data.author);
+                    $('#book-detail #publisher').text(response.data.publisher);
+                    $('#book-detail #catogary').text(response.data.catogary)
+                    $('#book-detail #quantity').text(response.data.quantity);
+                    $('#book-detail #available_books').text(response.data.available_books);
+                    $('#book-detail #bk_desc').text(response.data.bk_desc);
                     $('#book-detail #book_image').attr('src', adjustedUrl);
                 }
             },

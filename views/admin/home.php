@@ -80,8 +80,8 @@ $books = $bookModel->getAll();
                                 <div class="navbar-nav ms-auto">
                                     <a class="nav-item nav-link" href="home.php">HOME</a>
                                     <a class="nav-item nav-link" href="view_book.php">BOOKS</a>
-                                    <a class="nav-item nav-link" href="">ABOUT</a>
                                     <a class="nav-item nav-link" href="dashboard.php">DASHBOARD</a>
+                                    <a class="nav-item nav-link" href="about.php">ABOUT</a>
                                 </div>
                             </div>
                         </div>

@@ -15,8 +15,7 @@ if (!isset($username)) {
 $currentUrl = $_SERVER['SCRIPT_NAME'];
 
 // Extract the last filename from the URL
-$currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
-
+$currentFilename = basename($currentUrl);
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
@@ -168,7 +167,7 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                         <div class="avatar">
-                                            <img src="<?= asset('assets/img/avatars/1.png') ?>" alt class="w-px-40 h-auto rounded-circle" />
+                                            <img src="<?= asset('assets/uploads/lms-user.png') ?>" alt class="w-px-40 h-auto rounded-circle" />
                                         </div>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
@@ -177,7 +176,7 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar">
-                                                            <img src="<?= asset('assets/img/avatars/1.png') ?>" alt class="w-px-40 h-auto rounded-circle" />
+                                                            <img src="<?= asset('assets/uploads/lms-user.png') ?>" alt class="w-px-40 h-auto rounded-circle" />
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1">
@@ -188,10 +187,6 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
                                                     </div>
                                                 </div>
                                             </a>
-                                            <!-- <a class="dropdown-item" href="#">
-                                                <i class="bx bx-user me-2"></i>
-                                                <span class="align-middle">My Profile</span>
-                                            </a> -->
                                         </li>
                                         <li>
                                             <div class="dropdown-divider"></div>

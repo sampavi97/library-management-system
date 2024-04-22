@@ -171,10 +171,7 @@ $books = $bookModel->getAll();
               <label for="book_status" class="form-label">Book Status</label>
               <select id="book_status" name="book_status" class="form-select" required>
                 <option value="available">Available</option>
-                <option value="loaned">Loaned</option>
-                <option value="lost">Lost</option>
-                <option value="reserve">Reserve</option>
-                <option value="not-available">Not Available</option>
+                <option value="all-issued">All Issued</option>
               </select>
             </div>
           </div>

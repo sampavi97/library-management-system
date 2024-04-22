@@ -68,8 +68,8 @@ $books = $bookModel->getAll();
                                 <div class="navbar-nav ms-auto">
                                     <a class="nav-item nav-link" href="home.php">HOME</a>
                                     <a class="nav-item nav-link" href="view_book.php">BOOKS</a>
-                                    <a class="nav-item nav-link" href="about.php">ABOUT</a>
                                     <a class="nav-item nav-link" href="dashboard.php">DASHBOARD</a>
+                                    <a class="nav-item nav-link" href="about.php">ABOUT</a>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@ $books = $bookModel->getAll();
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-                    <div class="container-fluid" style="background-color: lightgray; width:1240px">
+                    <div class="container-fluid" style="background-color: lightgray; border-radius: 10px; width:1240px;">
                         <h2 class="mt-3 mb-3" style="color: black; font-family: 'Gill Sans'">General Guidelines</h2>
                     </div>
                     <div class="container">
