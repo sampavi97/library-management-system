@@ -140,6 +140,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     exit;
 }
+
+//Update User Password
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_pwd') {
+    try {
+        $password = $_POST['password'];
+
+        $id = $_POST['id'];
+
+        $userModel = new User();
+        $updated = $userModel->updatePassword($id, $password);
+        if ($updated) {
+            echo json_encode(['success' => true, 'message' => "Password changed successfully!"]);
+        } else {
+            echo json_encode(['success' => false, 'message' => "Failed to change password!"]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
+    exit;
+}
 //Update User Image
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_user_img') {
     try {

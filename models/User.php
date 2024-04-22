@@ -36,6 +36,21 @@ class User extends BaseModel
         return $this->pm->run("INSERT INTO " . $this->getTableName() . "(username,address,contact_num,nic,role,email,password,user_image) values(:username, :address, :contact_num, :nic, :role, :email, :password, :user_image)", $param);
     }
 
+    protected function updatePwd()
+    {
+        $param = array(
+            ':password' => $this->password,
+            ':id' => $this->id
+        );
+        return $this->pm->run(
+            "UPDATE " . $this->getTableName() . " 
+            SET
+            password = :password
+            WHERE id = :id",
+            $param
+        );
+    }
+
     protected function updateRec()
     {
         $existingUser = $this->getUserByUsernameOrEmailWithId($this->username, $this->email, $this->id);
@@ -142,6 +157,20 @@ class User extends BaseModel
         $user->role = $role;
         $user->email = $email;
         $user->updateRec();
+
+        if($user) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function updatePassword($id,$password)
+    {
+        $user = new User();
+        $user->id = $id;
+        $user->password = $password;
+        $user->updatePwd();
 
         if($user) {
             return true;

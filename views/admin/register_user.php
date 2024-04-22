@@ -56,7 +56,7 @@ require_once __DIR__ . '/../../models/User.php';
             <div class="col-md-8 mt-3">
                 <form id="add-user-form" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="add_user">
-                    <div class="card mb-4 mt-5">
+                    <div class="card mb-4 mt-2">
                         <h3 class="card-header text-center" style="font-family: Lucida Sans Unicode;">Create Your Account</h3>
                         <div class="card-body mt-3">
                             <div class="mb-3 row">
@@ -127,8 +127,8 @@ require_once __DIR__ . '/../../models/User.php';
                         <div class="row mb-1 mt-1">
                             <div id="alert-container-create-user"></div>
                         </div>
-
                         <div class="card-footer">
+                            <a href="../auth/login.php">Already have an account?</a>
                             <button type="button" id="add-now" class="btn btn-dark text-nowrap float-end">Create Account</button>
                         </div>
                     </div>

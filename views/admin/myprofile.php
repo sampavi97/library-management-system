@@ -27,9 +27,11 @@ $role = $sm->getAttribute("role");
                 </div>
                 <div class="col-lg-8 mb-3">
                     <div class="card mb-4 h-100">
-                        <a class="m-3" href="">Change Password</a>
+                        <div class="card-head mt-4">
+                            <a class="m-3" href="#" data-bs-toggle="modal" data-bs-target="#modalCenter">CHANGE PASSWORD</a>
+                        </div>
                         <hr>
-                        <div class="card-body">
+                        <div class="card-body mt-2">
                             <div class="mb-3 row">
                                 <label class="col-md-2 col-form-label" for="id">User Id</label>
                                 <div class="col-md-10">
@@ -78,6 +80,58 @@ $role = $sm->getAttribute("role");
                 <div id="alert-container-edit-profile"></div>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- Change Password -->
+<div class="col-lg-4 col-md-6">
+    <div class="mt-3">
+        <!-- Modal -->
+        <div class="modal fade" id="modalCenter" tabindex="-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form id="chngPwdForm" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="edit_pwd">
+                    <input type="hidden" name="id" id="user_id">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalCenterTitle">Change Password</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <?php if (isset($_GET['error'])) { ?>
+                                    <p class="error"><?php echo $_GET['error']; ?></p>
+                                <?php } ?>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="nameWithTitle" class="form-label">Old Password</label>
+                                    <input type="text" id="nameWithTitle" class="form-control" placeholder="Old Password">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="nameWithTitle" class="form-label">New Password</label>
+                                    <input type="text" id="nameWithTitle" class="form-control" placeholder="New Password">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label for="nameWithTitle" class="form-label">Confirm Password</label>
+                                    <input type="text" id="nameWithTitle" class="form-control" placeholder="Confirm Password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" id="edit-pwd" class="btn btn-primary">Change</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -232,7 +286,7 @@ require_once('../layouts/footer.php');
             }
         });
     }
-
+// Edit User Image
     $('#edit-img-now').on('click', function() {
         var form = $('#edit-user-image')[0];
         $('#edit-user-image')[0].reportValidity();
@@ -266,6 +320,44 @@ require_once('../layouts/footer.php');
             });
         } else {
             var message = ('Image is not valid. Please check your inputs. ');
+            showAlert(message, 'danger');
+        }
+    });
+
+    //Edit Password
+    $('#edit-pwd').on('click', function() {
+        var form = $('#chngPwdForm')[0];
+        $('#chngPwdForm')[0].reportValidity();
+
+        if (form.checkValidity()) {
+            var formData = new FormData($('#chngPwdForm')[0]);
+            var formAction = $('#chngPwdForm').attr('action');
+
+            $.ajax({
+                url: formAction,
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    ;
+                    if (response.success) {
+                        $('#modalCenter').modal('hide');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    }
+                },
+                error: function(error) {
+                    console.error('Error submitting the form:', error);
+                },
+                complete: function(response) {
+                    console.log('Request complete:', response);
+                }
+            });
+        } else {
+            var message = ('Password is not valid.');
             showAlert(message, 'danger');
         }
     });
