@@ -80,7 +80,45 @@ $books = $bookModel->getAll();
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-                    <div class="container-fluid" style="background-color: blue;">
+                    <div class="container-fluid" style="background-color: lightgray; width:1240px">
+                        <h2 class="mt-3 mb-3" style="color: black; font-family: 'Gill Sans'">General Guidelines</h2>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 mt-4" style="color: black;">
+                                <ul>
+                                    <li>
+                                        <p>Members are only allowed to borrow books.</p>
+                                    </li>
+                                    <li>
+                                        <p>Guests are restricted only to visit home, book page to view book details</p>
+                                    </li>
+                                    <li>
+                                        <p>Borrowers are limited to borrowing a maximum of 2 books at a time. They can borrow the next book only after returning any of the borrowed ones.</p>
+                                    </li>
+                                    <li>
+                                        <p>Books can only be borrowed for a period of 14 days.</p>
+                                    </li>
+                                    <li>
+                                        <p>The Librarian may recall books when needed, and the borrower must return books immediately when called upon.</p>
+                                    </li>
+                                    <li>
+                                        <p>Students should report to the issuing counter if they find any marks or damages to the books at the time of borrowing. Such a report is necessary for the books to be presumed to have been in good condition when loaned, and the borrower will be responsible and fined for any damage observed when the books are returned.</p>
+                                    </li>
+                                    <li>
+                                        <p>The fine will be imposed as follows for the books not returned on the due dates.</p>
+                                        <p>Form due date</p>
+                                        <ul>
+                                            <li>The fine amount per day for the first 5 days - Rs.10</li>
+                                            <li>Fine amount per day after 5 days - Rs.20</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3 mt-4">
+                                <img src="<?= asset('assets/uploads/lms-about.jpg') ?>" style="border: 2px solid gray; border-radius: 10px;" height="450" width="300" alt="lms">
+                            </div>
+                        </div>
                     </div>
                     <!-- / Content -->
 

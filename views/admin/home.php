@@ -57,7 +57,7 @@ $books = $bookModel->getAll();
     .bordered-text {
         border: 2px solid rgba(211, 211, 211, 0.5); /* Border style, adjust as needed */
         padding: 5px;
-        background-color: rgba(211, 211, 211, 0.5);
+        background-color: rgba(50, 50, 50, 0.5);
         color:darkslategray; /* Padding to create space between text and border */
     }
     </style>
