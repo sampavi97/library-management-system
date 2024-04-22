@@ -49,18 +49,6 @@ $books = $bookModel->getAll();
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="<?= asset('assets/js/config.js') ?>"></script>
 
-    <style>
-        .small-image {
-        height: 500px; /* Adjust the height as needed */
-        width: auto; /* Maintain aspect ratio */
-    }
-    .bordered-text {
-        border: 2px solid rgba(211, 211, 211, 0.5); /* Border style, adjust as needed */
-        padding: 5px;
-        background-color: rgba(211, 211, 211, 0.5);
-        color:darkslategray; /* Padding to create space between text and border */
-    }
-    </style>
 </head>
 
 <body>
@@ -80,7 +68,7 @@ $books = $bookModel->getAll();
                                 <div class="navbar-nav ms-auto">
                                     <a class="nav-item nav-link" href="home.php">HOME</a>
                                     <a class="nav-item nav-link" href="view_book.php">BOOKS</a>
-                                    <a class="nav-item nav-link" href="">ABOUT</a>
+                                    <a class="nav-item nav-link" href="about.php">ABOUT</a>
                                     <a class="nav-item nav-link" href="dashboard.php">DASHBOARD</a>
                                 </div>
                             </div>
@@ -91,54 +79,14 @@ $books = $bookModel->getAll();
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
-                    <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="row">
-                            <!-- Bootstrap carousel -->
-                            <div class="col-md-12">
-
-                                <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-                                    <ol class="carousel-indicators">
-                                        <li data-bs-target="#carouselExample" data-bs-slide-to="0" class=""></li>
-                                        <li data-bs-target="#carouselExample" data-bs-slide-to="1" class="active" aria-current="true"></li>
-                                        <li data-bs-target="#carouselExample" data-bs-slide-to="2" class=""></li>
-                                    </ol>
-                                    <div class="carousel-inner">
-                                        <div class="carousel-item">
-                                            <img class="small-image w-100" src="<?= asset('assets/uploads/library.jpg') ?>" alt="First slide">
-                                            <div class="carousel-caption d-none d-sm-block bordered-text">
-                                                <h3>A library is the delivery room for the birth of ideas, a place where history comes to life.</h3>
-                                                <p>Norman Cousins</p>
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item active">
-                                            <img class="small-image w-100" src="<?= asset('assets/uploads/lms-bg.jpg') ?>" alt="Second slide">
-                                            <div class="carousel-caption d-none d-sm-block bordered-text">
-                                                <h3>That perfect tranquillity of life, which is nowhere to be found but in retreat, a faithful friend and a good library.</h3>
-                                                <p>Aphra Behn</p>
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="small-image w-100" src="<?= asset('assets/uploads/lms-bg2.jpg') ?>" alt="Third slide">
-                                            <div class="carousel-caption d-none d-sm-block bordered-text">
-                                                <h3>The more that you read, the more things you will know. The more that you learn, the more places you’ll go.</h3>
-                                                <p>Dr. Seuss</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a class="carousel-control-prev" href="#carouselExample" role="button" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselExample" role="button" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Content -->
+                    <div class="container-fluid" style="background-color: blue;">
                     </div>
+                    <!-- / Content -->
+
                     <!-- Footer -->
                     <footer class="content-footer footer bg-footer-theme">
+
                     </footer>
                     <!-- / Footer -->
 

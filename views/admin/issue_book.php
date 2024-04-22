@@ -92,9 +92,9 @@ if (isset($_POST['submitUser'])) {
                 <div class="row">
                     <div class="col-md-3 mt-3">
                         <?php if ($users && isset($users['user_image'])) : ?>
-                            <img style="border: 1px solid black;" id="user_image" src="<?php echo '../../assets/upload/' . $users['user_image']; ?>" height="150" width="100" alt="User Image">
+                            <img style="border: 2px solid gray; border-radius: 10px;" id="user_image" src="<?php echo '../../assets/upload/' . $users['user_image']; ?>" height="150" width="100" alt="User Image">
                         <?php else : ?>
-                            <img style="border: 1px solid black;" id="book_image" src="<?= url('assets/uploads/upload-book.png') ?>" height="150" width="100" alt="book Image">
+                            <img style="border: 2px solid gray; border-radius: 10px;" id="user_image" src="<?= url('assets/uploads/user.png') ?>" height="150" width="100" alt="book Image">
                         <?php endif; ?>
                     </div>
 
@@ -122,9 +122,9 @@ if (isset($_POST['submitUser'])) {
                 <div class="row">
                     <div class="col-md-3 mt-3">
                         <?php if ($books && isset($books['book_image'])) : ?>
-                            <img style="border: 1px solid black;" id="book_image" src="<?php echo '../../assets/upload/' . $books['book_image']; ?>" height="150" width="100" alt="book Image">
+                            <img style="border: 2px solid gray; border-radius: 10px;" id="book_image" src="<?php echo '../../assets/upload/' . $books['book_image']; ?>" height="150" width="100" alt="book Image">
                         <?php else : ?>
-                            <img style="border: 1px solid black;" id="book_image" src="<?= url('assets/uploads/upload-book.png') ?>" height="150" width="100" alt="book Image">
+                            <img style="border: 2px solid gray; border-radius: 10px;" id="book_image" src="<?= url('assets/uploads/upload-book.png') ?>" height="150" width="100" alt="book Image">
                         <?php endif; ?>
                     </div>
 

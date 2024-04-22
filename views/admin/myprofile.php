@@ -9,7 +9,7 @@ $role = $sm->getAttribute("role");
 
 <div class="container">
     <h3 class="mx-3 my-5">My Profile</h3>
-    <hr class="m-3">
+    <hr>
 
     <div class="container-fluid">
         <form id="user-detail" action="<?= url('services/ajax_functions.php') ?>" enctype="multipart/form-data">
@@ -91,35 +91,30 @@ $role = $sm->getAttribute("role");
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <form id="chngPwdForm" action="<?= url('services/ajax_functions.php') ?>" autocomplete="off" enctype="multipart/form-data">
-                    <input type="hidden" name="action" value="edit_pwd">
-                    <input type="hidden" name="id" id="user_id">
+                        <input type="hidden" name="action" value="edit_pwd">
+                        <input type="hidden" name="id" value=<?= $id ?>>
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalCenterTitle">Change Password</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <?php if (isset($_GET['error'])) { ?>
-                                    <p class="error"><?php echo $_GET['error']; ?></p>
-                                <?php } ?>
-                            </div>
-                            <div class="row">
                                 <div class="col mb-3">
-                                    <label for="nameWithTitle" class="form-label">Old Password</label>
-                                    <input type="text" id="nameWithTitle" class="form-control" placeholder="Old Password">
+                                    <label for="password" class="form-label">New Password</label>
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="New Password">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
-                                    <label for="nameWithTitle" class="form-label">New Password</label>
-                                    <input type="text" id="nameWithTitle" class="form-control" placeholder="New Password">
+                                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Confirm Password">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col mb-3">
-                                    <label for="nameWithTitle" class="form-label">Confirm Password</label>
-                                    <input type="text" id="nameWithTitle" class="form-control" placeholder="Confirm Password">
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div id="additional-fields"></div>
+                            <div class="mb-3 mt-3">
+                                <div id="alert-container-chng-pwd"></div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -149,7 +144,6 @@ $role = $sm->getAttribute("role");
                 <div class="modal-body">
                     <div class="row g-1 mb-3">
                         <div class="col-md-4 text-center center">
-
                             <img id="previewImage" class="us_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
                             <p id="errorMsg"></p>
                             <label for="formFile" class="form-label">Change Image</label>
@@ -174,6 +168,7 @@ require_once('../layouts/footer.php');
 ?>
 
 <script>
+    //get user details
     $(document).ready(async function() {
         var user_id = <?php echo json_encode($id); ?>;
         await getUserById(user_id);
@@ -213,6 +208,7 @@ require_once('../layouts/footer.php');
         });
     }
 
+    //Edit user details
     $('#edit-profile').on('click', function() {
         var form = $('#user-detail')[0];
         $('#user-detail')[0].reportValidity();
@@ -254,6 +250,7 @@ require_once('../layouts/footer.php');
         await getImgById(user_id);
     })
 
+    // get existing image
     async function getImgById(id) {
         var formAction = $('#edit-user-image').attr('action');
 
@@ -286,7 +283,7 @@ require_once('../layouts/footer.php');
             }
         });
     }
-// Edit User Image
+    // Edit User Image
     $('#edit-img-now').on('click', function() {
         var form = $('#edit-user-image')[0];
         $('#edit-user-image')[0].reportValidity();
@@ -341,7 +338,7 @@ require_once('../layouts/footer.php');
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    ;
+                    showAlert(response.message, response.success ? 'primary' : 'danger', 'alert-container-edit-profile');
                     if (response.success) {
                         $('#modalCenter').modal('hide');
                         setTimeout(function() {

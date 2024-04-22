@@ -2,11 +2,8 @@
 require_once('../layouts/header.php');
 require_once __DIR__ . '/../../models/User.php';
 
-// $user_id = $sm->getAttribute("userId");
-
 $userModel = new User();
 $users = $userModel->getAll();
-// $user = $userModel->getById($user_id);
 
 ?>
 
@@ -41,7 +38,6 @@ $users = $userModel->getAll();
         <!-- /Filter By Username AND User Role -->
 
         <div class="card">
-
             <div class="table-responsive">
                 <table class="table table-bordered table-dark">
                     <thead>
@@ -110,7 +106,7 @@ $users = $userModel->getAll();
                     <div class="row g-2 mb-3">
 
                         <div class="col-md-3 mb-3 mt-3">
-                            <img id="previewImage" src="<?= url('assets/uploads/upload-user.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <img id="previewImage" src="<?= url('assets/uploads/user.png') ?>" width="110" height="140" style="border: 2px solid gray; border-radius: 10px;" />
                             <p id="errorMsg"></p>
                             <label for="formFile" class="form-label">Upload an image</label>
                             <input type="file" id="inputImage" name="user_image" class="form-control" accept="image/*">

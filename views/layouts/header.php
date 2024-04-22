@@ -25,7 +25,7 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Library Management System</title>
+    <title>LMS</title>
 
     <meta name="description" content="" />
 
@@ -159,10 +159,7 @@ $currentFilename = basename($currentUrl);  // e.g., "dashboard.php"
 
                         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
-                            <!-- Pagination -->
-                            <!-- example -->
-                            <h4 class="m-3 my-6">Do pagination</h4>
-                            <!-- /Pagination -->
+                            <h4 class="m-3 my-6" style="font-family: Calibri;">Library Management System</h4>
 
                             <ul class="navbar-nav flex-row align-items-center ms-auto">
 

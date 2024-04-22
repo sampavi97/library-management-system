@@ -38,6 +38,10 @@ class User extends BaseModel
 
     protected function updatePwd()
     {
+        if (!empty($this->password)) {
+            $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        }
+        
         $param = array(
             ':password' => $this->password,
             ':id' => $this->id

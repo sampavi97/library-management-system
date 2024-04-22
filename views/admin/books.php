@@ -9,8 +9,8 @@ $books = $bookModel->getAll();
 
 <div class="container">
 
-  <h3 class="mx-3 my-5">View All Books
-  <button type="button" class="btn btn-sm btn-dark float-end" href="home.php">View Home Books</button>
+  <h3 class="mx-3 my-5">Books List
+  <a href="view_book.php"><button type="button" class="btn btn-sm btn-dark float-end">View All Books</button></a>
   </h3>
   <hr class="m-3">
 
