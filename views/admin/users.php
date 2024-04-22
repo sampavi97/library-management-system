@@ -200,9 +200,8 @@ $users = $userModel->getAll();
                 <div class="modal-body">
                     <div class="row g-1 mb-3">
                         <div class="col-md-3 mb-3 mt-5">
-                            <img class="usr_image" src="<?= url('assets/uploads/upload-user.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <img class="usr_image" src="<?= url('assets/uploads/upload-user.png') ?>" width="110" height="140" style="border: 2px solid gray;" />
                             <button type="button" class="btn btn-sm btn-secondary edit-user-img" data-bs-toggle="tooltip" data-bs-original-title="Edit Image"><i class="tf-icons bx bx-edit "></i></button>
-                            <p id="errorMsg"></p>
                         </div>
                         <div class="col-md-9 mb-3 form-group mt-5">
                             <div class="row g-1">
@@ -290,14 +289,12 @@ $users = $userModel->getAll();
                     <div class="row g-1 mb-3">
                         <div class="col-md-4">
                             <!-- user image -->
-                            <img id="previewImage" class="us_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="120" height="150" style="border: 1px solid black;" />
+                            <img id="previewImage" class="us_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="120" height="150" style="border: 2px solid gray;" />
                             <p id="errorMsg"></p>
                             <label for="formFile" class="form-label">Change Image</label>
-                            <input type="file" id="usr_image" name="user_image" class="form-control" accept="image/*">
-                            <input type="hidden" id="oldimage" name="oldimage" class="form-control" accept="image/*">
+                            <input type="file" id="user_image" name="user_image" value="" class="form-control" accept="image/*" size="50">
+                            <input type="hidden" id="oldimage" name="oldimage" value="" class="form-control" accept="image/*">
                         </div>
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -558,7 +555,7 @@ require_once('../layouts/footer.php');
             var searchTerm = $(this).val().toLowerCase();
 
             $('tbody tr').each(function() {
-                var username = $(this).find('td:eq(2)').text().toLowerCase(); // Index 1 for the name column
+                var username = $(this).find('td:eq(3)').text().toLowerCase(); // Index 1 for the name column
                 var userid = $(this).find('td:eq(1)').text().toLowerCase();
 
                 // Check if the username contains the search term

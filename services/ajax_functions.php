@@ -439,3 +439,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     exit;
 }
+
+//Get returned book By Id
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['returned_id']) && isset($_GET['action']) && $_GET['action'] == 'get_ret') {
+
+    try {
+        $returned_id = $_GET['returned_id'];
+        $bookModel = new ReturnBook();
+        $book = $bookModel->getById($returned_id);
+        if ($book) {
+            echo json_encode(['success' => true, 'message' => "Book data returned successfully!", 'data' => $book]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to update book!']);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+// Update returned book details
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_ret') {
+    try {
+        $fine_paid = $_POST['fine_paid'];
+        $id = $_POST['id'];
+
+        $bookModel = new ReturnBook();
+        $updated = $bookModel->updateRetBook($id,$fine_paid);
+        if ($updated) {
+            echo json_encode(['success' => true, 'message' => "Returned book updated successfully!"]);
+        } else {
+            echo json_encode(['success' => false, 'message' => "Failed to update return book. May be book already exist!"]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
+    exit;
+}

@@ -115,29 +115,4 @@ class IssueBook extends BaseModel
         }
     }
 
-    // public function getAllWithUserAndTitle()
-    // {
-    //     return $this->pm->run("SELECT iss.*, bk.title AS bk_title, usr.username AS user_name FROM issued_book AS iss INNER JOIN users AS usr ON iss.user_id = usr.id INNER JOIN books AS bk ON bk.id = iss.book_id ORDER BY id DESC");
-    // }
-
-    // public function getAllWithUserAndTitleByUserId($user_id)
-    // {
-    //     $param = array(':user_id' => $user_id);
-    //     return $this->pm->run(
-    //         "SELECT iss.*, bk.title AS bk_title, usr.username AS user_name FROM issued_book AS iss INNER JOIN users AS usr ON iss.user_id = usr.id INNER JOIN books AS bk ON bk.id = iss.book_id WHERE usr.id = :user_id ORDER BY id DESC", $param
-    //     );
-    // }
-
-    // public function issueBook($book_id, $user_id)
-    // {
-    //     // Get the current date
-    //     $current_date = date("Y-m-d");
-
-    //     // Prepare the SQL query to insert a new record
-    //     $sql = "INSERT INTO issued_book (book_id, user_id, issue_date) VALUES (:book_id, :user_id, :issue_date)";
-
-    //     // Bind parameters and execute the query
-    //     $params = array(':book_id' => $book_id, ':user_id' => $user_id, ':issue_date' => $current_date);
-    //     return $this->pm->run($sql, $params, false);
-    // }
 }

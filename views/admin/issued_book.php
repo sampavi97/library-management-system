@@ -38,7 +38,6 @@ $issued_books = $issBookModel->getIssDet();
             <th>due date</th>
             <th>status</th>
             <th>on-hand books</th>
-            <th>option</th>
           </tr>
         </thead>
         <tbody class="table-primary">
@@ -65,18 +64,6 @@ $issued_books = $issBookModel->getIssDet();
                 </div>
               </td>
               <td><?= $ib['available_books'] ?></td>
-              <?php if ($role == 'admin') : ?>
-                <td>
-                  <div class="btn-group" role="group" aria-label="Second group">
-                    <button type="button" class="btn btn-sm btn-secondary edit-book" data-bs-toggle="tooltip" data-bs-original-title="Edit" data-id="<?= $b['id']; ?>">
-                      <i class="tf-icons bx bx-edit "></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-danger delete-book" data-bs-toggle="tooltip" data-bs-original-title="Delete" data-id="<?= $b['id']; ?>">
-                      <i class="tf-icons bx bx-trash "></i>
-                    </button>
-                  </div>
-                </td>
-              <?php endif; ?>
           </tr>
         <?php
             }
@@ -111,6 +98,7 @@ require_once('../layouts/footer.php');
       });
     });
 
+    //filter by issued date
     $('#filterDetails2').on('input', function() {
       var searchedDetails = $(this).val().toLowerCase();
 
@@ -126,4 +114,5 @@ require_once('../layouts/footer.php');
     });
 
   });
+
 </script>

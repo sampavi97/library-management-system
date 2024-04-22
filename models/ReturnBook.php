@@ -62,8 +62,6 @@ class ReturnBook extends BaseModel
     protected function updateRec()
     {
         $param = array( 
-            // ':returned_date' => $this->returned_date,
-            // ':fine' => $this->fine,
             ':fine_paid' => $this->fine_paid,
             ':id' => $this->id
         );
@@ -71,8 +69,6 @@ class ReturnBook extends BaseModel
         return $this->pm->run(
             "UPDATE returned_book 
             SET 
-                -- returned_date = :returned_date,
-                -- fine = :fine,
                 fine_paid = :fine_paid 
             WHERE id = :id", 
             $param
@@ -102,8 +98,6 @@ class ReturnBook extends BaseModel
     {
         $book = new ReturnBook();
         $book->id = $id;
-        // $book->returned_date = $returned_date;
-        // $book->fine = $fine;
         $book->fine_paid = $fine_paid;
         $book->updateRec();
 
@@ -113,10 +107,5 @@ class ReturnBook extends BaseModel
             return false;
         }
     }
-
-    // function returnBook()
-    // {
-    //     return $this->pm->run("UPDATE returned_book SET returned_date =  WHERE id = :id",)
-    // }
 
 }

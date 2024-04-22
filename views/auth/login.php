@@ -76,9 +76,6 @@ $error = $sm->getAttribute("error");
                             <div class="mb-3 form-password-toggle">
                                 <div class="d-flex justify-content-between">
                                     <label class="form-label" for="password">Password</label>
-                                    <a href="#">
-                                        <small>Forgot Password?</small>
-                                    </a>
                                 </div>
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" required />
@@ -88,13 +85,7 @@ $error = $sm->getAttribute("error");
                             <?php if (!empty($error)) : ?>
                                 <div class="alert alert-danger"><?= ($error ?? "") ?></div>
                             <?php endif; ?>
-                            <div class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                                    <label class="form-check-label" for="remember-me"> Remember Me </label>
-                                </div>
-                            </div>
-                            <div class="mb-3">
+                            <div class="mb-3 mt-4">
                                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                             </div>
                         </form>
@@ -103,7 +94,7 @@ $error = $sm->getAttribute("error");
                         <p class="text-center">
                             <span>Don't have an account?</span>
                             <a href="auth-register-basic.html">
-                                <span>&nbsp; Register Now</span>
+                                <a href="../admin/register_user.php">&nbsp; Register Now</a>
                             </a>
                         </p>
                     </div>

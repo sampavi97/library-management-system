@@ -19,7 +19,7 @@ $books = $bookModel->getAll();
         <div class="container col-md-2">
             <!-- Book Image Adding -->
             <div class="form-group">
-                <img id="previewImage" src="<?= url('assets/uploads/upload-book.png') ?>" width="140" height="180" />
+                <img id="previewImage" style="border: 2px solid gray; border-radius: 10px;" src="<?= url('assets/uploads/upload-book.png') ?>" width="140" height="180" />
                 <p id="errorMsg"></p>
                 <input type="file" id="book_image" name="book_image" class="form-control" accept="image/*">
             </div>

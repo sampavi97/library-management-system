@@ -9,11 +9,6 @@ $bookId = $_GET['id'];
 $issBookModel = new IssueBook();
 $issBookDet = $issBookModel->getById($bookId);
 
-// echo $issBookDet['book_id'] . "<br>";
-// echo $issBookDet['user_id'] . "<br>";
-// echo $issBookDet['due_date'] . "<br>";
-// echo $issBookDet['id'] . "<br>";
-
 $today = date("y-m-d");
 $timestamp = strtotime($today);
 $date = date("Y-m-d", $timestamp);
@@ -24,8 +19,6 @@ $dueDateTime = new DateTime($dueDate);
 
 $interval = $dueDateTime->diff($currentDate);
 $daysDifference = $interval->format('%r%a'); // %r for sign (+/-)
-
-// echo "The difference: " . $daysDifference . "<br>";
 
 // Fine Amount Calculation
 $fineAmount = 20;

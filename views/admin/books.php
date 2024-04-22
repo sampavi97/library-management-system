@@ -58,7 +58,6 @@ $books = $bookModel->getAll();
               <th>publisher</th>
               <th>catogary</th>
               <th>book status</th>
-              <!-- <th>book desc</th> -->
               <?php if ($role == 'admin') : ?><th>action</th><?php endif; ?>
             </tr>
           </thead>
@@ -82,7 +81,6 @@ $books = $bookModel->getAll();
                 <td><?= $b['publisher'] ?></td>
                 <td><?= $b['catogary'] ?></td>
                 <td><?= $b['book_status'] ?></td>
-                <!-- <td><?= $b['bk_desc'] ?></td> -->
                 <?php if ($role == 'admin') : ?>
                   <td>
                     <div class="btn-group" role="group" aria-label="Second group">
@@ -121,9 +119,8 @@ $books = $bookModel->getAll();
         <div class="modal-body">
           <div class="row g-1 mb-3">
             <div class="col-md-3 mb-3 mt-4">
-              <img class="bk_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+              <img class="bk_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 2px solid gray;" />
               <button type="button" class="btn btn-sm btn-secondary edit-book-img" data-bs-toggle="tooltip" data-bs-original-title="Edit Image"><i class="tf-icons bx bx-edit "></i></button>
-              <p id="errorMsg"></p>
             </div>
             <div class="col-md-9 mb-3 form-group mt-4">
               <div class="row g-1">
@@ -219,7 +216,7 @@ $books = $bookModel->getAll();
                     <div class="row g-1 mb-3">
                         <div class="col-md-4 text-center center">
                             <!-- book image -->
-                            <img id="previewImage" class="bk_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 1px solid black;" />
+                            <img id="previewImage" class="bk_image" src="<?= url('assets/uploads/upload-book.png') ?>" width="110" height="140" style="border: 2px solid gray;" />
                             <p id="errorMsg"></p>
                             <label for="formFile" class="form-label">Change Image</label>
                             <input type="file" id="book_image" name="book_image" value="" class="form-control" accept="image/*" size="50">

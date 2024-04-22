@@ -75,10 +75,6 @@ include __DIR__ . '/../../config.php';
         <div class="container">
             <div class="row m-5">
                 <h1 class="text-center font-style">Select User Type</h1>
-                <!-- <div class="col-md-4" id="border-style2">
-                    <a href="login.php"><img id="border-style" src="<?= asset('assets/uploads/admin-type-login.png') ?>" height="300" alt="user-admin"></a>
-                    <div class="text-center font-style">Admin</div> 
-                </div> -->
                 <div class="col-lg-2"></div>
                 <div class="col-lg-4 mt-3" id="border-style2">
                     <a href="login.php"><img id="border-style" src="<?= asset('assets/uploads/admin-type-login.png') ?>" alt="user-member"></a> 
