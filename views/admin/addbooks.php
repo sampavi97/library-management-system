@@ -49,6 +49,7 @@ $books = $bookModel->getAll();
                                     <option value="philosophy">Philosophy</option>
                                     <option value="thriller">Thriller</option>
                                     <option value="fantasy">Fantasy</option>
+                                    <option value="mystery">Mystery</option>
                                 </select>
                             </div>
                         </div>

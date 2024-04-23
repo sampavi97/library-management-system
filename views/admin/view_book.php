@@ -128,14 +128,8 @@ $books = $bookModel->getAll();
                                                         <!-- book status badges -->
                                                         <?php if ($b['book_status'] === 'available') { ?>
                                                             <span class="badge bg-success">available</span>
-                                                        <?php } else if ($b['book_status'] === 'reserve') { ?>
-                                                            <span class="badge bg-warning">reserve</span>
-                                                        <?php } else if ($b['book_status'] === 'lost') { ?>
-                                                            <span class="badge bg-danger">lost</span>
-                                                        <?php } else if ($b['book_status'] === 'loaned') { ?>
-                                                            <span class="badge bg-info">All issued</span>
-                                                        <?php } else if ($b['book_status'] === 'not-available') { ?>
-                                                            <span class="badge bg-info">Not Available</span>
+                                                        <?php } else if ($b['book_status'] === 'all-issued') { ?>
+                                                            <span class="badge bg-danger">All issued</span>
                                                         <?php } ?>
                                                     </div>
                                                 <?php

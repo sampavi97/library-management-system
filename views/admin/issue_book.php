@@ -15,7 +15,7 @@ $books = $_SESSION['books'] ?? null;
 
 if (isset($_POST['submitBook'])) {
     $book = $_POST['book'];
-    $books = $bookModel->getByBookTitle($book);
+    $books = $bookModel->getByIsbn($book);
     $_SESSION['books'] = $books;
 
     if (!$books) {
@@ -25,7 +25,7 @@ if (isset($_POST['submitBook'])) {
 
 if (isset($_POST['submitUser'])) {
     $borrower = $_POST['user'];
-    $users = $userModel->getByUsername($borrower);
+    $users = $userModel->getById($borrower);
     $_SESSION['users'] = $users;
 
     if (!$users) {

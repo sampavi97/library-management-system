@@ -36,6 +36,16 @@ class ReturnBook extends BaseModel
         return $result;
     }
 
+    protected function updateBookStatus()
+    {
+        $param = array(
+            ':borrowed_id' => $this->borrowed_id
+        );
+
+        $result = $this->pm->run("UPDATE books AS bk INNER JOIN issued_book AS iss ON bk.id = iss.book_id INNER JOIN returned_book AS ret ON iss.id = ret.borrowed_id SET bk.book_status = CASE WHEN bk.available_books > 0 THEN 'available' ELSE 'all-issued' END WHERE ret.borrowed_id = :borrowed_id", $param);
+        return $result;
+    }
+
     protected function setIsRecieved()
     {
         $result = $this->pm->run("UPDATE issued_book AS iss INNER JOIN returned_book AS ret ON iss.id = ret.borrowed_id SET iss.is_recieved = 1 WHERE iss.id IN (SELECT borrowed_id FROM returned_book)");
@@ -86,6 +96,7 @@ class ReturnBook extends BaseModel
         $book->addNewRec();
         $book->setIsRecieved();
         $book->updateAvailableBooks();
+        $book->updateBookStatus();
 
         if ($book) {
             return $book;

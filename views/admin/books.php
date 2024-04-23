@@ -68,10 +68,10 @@ $books = $bookModel->getAll();
               <tr class="table-primary">
                 <td><?= ++$key ?></td>
                 <td><?= $b['id'] ?></td>
-                <td><?= $b['isbn'] ?></td>
+                <td class="text-nowrap"><?= $b['isbn'] ?></td>
                 <td>
                   <?php if (isset($b['book_image']) || !empty($b['book_image'])) : ?>
-                    <img src="<?= asset('assets/upload/' . $b['book_image']) ?>" alt="book" class="d-block rounded m-3" width="80">
+                    <img src="<?= asset('assets/upload/' . $b['book_image']) ?>" alt="book" class="d-block rounded m-3" width="80" height="100">
                   <?php endif; ?>
                 </td>
                 <td><?= $b['title'] ?></td>
@@ -155,6 +155,7 @@ $books = $bookModel->getAll();
                 <option value="philosophy">Philosophy</option>
                 <option value="thriller">Thriller</option>
                 <option value="fantasy">Fantasy</option>
+                <option value="mystery">Mystery</option>
               </select>
             </div>
           </div>

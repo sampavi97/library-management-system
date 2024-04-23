@@ -52,6 +52,12 @@ class IssueBook extends BaseModel
 
         return $result;
     }
+    protected function updateBookStatus()
+    {
+        $result = $this->pm->run("UPDATE books AS bk INNER JOIN issued_book AS iss ON bk.id = iss.book_id SET bk.book_status = CASE WHEN bk.available_books = 0 THEN 'all-issued' ELSE 'available' END WHERE iss.is_recieved = 0");
+
+        return $result;
+    }
 
     protected function updateRec()
     {
@@ -87,6 +93,7 @@ class IssueBook extends BaseModel
         $book->due_date = $due_date;
         $book->is_recieved = $is_recieved;
         $book->addNewRec();
+        $book->updateBookStatus();
         $book->updateAvailableBook();
 
         if ($book) {

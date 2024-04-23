@@ -81,7 +81,7 @@ include __DIR__ . '/../../config.php';
                     <div class="text-center font-style">User</div>
                 </div>
                 <div class="col-lg-4 mt-3" id="border-style2">
-                    <a class="text-center" href="<?= url('views/admin/view_book.php') ?>"><img id="border-style" src="<?= asset('assets/uploads/guest-type-login.png') ?>" alt="user-guest"></a>
+                    <a class="text-center" href="<?= url('views/admin/home.php') ?>"><img id="border-style" src="<?= asset('assets/uploads/guest-type-login.png') ?>" alt="user-guest"></a>
                     <div class="text-center font-style">Guest</div>
                 </div>
                 <div class="col-lg-2"></div>
