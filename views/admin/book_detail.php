@@ -118,14 +118,8 @@ $role = $sm->getAttribute("role");
                                                 <div class="row mb-3">
                                                     <?php if ($bookDetail['book_status'] === 'available') { ?>
                                                         <span class="badge bg-success">available</span>
-                                                    <?php } else if ($bookDetail['book_status'] === 'reserve') { ?>
-                                                        <span class="badge bg-warning">reserve</span>
-                                                    <?php } else if ($bookDetail['book_status'] === 'lost') { ?>
-                                                        <span class="badge bg-danger">lost</span>
-                                                    <?php } else if ($bookDetail['book_status'] === 'loaned') { ?>
+                                                    <?php } else if ($bookDetail['book_status'] === 'all-issued') { ?>
                                                         <span class="badge bg-danger">All issued</span>
-                                                    <?php } else if ($bookDetail['book_status'] === 'not-available') { ?>
-                                                        <span class="badge bg-info">Not Available</span>
                                                     <?php } ?>
                                                 </div>
                                             </div>
