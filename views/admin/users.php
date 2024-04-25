@@ -224,23 +224,6 @@ $users = $userModel->getAll();
                             <input type="email" id="email" name="email" class="form-control" placeholder="XXXX@XXX.XXX" required>
                         </div>
                     </div>
-                    <!-- delete password option in update user modal
-                        <div class="row g-2 mt-2">
-                        <div class="col mb-0 form-password-toggle">
-                            <label class="form-label" for="password">Password</label>
-                            <div class="input-group">
-                                <input type="password" name="password" class="form-control" id="password" placeholder="············" aria-describedby="basic-default-password2" required>
-                                <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                            </div>
-                        </div>
-                        <div class="col mb-0 form-password-toggle">
-                            <label class="form-label" for="confirm_password">Confirm Password</label>
-                            <div class="input-group">
-                                <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="············" aria-describedby="basic-default-password2" required>
-                                <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="row g-2 mt-0">
                         <div class="col mb-3">
                             <label class="form-label" for="contact_num">Phone No</label>

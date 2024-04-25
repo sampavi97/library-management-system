@@ -12,11 +12,6 @@ $books = $bookModel->getTot();
 $users = $userModel->getTot();
 $issbooks = $issModel->getTot();
 $retbooks = $retModel->getTot();
-// var_dump($books);
-// echo "<br>" . $books[0]['total_rows'];
-// echo "<br>" . $users[0]['total_rows'];
-// echo "<br>" . $issbooks[0]['total_rows'];
-// echo "<br>" . $retbooks[0]['total_rows'];
 ?>
 <style>
     .card{
